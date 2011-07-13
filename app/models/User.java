@@ -1,14 +1,13 @@
 package models;
 
 import play.*;
-import play.db.jpa.*;
 import play.libs.OAuth.TokenPair;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-public class User extends BaseModel {
+public class User extends Model {
     public String username;
     public String requestToken;
     public String accessToken;
