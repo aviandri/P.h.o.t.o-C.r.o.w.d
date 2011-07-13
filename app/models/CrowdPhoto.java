@@ -1,7 +1,6 @@
 package models;
 
 import play.*;
-import play.db.jpa.*;
 
 import javax.persistence.*;
 
@@ -9,7 +8,7 @@ import java.net.URL;
 import java.util.*;
 
 @Entity
-public class CrowdPhoto extends BaseModel {
+public class CrowdPhoto extends Model {
     public CrowdGallery crowd;
     @Column(name="poster_user_name")
     public String posterUserName;

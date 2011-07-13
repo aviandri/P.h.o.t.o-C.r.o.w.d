@@ -12,7 +12,7 @@ import play.jobs.Job;
 import play.libs.WS;
 import play.libs.WS.HttpResponse;
 
-public class GalleryJob extends Job<String> {
+public class GalleryJob extends Job<Void> {
 	private CrowdGallery crowdGallery;
 	public GalleryJob(CrowdGallery crowdGallery){
 		this.crowdGallery = crowdGallery;
@@ -28,8 +28,9 @@ public class GalleryJob extends Job<String> {
 			String text = tweetObject.getAsJsonPrimitive("text").getAsString();
 			StringBuffer sb = new StringBuffer(text);
 			int i = sb.indexOf("http://twitpic.com");
-			if(i < 0)
+			if(i < 0){
 				continue;
+			}
 			PhotoJob photoJob = new PhotoJob(crowdGallery, tweetObject);
 			photoJob.run();
 		}
