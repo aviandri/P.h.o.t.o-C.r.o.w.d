@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Photo Crowd</title>
+<script type="text/javascript" src="javascripts/jquery-1.6.1.min.js"></script>
+
+<link rel="stylesheet" media="screen" type="text/css" href="javascripts/datepicker/css/datepicker.css" />
+<script type="text/javascript" src="javascripts/datepicker/js/datepicker.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	var now = new Date();
+	var nowFormatted = now.getMonth() + '/' + now.getDate() + '/' + now.getFullYear();
+	$('#startDate').DatePicker({
+		format:'m/d/Y',
+		date: nowFormatted,
+		current: nowFormatted,
+		starts: 1,
+		position: 'r',
+		onBeforeShow: function() {
+			var dateToShow;
+			if ($('#startDate').val().trim() == '') {
+				dateToShow = nowFormatted;
+			} else {
+				dateToShow = $('#startDate').val();
+			}
+			$('#startDate').DatePickerSetDate(dateToShow, true);
+			
+		},
+		onChange: function(formated, dates){
+			$('#startDate').val(formated);
+			$('#startDate').DatePickerHide();
+		}
+	});
+	
+	$('#endDate').DatePicker({
+		format:'m/d/Y',
+		date: nowFormatted,
+		current: nowFormatted,
+		starts: 1,
+		position: 'r',
+		onBeforeShow: function() {
+			var dateToShow;
+			if ($('#endDate').val().trim() == '') {
+				dateToShow = nowFormatted;
+			} else {
+				dateToShow = $('#endDate').val();
+			}
+			$('#endDate').DatePickerSetDate(dateToShow, true);
+			
+		},
+		onChange: function(formated, dates){
+			$('#endDate').val(formated);
+			$('#endDate').DatePickerHide();
+		}
+	});
+})
+</script>
+
+<link rel="stylesheet" media="screen"  href="stylesheets/common.css"/>
+<link rel="stylesheet" media="screen"  href="stylesheets/main.css"/>
+<style type="text/css">
+
+#welcome {
+	font-size: 180%;
+	font-weight: bold;
+}
+
+#welcome em {
+	font-weight: 100;
+	font-style: normal;
+}
+
+#welcome {
+	width: 250px;
+	float: left;
+}
+
+form {
+	margin-left: 250px;
+	padding-left: 10px;
+}
+
+::-webkit-input-placeholder {
+	color: #dddddd;
+}
+input:-moz-placeholder {
+	color: #dddddd;
+}
+
+input[type=text] {
+	font-size: 20px;
+	border: 1px solid #cccccc;
+	border-radius: 5px;
+	padding: 7px;
+	width: 400px;
+}
+
+input[type=text]:hover {
+	border-color: gray;
+}
+
+textarea {
+	font-size: 20px;
+	border: 1px solid #cccccc;
+	border-radius: 5px;
+	padding: 7px;
+	width: 400px;
+	height: 150px;
+}
+
+textarea:hover {
+	border-color: gray;
+}
+
+input[type=text].date {
+	background-image: url("images/calendar.png");
+	background-repeat: no-repeat;
+	background-position: 99% 50%;
+	padding-right: 45px;
+	width: 362px;
+}
+
+input[type=submit] {
+	border: 1px solid #ffaa22;
+	border-radius: 5px;
+	background-color: #ffdb53;
+	
+	width: 416px;
+	
+	font-family: Arial, sans-serif;
+	font-size: 17px;
+	font-weight: bold;
+	
+	padding: 10px 10px;
+	
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffee66), color-stop(100%, #ffaa22));
+	background-image: -webkit-linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+	background-image: -moz-linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+	background-image: -o-linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+	background-image: -ms-linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+	background-image: linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+	
+	color: #333333;
+	text-shadow: 0 1px 1px #ffe860;
+	
+	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	border-color: #d38900;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffee66), color-stop(40%, #ffba32), color-stop(100%, #ffaa22));
+	background-image: -webkit-linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+	background-image: -moz-linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+	background-image: -o-linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+	background-image: -ms-linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+	background-image: linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+}
+
+form div.field {
+	margin-bottom: 10px;
+}
+
+</style>
+</head>
+<body>
+	<div id="container">
+		<div id="top-bar" class="common-wrapper">
+			<div class="common-content">
+				<h1><a href="index.html">Photo Crowd</a></h1>
+			</div>
+		</div>
+		<div id="body-wrapper" class="common-wrapper">
+			<div id="body" class="common-content">
+				<div id="welcome">
+					Time to set the crowd.<br/>
+					<em>Create your photo album right now.</em>
+				</div>
+				<form action="album-details.html">
+					<div class="field">
+						<input type="text" placeholder="Album name" />
+					</div>
+					<div class="field">
+						<input type="text" placeholder="Start date" id="startDate" class="date"/>
+					</div>
+					<div class="field">
+						<input type="text" placeholder="End date" id="endDate" class="date"/>
+					</div>
+					<div class="field">
+						<input type="text" placeholder="Hashtag"/>
+					</div>
+					<div class="field">
+						<input type="text" placeholder="Location"/>
+					</div>
+					<div class="field">
+						<textarea rows="5" cols="30" placeholder="Description"></textarea>
+					</div>
+					<input type="submit" value="Create album"/>
+				</form>
+			</div>
+		</div>
+		<div id="footer" class="common-wrapper">
+			<div class="common-content">
+				<ul>
+					<li><a href="#">About</a></li>
+					<li><a href="#">Help</a></li>
+					<li>&copy; Photo Crowd</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
