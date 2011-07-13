@@ -14,7 +14,7 @@ import play.libs.WS;
 import play.libs.WS.HttpResponse;
 
 @Every("60s")
-public class GalleryManagerJob extends Job<String> {
+public class GalleryManagerJob extends Job<Void> {
 	@Override
 	public void doJob() throws Exception {
 		System.out.println("job is started");

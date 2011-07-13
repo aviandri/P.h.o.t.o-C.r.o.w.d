@@ -18,7 +18,7 @@ import play.libs.WS.HttpResponse;
 import utils.TweetPhotoFactory;
 import utils.TweetPhotoGrabber;
 
-public class PhotoJob extends Job<Boolean>{
+public class PhotoJob extends Job<Void>{
 	private CrowdGallery crowdGallery;
 	private JsonObject tweetJsonObject;
 	public PhotoJob(CrowdGallery crowdGallery, JsonObject tweetJsonObject){
