@@ -1,3 +1,4 @@
+package jobs;
 import java.util.List;
 
 import models.User;
