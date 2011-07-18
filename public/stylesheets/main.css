@@ -1,74 +1,182 @@
 body {
-	margin: 0;
-	font-family: Helvetica, Tahoma, Arial, sans-serif;
-	font-size: 12px;
+    margin: 0;
+    font-family: Helvetica, Tahoma, Arial, sans-serif;
+    font-size: 12px;
 }
 
 #top-bar {
-	padding: 10px 50px;
-	background-color: black;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #121212));
-	background-image: -webkit-linear-gradient(top, #333333 0%, #121212 100%);
-	background-image: -moz-linear-gradient(top, #333333 0%, #121212 100%);
-	background-image: -o-linear-gradient(top, #333333 0%, #121212 100%);
-	background-image: -ms-linear-gradient(top, #333333 0%, #121212 100%);
-	background-image: linear-gradient(top, #333333 0%, #121212 100%);
+    /*padding: 10px 50px;*/
+    background-color: black;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #121212));
+    background-image: -webkit-linear-gradient(top, #333333 0%, #121212 100%);
+    background-image: -moz-linear-gradient(top, #333333 0%, #121212 100%);
+    background-image: -o-linear-gradient(top, #333333 0%, #121212 100%);
+    background-image: -ms-linear-gradient(top, #333333 0%, #121212 100%);
+    background-image: linear-gradient(top, #333333 0%, #121212 100%);
+    color: white;
+}
+
+#top-bar:after {
+    content: "";
+    display: block;
+    height: 0;
+    font-size: 0;
+    clear: both;
+}
+
+#top-bar .container {
+    height: 50px;
+    float: left;
+}
+
+#top-bar .container.focus {
+    background-color: rgba(80, 80, 80, 0.4);
+}
+
+#top-bar .container.clickable:hover {
+    background-color: rgba(80, 80, 80, 0.4);
+    cursor: pointer;
 }
 
 #top-bar h1 {
-	color: white;
-	margin: 0;
-	font-size: 20px;
+    color: white;
+    margin: 0;
+    font-size: 20px;
+    padding: 13px 0 0 0;
 }
 
 #top-bar h1 a {
-	color: inherit;
-	text-decoration: none;
+    color: inherit;
+    text-decoration: none;
+}
+
+#top-bar .left-column {
+    float: left;
+}
+
+#top-bar .right-column {
+    float: right;
+}
+
+#top-bar #user-panel {
+    padding: 0 10px;
+}
+
+#top-bar #user-panel .user-avatar-frame {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    top: 11px;
+    float: left;
+}
+
+#top-bar #user-panel .user-avatar-frame img {
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#top-bar #user-panel .username {
+    display: inline-block;
+    padding-left: 5px;
+    line-height: 50px;
+}
+
+#top-bar .container.create-crowd {
+    padding: 0 10px;
+}
+
+#top-bar .container.create-crowd .create-sign {
+    color: #81bb62;
+    font-size: 25px;
+    font-weight: bold;
+    text-shadow: 0 0 5px #456f23;
+    line-height: 50px;
+}
+
+#top-bar .container.create-crowd .crowd-text {
+    font-size: 15px;
+    margin-left: 2px;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 50px;
+}
+
+#user-menu {
+    background-color: #222222;
+    position: absolute;
+    top: 50px;
+    color: white;
+    border-radius: 0 0 5px 5px;
+    width: 180px;
+    display: none;
+}
+
+#user-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#user-menu li:hover {
+    background-color: rgba(80, 80, 80, 0.4);
+}
+
+#user-menu a {
+    color: inherit;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
 }
 
 #body-wrapper {
-	padding-top: 20px;
+    padding-top: 20px;
 }
 
 /* footer part */
 
 #footer {
-	clear: both;
-	padding-top: 20px;
-	font-size: 90%;
-	color: #66667d;
+    clear: both;
+    padding-top: 20px;
+    font-size: 90%;
+    color: #66667d;
 }
 
 #footer div.common-content {
-	border-top: 1px solid #eeeeee;
-	padding: 20px 0;
+    border-top: 1px solid #eeeeee;
+    padding: 20px 0;
 }
 
 #footer ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	text-align: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
 #footer li {
-	display: inline;
+    display: inline;
 }
 
 #footer li:first-child:before {
-	content: "";
+    content: "";
 }
 
 #footer li:before {
-	content: "-";
-	margin-right: 2px;
+    content: "-";
+    margin-right: 2px;
 }
 
 #footer a {
-	color: #999999;
-	text-decoration: none;
+    color: #999999;
+    text-decoration: none;
 }
 
 #footer a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
