@@ -2,4 +2,5 @@
 
 require:
     - play
-    - net.htmlparser.jericho -> jericho-html 2.3
+    - net.htmlparser.jericho -> jericho-html 3.2:
+        transitive: false
