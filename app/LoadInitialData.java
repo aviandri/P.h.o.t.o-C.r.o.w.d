@@ -12,6 +12,6 @@ public class LoadInitialData extends Job<Boolean>{
 	
 	public void doJob() throws Exception {
 		Logger.info("Initializing data...");
-        Fixtures.load("initial-data.yml");
+        Fixtures.loadModels("initial-data.yml");
 	}
 }
