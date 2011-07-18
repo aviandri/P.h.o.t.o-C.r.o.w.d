@@ -53,7 +53,7 @@ public class Application extends Controller {
     public static void show() throws IOException{
     	TweetPhotoGrabber grabber = TweetPhotoFactory.create(new URL("http://twitpic.com/2giosz"));
     	System.out.println(grabber.getFullImageURL());
-    	render();
+    	renderText("OK");
     }
     
     public static void test() throws IOException{
