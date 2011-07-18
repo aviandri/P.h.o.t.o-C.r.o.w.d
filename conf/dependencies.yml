@@ -2,3 +2,4 @@
 
 require:
     - play
+    - net.htmlparser.jericho -> jericho-html 2.3
