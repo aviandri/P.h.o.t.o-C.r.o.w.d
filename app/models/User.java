@@ -8,6 +8,7 @@ public class User extends Model {
     public String secretToken;
     public String accessToken;
     public Long twitterId;
+    public String profileImageUrl;
     
     public static User findByUsername(String userName){
     	return User.find("byUsername", userName).first();

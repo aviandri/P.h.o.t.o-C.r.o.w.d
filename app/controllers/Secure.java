@@ -51,15 +51,14 @@ public class Secure extends Controller {
             JsonElement json = WS.url(TWITTER_VERIFY_CREDENTIALS_URL).oauth(serviceInfo, accessTokenResp.token, accessTokenResp.secret).get().getJson();
             JsonObject jsonObj = json.getAsJsonObject();
             Long twitterId = jsonObj.getAsJsonPrimitive("id").getAsLong();
-            String username = jsonObj.getAsJsonPrimitive("screen_name").getAsString();
-            
             User user = User.findByTwitterId(twitterId);
             if (user == null) {
                 user = new User();
                 user.twitterId = twitterId;
             }
             
-            user.username = username;
+            user.username = jsonObj.getAsJsonPrimitive("screen_name").getAsString();;
+            user.profileImageUrl = jsonObj.getAsJsonPrimitive("profile_image_url").getAsString();
             user.accessToken = accessTokenResp.token;
             user.secretToken = accessTokenResp.secret;
             user.save();
