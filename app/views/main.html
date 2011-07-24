@@ -17,32 +17,43 @@
 	<body>
 	    <div id="container">
 	        <div id="top-bar" class="common-wrapper">
-	            <div class="common-content">
-	                <div class="left-column">
-	                    <div class="container">
-	                        <h1><a href="index.html">Photo Crowd</a></h1>
-	                    </div>
-	                </div>
-	                <div class="right-column">
-	                    <div id="user-panel" class="container clickable">
-	                        <div class="user-avatar-frame">
-	                            <img alt="avatar" src="@{'/public/images/avatars/bozzie.jpg'}">
-	                        </div>
-	                        <span class="username">Nuruddin Ashr</span>
-	                    </div>
-	                    <div class="container clickable create-crowd" onclick="location.href='album-create.html'">
-	                        <span class="create-sign">+</span><span class="crowd-text">Crowd</span>
-	                    </div>
-	                    <div id="user-menu">
-	                        <ul>
-	                            <li><a href="#">Settings</a></li>
-	                            <li><a href="#">Help</a></li>
-	                            <li><a href="index.html">Sign out</a></li>
-	                        </ul>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+                <div class="common-content">
+                    <div class="left-column">
+                        <h1><a href="index.html">Photo Crowd</a></h1>
+                    </div>
+                    <div class="right-column">
+                        <div id="user-panel" class="container clickable">
+                            <table class="centerize">
+                                <tr>
+                                    <td>
+                                        <div class="user-avatar-frame">
+                                            <img alt="avatar" src="@{'/public/images/avatars/bozzie.jpg'}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="username">Nuruddin Ashr</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="container clickable create-crowd" onclick="location.href='album-create.html'">
+                            <table class="centerize">
+                                <tr>
+                                    <td><span class="create-sign">+</span></td>
+                                    <Td><span class="crowd-text">Crowd</span></Td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="user-menu">
+                            <ul>
+                                <li><a href="#">Settings</a></li>
+                                <li><a href="#">Help</a></li>
+                                <li><a href="index.html">Sign out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
 	        <div id="body-wrapper" class="common-wrapper">
 	            <div id="body" class="common-content">
 	               #{doLayout /}
