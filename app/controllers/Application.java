@@ -45,7 +45,7 @@ public class Application extends Controller {
     public static void index() {
     	String userId = session.get("loggedUser.id");
 		if(userId!=null){
-			Galleries.index();
+			Users.galleries();
 		}
     	render();
     }

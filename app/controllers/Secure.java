@@ -50,18 +50,26 @@ public class Secure extends Controller {
                 user.save();
             }
             session.put("loggedUser.id", user.id);
-            Galleries.index();
+            Users.galleries();
 
         }
 
         OAuth twitt = OAuth.service(TWITTER);
-        Response reqTokenResp = twitt.retrieveRequestToken();
+        Response reqTokenResp = twitt.retrieveRequestToken(
+                Play.configuration.getProperty("application.twitter.callbackUrl", 
+                        "http://localhost:9000/secure/authenticate"));
+        
         session.put("twitter.secret", reqTokenResp.secret);
         session.put("twitter.token", reqTokenResp.token);
         Logger.debug("secret first :" + reqTokenResp.secret);
         Logger.debug("token first :" + reqTokenResp.token);
         redirect(twitt.redirectUrl(reqTokenResp.token));
 
+    }
+    
+    public static void signOut() {
+        session.clear();
+        Application.index();
     }
     
     static void redirectToOriginalURL() throws Throwable {
