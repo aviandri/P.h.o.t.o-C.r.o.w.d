@@ -1,6 +1,7 @@
-.settings/
+.settings
 .classpath
 .project
-eclipse/
-lib/
-tmp/
+eclipse
+lib
+tmp
+precompiled
