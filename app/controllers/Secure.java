@@ -11,6 +11,7 @@ import play.mvc.Before;
 import play.mvc.Controller;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * @author uudashr@gmail.com
@@ -47,10 +48,13 @@ public class Secure extends Controller {
                             session.get("twitter.secret"));
             
             JsonElement json = WS.url(TWITTER_VERIFY_CREDENTIALS_URL).oauth(serviceInfo, accessTokenResp.token, accessTokenResp.secret).get().getJson();
-            Long twitterId = json.getAsJsonObject().getAsJsonPrimitive("id").getAsLong();
+            JsonObject jsonObj = json.getAsJsonObject();
+            Long twitterId = jsonObj.getAsJsonPrimitive("id").getAsLong();
+            String username = jsonObj.getAsJsonPrimitive("screen_name").getAsString();
             User user = User.findByTwitterId(twitterId);
             if (user == null) {
                 user = new User();
+                user.username = username;
                 user.accessToken = accessTokenResp.token;
                 user.secretToken = accessTokenResp.secret;
                 user.twitterId = twitterId;
