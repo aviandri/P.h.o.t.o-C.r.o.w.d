@@ -19,7 +19,7 @@
 	        <div id="top-bar" class="common-wrapper">
                 <div class="common-content">
                     <div class="left-column">
-                        <h1><a href="index.html">Photo Crowd</a></h1>
+                        <h1><a href="@{Application.home()}">Photo Crowd</a></h1>
                     </div>
                     <div class="right-column">
                         <div id="user-panel" class="container clickable">
@@ -46,6 +46,7 @@
                         </div>
                         <div id="user-menu">
                             <ul>
+                                <li><a href="@{Users.galleries()}">My Galleries</a></li>
                                 <li><a href="#">Settings</a></li>
                                 <li><a href="#">Help</a></li>
                                 <li><a href="index.html">Sign out</a></li>
