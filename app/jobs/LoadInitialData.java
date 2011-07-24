@@ -9,7 +9,7 @@ import play.jobs.OnApplicationStart;
 import play.libs.Crypto;
 import play.test.Fixtures;
 
-@OnApplicationStart
+//@OnApplicationStart(async)
 public class LoadInitialData extends Job<Boolean>{
 	
 	public void doJob() throws Exception {

@@ -13,7 +13,7 @@ import play.jobs.OnApplicationStart;
 import play.libs.WS;
 import play.libs.WS.HttpResponse;
 
-@Every("60s")
+//@Every("60s")
 public class GalleryManagerJob extends Job<Void> {
 	@Override
 	public void doJob() throws Exception {
