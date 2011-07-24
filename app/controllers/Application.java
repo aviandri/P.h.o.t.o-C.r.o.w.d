@@ -43,11 +43,15 @@ import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 public class Application extends Controller {
 
     public static void index() {
-    	String userId = session.get("session.userid");
+    	String userId = session.get("loggedUser.id");
 		if(userId!=null){
 			Galleries.index();
 		}
     	render();
+    }
+    
+    public static void home() {
+        render();
     }
     
     public static void show() throws IOException{

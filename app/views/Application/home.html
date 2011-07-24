@@ -1,0 +1,132 @@
+#{extends 'main.html'/}
+#{set title:'Home'/}
+
+#{set 'moreScripts'}
+<script type="text/javascript" src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
+
+<script type="text/javascript">
+var lastRandomIndex;
+var images = ['ABeautifulCeremony1.jpg', 
+              'beachparty.jpg', 
+              'burning_man_festival_12.jpg', 
+              'burning_man_festival_20.jpg', 
+              'burning-man-pink.jpg', 
+              'ceremony-2006-1.jpg', 
+              'holiday-destinations-india.jpg', 
+              'kids-birthday.jpg', 
+              'long-necks.jpg', 
+              'mud-festival.jpg', 
+              'opening-ceremony-penfield-fall-2009-00.jpg', 
+              'penis-festival_1379487i.jpg', 
+              'snorkelling-couple.jpg', 
+              'tea-party.jpg', 
+              'tulip-joshi-birthday-party03.jpg', 
+              'wayans_birthday-party_cimg2174.jpg'];
+
+function appendImage(imageFileName) {
+    $element = $('<div class="box"><img alt="photo" src="@{'/public/images/photos'}/' + imageFileName + '"><div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div></div>');
+    $('#masonry-container').prepend($element).masonry('remove', $('#masonry-container div.box:last')).masonry('reload');
+}
+
+$(document).ready(function() {
+    var $masonryContainer = $('#masonry-container');
+    $masonryContainer.imagesLoaded(function() {
+        $masonryContainer.masonry({
+            itemSelector : '.box', 
+            isAnimated: true, 
+            isFitWidth: true
+        });
+    });
+    
+    $('#masonry-container .box').click(function() {
+        document.location = $(this).attr('targetUrl');
+    });
+    
+    window.setInterval(function() {
+        var randomIndex;
+        for (var i = 0; i < 10; i++) {
+            randomIndex = Math.floor(Math.random() * images.length);
+            if (randomIndex != lastRandomIndex) {
+                break;
+            }
+        }
+        
+        appendImage(images[randomIndex]);
+        lastRandomIndex = randomIndex;
+        
+    }, 10000);
+});
+</script>
+#{/set}
+
+#{set 'moreStyles'}
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/page-home-page.css'}"/>
+#{/set}
+
+
+<div id="masonry-container">
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/ABeautifulCeremony1.jpg'}"/>
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/beachparty.jpg'}"/>
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/burning_man_festival_12.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/burning_man_festival_20.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/burning-man-pink.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/ceremony-2006-1.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/holiday-destinations-india.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/kids-birthday.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/long-necks.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/mud-festival.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/opening-ceremony-penfield-fall-2009-00.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/penis-festival_1379487i.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/snorkelling-couple.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/tea-party.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/tulip-joshi-birthday-party03.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+    <div class="box" targetUrl="photo-details.html">
+        <img alt="photo" src="${'/public/images/photos/wayans_birthday-party_cimg2174.jpg'}">
+        <div class="caption"><span>uudashr: Lorem ipsum dolor de amet bla bla bla</span></div>
+    </div>
+</div>
