@@ -6,6 +6,25 @@
 
 <link rel="stylesheet" media="screen"  href="@{'/public/stylesheets/common.css'}"/>
 <link rel="stylesheet" media="screen"  href="@{'/public/stylesheets/page-index.css'}"/>
+<script type="text/javascript" src="@{'/public/javascripts/jquery-1.6.2.min.js'}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    window.setInterval(function() {
+        var randomIndex = Math.floor(Math.random() * 16);
+        
+        var replacementIndex = Math.floor(Math.random() * 20);
+        var imageFileName = 'image' + (replacementIndex + 1) + ".jpg";
+        
+        var $img = $('#recent-photos img:eq(' + randomIndex + ')');
+        
+        $img.fadeOut(200, function() {
+            $img.attr('src', "${'/public/images/photos/thumbnail'}/" + imageFileName);
+            $img.fadeIn(500);
+        });
+        
+    }, 10000);
+});
+</script>
 
 </head>
 <body>

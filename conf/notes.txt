@@ -1,0 +1,9 @@
+# export war
+play war ${path to your play project} -o ${war name} --zip --exclude eclipse:jar:lib --%production 
+
+
+# cloudbees deployment
+bees app:deploy -a login/yourProject ${war file}
+
+# export schema
+play db:export myapplication  --output=myfile.ddl
