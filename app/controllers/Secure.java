@@ -28,6 +28,7 @@ public class Secure extends Controller {
             flash.put("url", "GET".equals(request.method) ? request.url : "/");
             authenticate();
         }
+        renderArgs.put("loggedUser", Security.connectedUser());
     }
     
     private static ServiceInfo twitterServiceInfo() {
@@ -51,15 +52,18 @@ public class Secure extends Controller {
             JsonObject jsonObj = json.getAsJsonObject();
             Long twitterId = jsonObj.getAsJsonPrimitive("id").getAsLong();
             String username = jsonObj.getAsJsonPrimitive("screen_name").getAsString();
+            
             User user = User.findByTwitterId(twitterId);
             if (user == null) {
                 user = new User();
-                user.username = username;
-                user.accessToken = accessTokenResp.token;
-                user.secretToken = accessTokenResp.secret;
                 user.twitterId = twitterId;
-                user.save();
             }
+            
+            user.username = username;
+            user.accessToken = accessTokenResp.token;
+            user.secretToken = accessTokenResp.secret;
+            user.save();
+            
             session.put("loggedUser.id", user.id);
             Users.galleries();
 
@@ -72,8 +76,6 @@ public class Secure extends Controller {
         
         session.put("twitter.secret", reqTokenResp.secret);
         session.put("twitter.token", reqTokenResp.token);
-        Logger.debug("secret first :" + reqTokenResp.secret);
-        Logger.debug("token first :" + reqTokenResp.token);
         redirect(twitt.redirectUrl(reqTokenResp.token));
 
     }
@@ -89,5 +91,12 @@ public class Secure extends Controller {
             url = "/";
         }
         redirect(url);
+    }
+
+    public static class Security extends Controller {
+        static User connectedUser() {
+            String userId = session.get("loggedUser.id");
+            return User.findById(Long.valueOf(userId));
+        }
     }
 }
