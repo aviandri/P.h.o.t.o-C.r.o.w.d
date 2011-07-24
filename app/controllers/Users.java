@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import play.Logger;
 import play.Play;
 import play.libs.OAuth;
 import play.libs.OAuth.Response;
@@ -43,8 +44,8 @@ public class Users extends Controller {
         Response reqTokenResp = twitt.retrieveRequestToken();
         session.put("twitter.secret", reqTokenResp.secret);
         session.put("twitter.token", reqTokenResp.token);
-        System.out.println("secret first :" + reqTokenResp.secret);
-        System.out.println("token first :" + reqTokenResp.token);
+        Logger.debug("secret first :" + reqTokenResp.secret);
+        Logger.debug("token first :" + reqTokenResp.token);
         redirect(twitt.redirectUrl(reqTokenResp.token));
 
     }
