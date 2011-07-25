@@ -19,6 +19,10 @@ div#short-info h1 {
     margin: 0;
 }
 
+div#short-info ul {
+    width: 100%;
+}
+
 #head-info {
     float: left;
     position: relative;
