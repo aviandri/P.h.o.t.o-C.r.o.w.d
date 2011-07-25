@@ -30,6 +30,7 @@ body {
 
 #top-bar .container.focus {
     background-color: rgba(80, 80, 80, 0.4);
+    color: white;
 }
 
 #top-bar .container.clickable:hover {
