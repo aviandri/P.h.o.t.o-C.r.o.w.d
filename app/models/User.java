@@ -8,7 +8,7 @@ import play.data.validation.Required;
 @Entity
 public class User extends Model {
     @Required
-    @Column(nullable=false)
+    @Column(nullable=false, unique=true)
     public String username;
     
     @Required
@@ -31,8 +31,8 @@ public class User extends Model {
     
     public String profileImageOriginalUrl;
     
-    public static User findByUsername(String userName){
-    	return User.find("byUsername", userName).first();
+    public static User findByUsername(String username){
+    	return User.find("byUsername", username).first();
     }
     
     public static User findByTwitterId(Long twitterId){

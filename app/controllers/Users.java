@@ -16,4 +16,11 @@ public class Users extends Controller {
         User user  = Security.connectedUser();
         render("@galleries", user);
     }
+    
+    public static void galleries(String username) {
+        User user = User.findByUsername(username);
+        notFoundIfNull(user);
+        
+        render(user);
+    }
 }
