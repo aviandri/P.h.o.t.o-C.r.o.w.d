@@ -64,7 +64,7 @@ public class Secure extends Controller {
             user.save();
             
             session.put("loggedUser.id", user.id);
-            Users.galleries();
+            Users.myGalleries();
 
         }
         

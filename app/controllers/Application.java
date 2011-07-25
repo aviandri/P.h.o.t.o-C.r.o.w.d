@@ -46,7 +46,7 @@ public class Application extends Controller {
 
     public static void index() {
 		if(Security.isConnected()){
-			Users.galleries();
+			Users.myGalleries();
 		}
     	render();
     }
