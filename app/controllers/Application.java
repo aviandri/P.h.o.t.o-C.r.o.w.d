@@ -1,45 +1,12 @@
 package controllers;
 
-import play.*;
-import play.libs.WS;
-import play.libs.WS.HttpResponse;
-import play.libs.XPath;
-import play.mvc.*;
-import utils.TweetPhotoFactory;
-import utils.TweetPhotoGrabber;
-
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URL;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
 
 import jobs.GalleryManagerJob;
-import jobs.PhotoJob;
-
-import models.CrowdGallery;
-import models.User;
-import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.Source;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
-
+import play.mvc.Controller;
+import utils.TweetPhotoFactory;
+import utils.TweetPhotoGrabber;
 import controllers.Secure.Security;
 
 public class Application extends Controller {
