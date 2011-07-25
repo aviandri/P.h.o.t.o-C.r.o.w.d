@@ -40,11 +40,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 
+import controllers.Secure.Security;
+
 public class Application extends Controller {
 
     public static void index() {
-    	String userId = session.get("loggedUser.id");
-		if(userId!=null){
+		if(!Security.isConnected()){
 			Users.galleries();
 		}
     	render();

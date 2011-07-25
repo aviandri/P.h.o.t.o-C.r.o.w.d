@@ -93,6 +93,11 @@ public class Secure extends Controller {
     }
 
     public static class Security extends Controller {
+        
+        static boolean isConnected() {
+            return session.get("loggedUser.id") != null;
+        }
+        
         static User connectedUser() {
             String userId = session.get("loggedUser.id");
             return User.findById(Long.valueOf(userId));
