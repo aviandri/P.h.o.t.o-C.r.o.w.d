@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <cloudbees-web-app xmlns="http://www.cloudbees.com/xml/webapp/1">
-	<resource name="jdbc/firebird" auth="Container" type="javax.sql.DataSource">
+	<resource name="jdbc/photocrowd" auth="Container" type="javax.sql.DataSource">
 		<param name="username" value="photocrowd" />
 		<param name="password" value="manager" />
 		<param name="url" value="jdbc:cloudbees://photocrowd" />
