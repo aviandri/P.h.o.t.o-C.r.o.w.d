@@ -100,6 +100,9 @@ public class Secure extends Controller {
         
         static User connectedUser() {
             String userId = session.get("loggedUser.id");
+            if (userId == null) {
+                return null;
+            }
             return User.findById(Long.valueOf(userId));
         }
     }
