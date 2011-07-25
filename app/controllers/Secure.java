@@ -6,9 +6,11 @@ import play.Play;
 import play.libs.OAuth;
 import play.libs.OAuth.Response;
 import play.libs.OAuth.ServiceInfo;
+import play.libs.WS.HttpResponse;
 import play.libs.WS;
 import play.mvc.Before;
 import play.mvc.Controller;
+import play.utils.HTTP;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -21,6 +23,7 @@ public class Secure extends Controller {
     private static final String TWITTER_REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
     private static final String TWITTER_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
     private static final String TWITTER_VERIFY_CREDENTIALS_URL = "http://api.twitter.com/1/account/verify_credentials.json";
+    private static final String TWITTER_PROFILE_IMAGE_URL = "http://api.twitter.com/1/users/profile_image";
     
     @Before(unless={"authenticate"})
     static void checkAccess() throws Throwable {
@@ -48,17 +51,29 @@ public class Secure extends Controller {
                             session.get("twitter.token"),
                             session.get("twitter.secret"));
             
-            JsonElement json = WS.url(TWITTER_VERIFY_CREDENTIALS_URL).oauth(serviceInfo, accessTokenResp.token, accessTokenResp.secret).get().getJson();
+            JsonElement json = WS.url(TWITTER_VERIFY_CREDENTIALS_URL)
+                    .oauth(serviceInfo, 
+                            accessTokenResp.token, 
+                            accessTokenResp.secret).get().getJson();
             JsonObject jsonObj = json.getAsJsonObject();
             Long twitterId = jsonObj.getAsJsonPrimitive("id").getAsLong();
+            String username = jsonObj.getAsJsonPrimitive("screen_name").getAsString();
+            
+            String profileImageMiniUrl = retrieveProfileImageUrl(username, "mini");
+            String profileImageBiggerUrl = retrieveProfileImageUrl(username, "bigger");
+            String profileImageOriginalUrl = retrieveProfileImageUrl(username, "original");
+            
             User user = User.findByTwitterId(twitterId);
             if (user == null) {
                 user = new User();
                 user.twitterId = twitterId;
             }
             
-            user.username = jsonObj.getAsJsonPrimitive("screen_name").getAsString();;
+            user.username = username;
             user.profileImageUrl = jsonObj.getAsJsonPrimitive("profile_image_url").getAsString();
+            user.profileImageMiniUrl = profileImageMiniUrl;
+            user.profileImageBiggerUrl = profileImageBiggerUrl;
+            user.profileImageOriginalUrl = profileImageOriginalUrl;
             user.accessToken = accessTokenResp.token;
             user.secretToken = accessTokenResp.secret;
             user.save();
@@ -82,6 +97,14 @@ public class Secure extends Controller {
     public static void signOut() {
         session.clear();
         Application.index();
+    }
+    
+    private static String retrieveProfileImageUrl(String username, String size) {
+        HttpResponse resp = WS.url(TWITTER_PROFILE_IMAGE_URL).setParameter("screen_name", username).setParameter("size", size).followRedirects(false).get();
+        if (resp.getStatus() == 302) {
+            return resp.getHeader("location");
+        }
+        return null;
     }
     
     static void redirectToOriginalURL() throws Throwable {

@@ -25,6 +25,12 @@ public class User extends Model {
     
     public String profileImageUrl;
     
+    public String profileImageMiniUrl;
+    
+    public String profileImageBiggerUrl;
+    
+    public String profileImageOriginalUrl;
+    
     public static User findByUsername(String userName){
     	return User.find("byUsername", userName).first();
     }
