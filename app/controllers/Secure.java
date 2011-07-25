@@ -70,7 +70,7 @@ public class Secure extends Controller {
         
         OAuth twitt = OAuth.service(serviceInfo);
         Response reqTokenResp = twitt.retrieveRequestToken(
-                Play.configuration.getProperty("application.twitter.callbackUrl", 
+                Play.configuration.getProperty("twitter.callbackUrl", 
                         "http://localhost:9000/secure/authenticate"));
         
         session.put("twitter.secret", reqTokenResp.secret);
