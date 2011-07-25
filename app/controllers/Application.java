@@ -45,7 +45,7 @@ import controllers.Secure.Security;
 public class Application extends Controller {
 
     public static void index() {
-		if(!Security.isConnected()){
+		if(Security.isConnected()){
 			Users.galleries();
 		}
     	render();
