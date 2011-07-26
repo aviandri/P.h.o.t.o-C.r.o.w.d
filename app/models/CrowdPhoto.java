@@ -9,7 +9,8 @@ import java.util.*;
 
 @Entity
 public class CrowdPhoto extends Model {
-    public CrowdGallery crowd;
+    @ManyToOne
+	public CrowdGallery crowd;
     @Column(name="poster_user_name")
     public String posterUserName;
     @Column(name="tweet_content")
@@ -18,4 +19,8 @@ public class CrowdPhoto extends Model {
     public URL fullImageURL;
     @Column(name="thumb_image_url")
     public URL thumbImageURL;
+    @ManyToOne
+    public CrowdGallery crowdGallery;
+    
+    
 }

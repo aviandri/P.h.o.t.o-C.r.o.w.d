@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import java.util.*;
 
-@Entity
+@MappedSuperclass
 public class Model extends play.db.jpa.Model {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=false)

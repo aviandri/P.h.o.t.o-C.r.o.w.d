@@ -5,6 +5,7 @@ import play.libs.WS;
 import play.libs.WS.HttpResponse;
 import play.libs.XPath;
 import play.mvc.*;
+import utils.StringUtils;
 import utils.TweetPhotoFactory;
 import utils.TweetPhotoGrabber;
 
@@ -56,8 +57,7 @@ public class Application extends Controller {
     	render();
     }
     
-    public static void test() throws IOException{
-    	GalleryManagerJob job = new GalleryManagerJob();
-    	job.run();
+    public static void test(){
+    	
     }
 }

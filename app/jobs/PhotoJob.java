@@ -20,22 +20,18 @@ import utils.TweetPhotoGrabber;
 
 public class PhotoJob extends Job<Void>{
 	private CrowdGallery crowdGallery;
-	private JsonObject tweetJsonObject;
-	public PhotoJob(CrowdGallery crowdGallery, JsonObject tweetJsonObject){
+	private String url;
+	private String username;
+	private String tweetText;
+	public PhotoJob(CrowdGallery crowdGallery, String url, String username, String tweetText){
 		this.crowdGallery = crowdGallery;
-		this.tweetJsonObject = tweetJsonObject;
+		this.url = url;
+		this.username = username;
+		this.tweetText = tweetText;
 	}
 	
 	public void doJob() throws Exception {
-		String tweetText = tweetJsonObject.getAsJsonPrimitive("text").getAsString();
-		String username = tweetJsonObject.getAsJsonPrimitive("form_user").getAsString();
-		
-		StringBuffer sb = new StringBuffer(tweetText);
-    	int i = sb.indexOf("http://twitpic.com");
-		String sub = sb.substring(i, tweetText.length());
-		String url = tweetText.substring(0, sub.indexOf(" "));
 		TweetPhotoGrabber grabber = TweetPhotoFactory.create(new URL(url));
-		
 		CrowdPhoto photo = new CrowdPhoto();
 		photo.fullImageURL = grabber.getFullImageURL();
 		photo.thumbImageURL = grabber.getThumbImageURL();
@@ -44,7 +40,9 @@ public class PhotoJob extends Job<Void>{
 		photo.crowd = crowdGallery;
 		
 		photo.save();
-		
+		CrowdGallery crowd = CrowdGallery.findById(crowdGallery.id);
+		crowd.crowdPhotos.add(photo);
+		crowd.save();
 		
 	}
 	

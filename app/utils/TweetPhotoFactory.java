@@ -8,6 +8,9 @@ public class TweetPhotoFactory {
 		if(path.contains("twitpic.com")){
 			return new TwitPicGrabber(tweetPicURL);
 		}
+		else if(path.contains("lockerz.com")){
+			return new LokerzGrabber(tweetPicURL);
+		}
 		else{
 			throw new RuntimeException();
 		}
