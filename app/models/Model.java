@@ -11,24 +11,24 @@ import javax.persistence.TemporalType;
 
 @MappedSuperclass
 public abstract class Model extends play.db.jpa.Model {
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=false)
-	public Date dateCreated;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, name = "date_created")
+    public Date dateCreated;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=false)
-	public Date dateUpdated;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, name = "date_updated")
+    public Date dateUpdated;
 
-	@SuppressWarnings("unused")
+    @SuppressWarnings("unused")
     @PrePersist
-	private void prePersist() {
-		dateCreated = new Date();
-		dateUpdated = new Date();
-	}
+    private void prePersist() {
+        dateCreated = new Date();
+        dateUpdated = new Date();
+    }
 
-	@SuppressWarnings("unused")
-	@PreUpdate
-	private void preUpdate() {
-		dateUpdated = new Date();
-	}
+    @SuppressWarnings("unused")
+    @PreUpdate
+    private void preUpdate() {
+        dateUpdated = new Date();
+    }
 }
