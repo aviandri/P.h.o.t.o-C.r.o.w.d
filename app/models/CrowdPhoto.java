@@ -20,6 +20,7 @@ public class CrowdPhoto extends Model {
     @Column(name="thumb_image_url")
     public URL thumbImageURL;
     @ManyToOne
+    @JoinColumn(name = "crowdgallery_id")
     public CrowdGallery crowdGallery;
     
     

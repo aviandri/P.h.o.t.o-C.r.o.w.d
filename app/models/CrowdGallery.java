@@ -17,24 +17,30 @@ public class CrowdGallery extends Model {
     @Required
 	public String hashtag;
     @Required
+	public String name;
+    @Required
+	public String location;
+    @Required
     public User creator;
     @Column(name="last_id")
     public Long lastId=0L;
     public boolean state=true;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "crowdgallery_id")
     public Set<CrowdPhoto> crowdPhotos = new HashSet<CrowdPhoto>();
     @ManyToOne
     public User user;
     
     
-    public static void save(CrowdGallery crowd){
-    	crowd.save();
+    public List<CrowdPhoto> getPhotos(int page, int perPage){
+    	Logger.debug("fetch gallery photos");
+    	return CrowdPhoto.find("byCrowdGallery", this).fetch(page, perPage);
+    	
     }
     
-    
-    public static String test(){
-    	JsonArray array = TwitterUtil.searchTwitter("t", 1L);
-    	JsonObject jObject = array.get(0).getAsJsonObject();
-    	return jObject.getAsJsonPrimitive("test").getAsString();
+    public long getPhotosCount(){
+    	return CrowdPhoto.count("byCrowdGallery", this);
     }
+    
+   
 }

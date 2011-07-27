@@ -15,7 +15,7 @@ public class User extends Model {
     public String secretToken;
     public String accessToken;
     public Long twitterId;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     public Set<CrowdGallery> crowdGalleries = new HashSet<CrowdGallery>();
     
     public static User findByUsername(String userName){
