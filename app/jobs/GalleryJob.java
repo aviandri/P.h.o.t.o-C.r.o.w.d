@@ -1,6 +1,6 @@
 package jobs;
 
-import models.CrowdGallery;
+import models.Gallery;
 import play.Logger;
 import play.jobs.Job;
 import utils.StringUtils;
@@ -11,16 +11,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class GalleryJob extends Job<Void> {
-    private CrowdGallery crowdGallery;
+    private Gallery gallery;
 
-    public GalleryJob(CrowdGallery crowdGallery) {
-        this.crowdGallery = crowdGallery;
+    public GalleryJob(Gallery crowdGallery) {
+        this.gallery = crowdGallery;
     }
 
     @Override
     public void doJob() throws Exception {
         JsonArray results = TwitterUtil.searchTwitter("#"
-                + crowdGallery.hashtag, crowdGallery.lastId);
+                + gallery.hashtag, gallery.lastId);
 
         Logger.debug("tweet search result:" + results);
         for (JsonElement tweet : results) {
@@ -36,9 +36,9 @@ public class GalleryJob extends Job<Void> {
         Long lastId = Long.parseLong(results.get(0).getAsJsonObject()
                 .getAsJsonPrimitive("id_str").getAsString());
         Logger.debug("Tweet last Id" + lastId);
-        Logger.debug("crowd gallery id" + crowdGallery.id);
+        Logger.debug("crowd gallery id" + gallery.id);
 
-        CrowdGallery crowd = CrowdGallery.findById(this.crowdGallery.id);
+        Gallery crowd = Gallery.findById(this.gallery.id);
         Logger.info("Crowd gallery" + crowd);
         if (lastId == null) {
             return;
@@ -60,7 +60,7 @@ public class GalleryJob extends Job<Void> {
     }
 
     private void initPhotoJob(String tweetText, String username, String url) {
-        PhotoJob photoJob = new PhotoJob(crowdGallery, url, username, tweetText);
+        PhotoJob photoJob = new PhotoJob(gallery, url, username, tweetText);
         photoJob.now();
     }
 

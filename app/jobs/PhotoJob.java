@@ -2,21 +2,21 @@ package jobs;
 
 import java.net.URL;
 
-import models.CrowdGallery;
-import models.CrowdPhoto;
+import models.Gallery;
+import models.Photo;
 import play.jobs.Job;
 import utils.TweetPhotoFactory;
 import utils.TweetPhotoGrabber;
 
 public class PhotoJob extends Job<Void> {
-    private CrowdGallery crowdGallery;
+    private Gallery gallery;
     private String url;
     private String username;
     private String tweetText;
 
-    public PhotoJob(CrowdGallery crowdGallery, String url, String username,
+    public PhotoJob(Gallery gallery, String url, String username,
             String tweetText) {
-        this.crowdGallery = crowdGallery;
+        this.gallery = gallery;
         this.url = url;
         this.username = username;
         this.tweetText = tweetText;
@@ -24,18 +24,14 @@ public class PhotoJob extends Job<Void> {
 
     public void doJob() throws Exception {
         TweetPhotoGrabber grabber = TweetPhotoFactory.create(new URL(url));
-        CrowdPhoto photo = new CrowdPhoto();
-        photo.fullImageURL = grabber.getFullImageURL();
-        photo.thumbImageURL = grabber.getThumbImageURL();
+        Photo photo = new Photo();
+        photo.fullImageURL = grabber.getFullImageURL().toString();
+        photo.thumbImageURL = grabber.getThumbImageURL().toString();
         photo.posterUserName = username;
         photo.tweetContent = tweetText;
-        photo.crowd = crowdGallery;
+        photo.gallery = gallery;
 
         photo.save();
-        CrowdGallery crowd = CrowdGallery.findById(crowdGallery.id);
-        crowd.crowdPhotos.add(photo);
-        crowd.save();
-
     }
 
 }
