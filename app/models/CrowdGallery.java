@@ -32,9 +32,9 @@ public class CrowdGallery extends Model {
     public User user;
     
     
-    public List<CrowdPhoto> getPhotos(int page, int perPage){
+    public List<CrowdPhoto> getPhotos(){
     	Logger.debug("fetch gallery photos");
-    	return CrowdPhoto.find("byCrowdGallery", this).fetch(page, perPage);
+    	return CrowdPhoto.find("byCrowdGallery", this).fetch();
     	
     }
     
