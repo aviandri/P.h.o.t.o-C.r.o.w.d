@@ -38,6 +38,7 @@ public class Gallery extends Model {
     
     public Boolean state = true;
     
+    @Required
     @ManyToOne
     public User user;
     
