@@ -1,0 +1,135 @@
+#welcome {
+    font-size: 180%;
+    font-weight: bold;
+}
+
+#welcome em {
+    font-weight: 100;
+    font-style: normal;
+}
+
+#welcome {
+    width: 250px;
+    float: left;
+}
+
+form {
+    margin-left: 250px;
+    padding-left: 10px;
+}
+
+::-webkit-input-placeholder {
+    color: #dddddd;
+}
+
+input:-moz-placeholder, textarea:-moz-placeholder {
+    color: #dddddd;
+}
+
+input[type=text] {
+    font-size: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 7px;
+    width: 400px;
+}
+
+input[type=text]:hover {
+    border-color: gray;
+}
+
+textarea {
+    font-size: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 7px;
+    width: 400px;
+    height: 150px;
+}
+
+textarea:hover {
+    border-color: gray;
+}
+
+input[type=text].date {
+    background-image: url("../../images/calendar.png");
+    background-repeat: no-repeat;
+    background-position: 99% 50%;
+    padding-right: 45px;
+    width: 362px;
+}
+
+input[type=submit] {
+    border: 1px solid #ffaa22;
+    border-radius: 5px;
+    background-color: #ffdb53;
+    
+    width: 416px;
+    
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    font-weight: bold;
+    
+    padding: 10px 10px;
+    
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffee66), color-stop(100%, #ffaa22));
+    background-image: -webkit-linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+    background-image: -moz-linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+    background-image: -o-linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+    background-image: -ms-linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+    background-image: linear-gradient(top, #ffee66 0%, #ffaa22 100%);
+    
+    color: #333333;
+    text-shadow: 0 1px 1px #ffe860;
+    
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    border-color: #d38900;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffee66), color-stop(40%, #ffba32), color-stop(100%, #ffaa22));
+    background-image: -webkit-linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+    background-image: -moz-linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+    background-image: -o-linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+    background-image: -ms-linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+    background-image: linear-gradient(top, #ffee66 0%, #ffba32 40%, #ffaa22 100%);
+}
+
+form div.field {
+    margin-bottom: 10px;
+}
+
+form div.field input, form div.field textarea {
+    margin: 0;
+    vertical-align: middle;
+}
+
+form .message {
+    font-size: 105%;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+form .message .hint {
+    color: #66667d;
+}
+
+form .message span.ok {
+    color: #390;
+    background-image: url("../../images/accept-check.png");
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+    padding-left: 20px;
+}
+
+form .message span.nok {
+    color: #c33;
+    background-image: url("../../images/error.png");
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+    padding-left: 20px;
+}
+
+form .message span.hide {
+    display: none;
+}

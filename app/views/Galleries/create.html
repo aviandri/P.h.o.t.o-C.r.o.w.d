@@ -1,0 +1,152 @@
+#{extends 'main.html'/}
+#{set title:'PhotoCrowd - Create Gallery'/}
+
+#{set 'moreStyles'}
+<link rel="stylesheet" media="screen" type="text/css" href="@{'/public/javascripts/datepicker/css/datepicker.css'}" />
+<link rel="stylesheet" media="screen"  href="@{'/public/stylesheets/galleries/create.css'}"/>
+#{/set}
+
+#{set 'moreScripts'}
+<script type="text/javascript" src="@{'/public/javascripts/datepicker/js/datepicker.js'}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var now = new Date();
+    var nowFormatted = (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear();
+    $('#startDate').DatePicker({
+        format:'m/d/Y',
+        date: nowFormatted,
+        current: nowFormatted,
+        starts: 1,
+        position: 'r',
+        onBeforeShow: function() {
+            var dateToShow;
+            if ($('#startDate').val().trim() == '') {
+                dateToShow = nowFormatted;
+            } else {
+                dateToShow = $('#startDate').val();
+            }
+            $('#startDate').DatePickerSetDate(dateToShow, true);
+            
+        },
+        onChange: function(formated, dates){
+            $('#startDate').val(formated);
+            $('#startDate').DatePickerHide();
+        }
+    });
+    
+    $('#endDate').DatePicker({
+        format:'m/d/Y',
+        date: nowFormatted,
+        current: nowFormatted,
+        starts: 1,
+        position: 'r',
+        onBeforeShow: function() {
+            var dateToShow;
+            if ($('#endDate').val().trim() == '') {
+                dateToShow = nowFormatted;
+            } else {
+                dateToShow = $('#endDate').val();
+            }
+            $('#endDate').DatePickerSetDate(dateToShow, true);
+            
+        },
+        onChange: function(formated, dates){
+            $('#endDate').val(formated);
+            $('#endDate').DatePickerHide();
+        }
+    });
+})
+</script>
+#{/set}
+
+<div id="welcome">
+    Time to set the crowd.<br/>
+    <em>Create your photo gallery right now.</em>
+</div>
+#{form @Galleries.save()}
+    <div class="field">
+        <input type="text" placeholder="Gallery name" name="name" value="${gallery?.name}"/>
+        <div class="message">
+            #{ifError 'name'}
+                <span class="nok">#{error 'name'/}</span>
+            #{/ifError}
+            #{elseif gallery?.name}
+                <span class="ok">What a great name</span>
+            #{/elseif}
+            #{else}
+                <span class="hint">Enter the gallery name</span>
+            #{/else}
+        </div>
+    </div>
+    <div class="field">
+        <input type="text" placeholder="Start date" id="startDate" class="date" readonly="readonly" name="startDate" value="${gallery?.startDate?.format('MM/dd/yyyy')}"/>
+        <div class="message">
+            #{ifError 'startDate'}
+                <span class="nok">#{error 'startDate'/}</span>
+            #{/ifError}
+            #{elseif gallery?.startDate}
+                <span class="ok">Valid start date</span>
+            #{/elseif}
+            #{else}
+                <span class="hint">When does the event occurred?</span>
+            #{/else}
+        </div>
+    </div>
+    <div class="field">
+        <input type="text" placeholder="End date" id="endDate" class="date" readonly="readonly" name="endDate" value="${gallery?.endDate?.format('MM/dd/yyyy')}"/>
+        <div class="message">
+            #{ifError 'endDate'}
+                <span class="nok">#{error 'endDate'/}</span>
+            #{/ifError}
+            #{elseif gallery?.endDate}
+                <span class="ok">Valid end date</span>
+            #{/elseif}
+            #{else}
+                <span class="hint">When the event should ended?</span>
+            #{/else}
+        </div>
+    </div>
+    <div class="field">
+        <input type="text" placeholder="Hashtag" name="hashtag" value="${gallery?.hashtag}"/>
+        <div class="message">
+            #{ifError 'hashtag'}
+                <span class="nok">#{error 'hashtag'/}</span>
+            #{/ifError}
+            #{elseif gallery?.hashtag}
+                <span class="ok">Valid hashtag</span>
+            #{/elseif}
+            #{else}
+                <span class="hint">The hashtag that describe the event?</span>
+            #{/else}
+        </div>
+    </div>
+    <div class="field">
+        <input type="text" placeholder="Location" name="location" value="${gallery?.location}"/>
+        <div class="message">
+            #{ifError 'location'}
+                <span class="nok">#{error 'location'/}</span>
+            #{/ifError}
+            #{elseif gallery?.location}
+                <span class="ok">Nice location</span>
+            #{/elseif}
+            #{else}
+                <span class="hint">The location to narrow the aggregation</span>
+            #{/else}
+        </div>
+    </div>
+    <div class="field">
+        <textarea rows="5" cols="30" placeholder="Description" name="description">${gallery?.description}</textarea>
+        <div class="message">
+            #{ifError 'description'}
+                <span class="nok">#{error 'description'/}</span>
+            #{/ifError}
+            #{elseif gallery?.description}
+                <span class="ok">Fine</span>
+            #{/elseif}
+            #{else}
+                <span class="hint">Short description about the gallery</span>
+            #{/else}
+        </div>
+    </div>
+    <input type="submit" value="Create gallery"/>
+#{/form}

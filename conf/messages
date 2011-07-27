@@ -1,3 +1,8 @@
 # You can specialize this file for each language.
 # For example, for French create a messages.fr file
 #
+
+validation.required.gallery.name=You have to give a name!
+validation.required.gallery.hashtag=You should define hashtag!
+validation.required.reference.startDate=You also need to fill the start date
+validation.hashtag=Invalid hashtag format
