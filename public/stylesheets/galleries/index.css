@@ -1,0 +1,39 @@
+#masonry-container {
+    margin: auto;
+}
+
+.box {
+    width: 225px;
+    margin: 2px;
+    float: left;
+    cursor: pointer;
+}
+
+.box:hover {
+    -webkit-box-shadow: 0px 0px 5px 3px #0063dc;
+    -moz-box-shadow: 0px 0px 5px 3px #0063dc;
+    box-shadow: 0px 0px 5px 3px #0063dc;
+}
+
+.box img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+.box .caption {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.box .caption span {
+    padding: 3px;
+    display: block;
+    font-weight: 100;
+}
+
+.box a {
+    text-decoration: none;
+}
