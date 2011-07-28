@@ -79,8 +79,7 @@ public class Secure extends Controller {
             user.save();
             
             session.put("loggedUser.id", user.id);
-            Users.myGalleries();
-
+            Galleries.index();
         }
         
         OAuth twitt = OAuth.service(serviceInfo);

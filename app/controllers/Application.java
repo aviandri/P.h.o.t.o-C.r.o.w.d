@@ -8,7 +8,7 @@ public class Application extends Controller {
 
     public static void index() {
 		if(Security.isConnected()){
-			Users.myGalleries();
+			Galleries.index();
 		}
     	render();
     }
