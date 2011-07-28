@@ -2,11 +2,14 @@ package models;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -47,7 +50,10 @@ public class Gallery extends Model {
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;
-
+    
+    @OneToMany(mappedBy = "gallery", fetch = FetchType.LAZY)
+    public Set<Photo> photos;
+    
     public Gallery() {
     }
 
@@ -60,13 +66,4 @@ public class Gallery extends Model {
         this.location = location;
         this.description = description;
     }
-    
-    public List<Photo> getPhotos() {
-        return Photo.find("byGallery", this).fetch();
-    }
-    
-    public long getPhotosCount() {
-        return Photo.count("byGallery", this);
-    }
-
 }
