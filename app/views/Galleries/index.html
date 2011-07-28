@@ -271,7 +271,7 @@ ul#photos li img:hover {
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a placerat libero hendrerit. Aliquam ut risus quis quam luctus porttitor eu et nisl. Nunc pharetra ultricies mattis. Mae
                         </div>
                         <ul id="photos">
-                        #{list items:gallery.getPhotos(), as:'photo'}
+                        #{list items:gallery.photos, as:'photo'}
                             <li>
                                 <a href="photo-details.html">
                                     <img alt="photo" src="${photo.thumbImageURL}">
