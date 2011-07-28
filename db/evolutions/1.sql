@@ -36,8 +36,26 @@ alter table Gallery
     add constraint FK57850F3247140EFE 
     foreign key (user_id) 
     references User (id);
+
+create table Photo (
+    id bigint not null auto_increment,
+    date_created datetime not null,
+    date_updated datetime not null,
+    full_image_url varchar(255),
+    poster_user_name varchar(255),
+    thumb_image_url varchar(255),
+    tweet_content varchar(255),
+    gallery_id bigint,
+    primary key (id)
+);
     
 # ---- !Downs
+
+alter table Photo 
+    drop 
+    foreign key FK4984E12500560D6;
+
+drop table if exists Photo;
 
 alter table Gallery 
     drop foreign key FK57850F3247140EFE;
