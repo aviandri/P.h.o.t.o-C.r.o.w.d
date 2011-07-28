@@ -1,8 +1,7 @@
 package controllers;
 
 import java.util.Date;
-
-import controllers.Secure.Security;
+import java.util.List;
 
 import models.Gallery;
 import play.data.binding.As;
@@ -10,6 +9,7 @@ import play.data.validation.Match;
 import play.data.validation.Required;
 import play.mvc.Controller;
 import play.mvc.With;
+import controllers.Secure.Security;
 
 /**
  * @author uudashr@gmail.com
@@ -17,7 +17,12 @@ import play.mvc.With;
  */
 @With(Secure.class)
 public class Galleries extends Controller {
-
+    
+    public static void index() {
+        List<Gallery> galleries =  Gallery.findAll();
+        render(galleries);
+    }
+    
     public static void create() {
         renderCreate(null);
     }

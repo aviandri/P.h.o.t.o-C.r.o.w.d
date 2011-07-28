@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,6 +59,14 @@ public class Gallery extends Model {
         this.hashtag = hashtag;
         this.location = location;
         this.description = description;
+    }
+    
+    public List<Photo> getPhotos() {
+        return Photo.find("byGallery", this).fetch();
+    }
+    
+    public long getPhotosCount() {
+        return Photo.count("byGallery", this);
     }
 
 }

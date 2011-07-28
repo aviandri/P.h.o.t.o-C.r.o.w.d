@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Photo Crowd</title>
+<script type="text/javascript" src="public/javascripts/jquery-1.6.1.min.js"></script>
+<script type="text/javascript">
+
+function showTwitterLink() {
+    //$(this).find('a.open-tweet').css('visibility', 'visible');
+    $(this).find('a.open-tweet').stop().css('opacity', 1);
+}
+
+function hideTwitterLink() {
+    //$(this).find('a.open-tweet').css('visibility', 'hidden');
+    $(this).find('a.open-tweet').animate({opacity:0}, 'fast');
+}
+
+$(document).ready(function() {
+    //$('#recent-activity li a.open-tweet').css('visibility', 'hidden');
+    $('#recent-activity li a.open-tweet').css('opacity', 0);
+    $('#recent-activity li').mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
+});
+
+function simulateRecentActivityUpdate() {
+    var newElement = $('<li><div class="image-wrapper"><a href="#"><img alt="avatar" src="/public/images/avatars/vaimiti.jpg"></a></div><div class="right-column"><div class="date">1 day ago</div><div class="content"><a href="#" class="username">Vaimiti</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl<a href="#" class="open-tweet" style="opacity: 0;"><img alt="open twitter" src="public/assets/images/twitter-small.png"></a></div></div></li>');
+    newElement.mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
+    newElement.hide().prependTo('#recent-activity ul#activities').slideDown('slow');
+    $('#recent-activity li:last').slideUp('slow', function() {
+        $(this).remove();
+    });
+
+}
+</script>
+
+<link rel="stylesheet" media="screen"  href="/public/stylesheets/common.css"/>
+<link rel="stylesheet" media="screen"  href="/public/stylesheets/main.css"/>
+
+<style type="text/css">
+
+#body h1 {
+    margin: 0;
+}
+
+#body h3 {
+    margin: 0;
+    font-size: 90%;
+    color: #9b9b9b;
+    font-weight: normal;
+}
+
+#body h3 a {
+    color: #0063dc;
+    text-decoration: none;
+}
+
+#body h3 a:hover {
+    text-decoration: underline;
+}
+
+#album-date {
+    font-size: 130%;
+    margin-top: 5px;
+    color: #3e3e3e;
+}
+
+#album-hashtag {
+    font-size: 170%;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+#album-info-column-container {
+    margin-top: 5px;
+}
+
+#album-info-column-left {
+    float: left;
+    width: 670px;
+}
+
+#recent-activity {
+    width: 300px;
+    float: right;
+    margin-right: 10px;
+    color: #3e3e3e;
+}
+
+#recent-activity div.title {
+    background-color: #3e3e3e;
+    color: white;
+    padding: 5px 10px;
+}
+
+#recent-activity div.title span.count {
+    font-weight: 100;
+}
+
+#recent-activity div.title span.count:before {
+    content: "(";
+}
+
+#recent-activity div.title span.count:after {
+    content: ")";
+}
+
+#recent-activity div.nipple {
+    border-color: #3e3e3e transparent transparent transparent;
+    border-style: solid;
+    border-width: 5px;
+    width: 0;
+    height: 0;
+    margin-left: 10px;
+}
+
+#recent-activity ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+#recent-activity li {
+    border-top: 1px dotted #d5d2d2;
+    padding: 5px 0;
+}
+
+#recent-activity li:first-child {
+    border-top: 0;
+}
+
+#recent-activity div.image-wrapper {
+    background-color: gray;
+    width: 30px;
+    height: 30px;
+    float: left;
+    position: relative;
+}
+
+#recent-activity div.image-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#recent-activity div.right-column {
+    margin-left: 40px;
+    max-width: 100%;
+}
+
+#recent-activity div.date {
+    width: 100%;
+    color: #9b9b9b;
+}
+
+#recent-activity div.content {
+    width: 100%;
+}
+
+#recent-activity div.content a.username {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+}
+
+#recent-activity div.content a.username:hover {
+    text-decoration: underline;
+}
+
+ul#photos {
+    list-style: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+}
+
+ul#photos li {
+    float: left;
+    width: 75px;
+    height: 75px;
+}
+
+ul#photos li img {
+    max-width: 95%;
+    max-height: 95%;
+}
+
+ul#photos li img:hover {
+    -webkit-box-shadow: 0px 0px 5px 3px #0063dc;
+    -moz-box-shadow: 0px 0px 5px 3px #0063dc;
+    box-shadow: 0px 0px 5px 3px #0063dc;
+}
+
+#pagination {
+    clear: both;
+    font-size: 110%;
+    padding: 10px 10px 0 10px;
+}
+
+#pagination ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#pagination li {
+    float: left;
+    border: 1px solid #eeeeee;
+    margin-left: 5px;
+}
+
+#pagination li:first-child {
+    margin-left: 0;
+}
+
+#pagination .prev-nav {
+    margin-right: 20px; 
+}
+
+#pagination .next-nav {
+    margin-left: 20px;
+}
+
+#pagination .padded {
+    padding: 2px 6px;
+    display: inline-block;
+}
+
+#pagination span.disabled {
+    color: #bbbbbb;
+}
+
+#pagination span.current-page {
+    color: #ff0084;
+}
+
+#pagination a {
+    color: #0063dc;
+    text-decoration: none;
+}
+
+#pagination a:hover {
+    color: white;
+    background-color: #0063dc;
+}
+
+</style>
+</head>
+<body>
+    <div id="container">
+        <div id="top-bar" class="common-wrapper">
+            <div class="common-content">
+                <h1><a href="index.html">Photo Crowd</a></h1>
+            </div>
+        </div>
+        <div id="body-wrapper" class="common-wrapper">
+            <div id="body" class="common-content">
+            #{list items:galleries, as:'gallery'}
+                <h1>Google Developer Day 2011</h1>
+                <div id="album-date">Thursday, 30 June 2011</div>
+                <div id="album-hashtag">#${gallery.hashtag}</div>
+                <h3>An album by <a href="user-page.html">Bozzie Bozzo</a></h3>
+                <div id="album-info-column-container">
+                    <div id="album-info-column-left">
+                        <!-- 255 characters -->
+                        <div id="album-description">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a placerat libero hendrerit. Aliquam ut risus quis quam luctus porttitor eu et nisl. Nunc pharetra ultricies mattis. Mae
+                        </div>
+                        <ul id="photos">
+                        #{list items:gallery.getPhotos(), as:'photo'}
+                            <li>
+                                <a href="photo-details.html">
+                                    <img alt="photo" src="${photo.thumbImageURL}">
+                                </a>
+                            </li>
+                        #{/list}
+                        </ul>
+                        <div id="pagination">
+                            <ul>
+                                <li class="prev-nav"><span class="disabled padded">← prev</span></li>
+                                <li><span class="current-page padded">1</span></li>
+                                <li><a href="#" class="padded">2</a></li>
+                                <li><a href="#" class="padded">3</a></li>
+                                <li><a href="#" class="padded">4</a></li>
+                                <li><a href="#" class="padded">5</a></li>
+                                <li class="next-nav"><a href="#" class="padded">next →</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                #{/list}
+                    <div id="recent-activity">
+                        <div class="title">Recent activity <a href="javascript:void(0)" style="color: white;" onclick="simulateRecentActivityUpdate()">[Refresh]</a> <span class="count">320</span></div>
+                        <div class="nipple"></div>
+                        <ul id="activities">
+                            <li>
+                                <div class="image-wrapper">
+                                    <a href="#">
+                                        <img alt="avatar" src="/public/images/avatars/vaimiti.jpg">
+                                    </a>
+                                </div>
+                                <div class="right-column">
+                                    <div class="date">1 day ago</div>
+                                    <div class="content">
+                                        <a href="#" class="username">Vaimiti</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl
+                                        <a href="#" class="open-tweet"><img alt="open twitter" src="/public/images/twitter-small.png"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="image-wrapper">
+                                    <a href="#">
+                                        <img alt="avatar" src="/public/images/avatars/bozzie.jpg">
+                                    </a>
+                                </div>
+                                <div class="right-column">
+                                    <div class="date">1 day ago</div>
+                                    <div class="content">
+                                        <a href="#" class="username">Bozzie</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non
+                                        <a href="#" class="open-tweet"><img alt="open twitter" src="/public/images/twitter-small.png"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="image-wrapper">
+                                    <a href="#">
+                                        <img alt="avatar" src="/public/images/avatars/meat-bingo.jpg">
+                                    </a>
+                                </div>
+                                <div class="right-column">
+                                    <div class="date">1 day ago</div>
+                                    <div class="content">
+                                        <a href="#" class="username">meatbingo</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl
+                                        <a href="#" class="open-tweet"><img alt="open twitter" src="/public/images/twitter-small.png"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="image-wrapper">
+                                    <a href="#">
+                                        <img alt="avatar" src="/public/images/avatars/leslie.jpg">
+                                    </a>
+                                </div>
+                                <div class="right-column">
+                                    <div class="date">1 day ago</div>
+                                    <div class="content">
+                                        <a href="#" class="username">meatbingo</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                        <a href="#" class="open-tweet"><img alt="open twitter" src="/public/images/twitter-small.png"></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="image-wrapper">
+                                    <a href="#">
+                                        <img alt="avatar" src="/public/images/avatars/sonny-chavez.jpg">
+                                    </a>
+                                </div>
+                                <div class="right-column">
+                                    <div class="date">1 day ago</div>
+                                    <div class="content">
+                                        <a href="#" class="username">meatbingo</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl
+                                        <a href="#" class="open-tweet"><img alt="open twitter" src="/public/images/twitter-small.png"></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer" class="common-wrapper">
+            <div class="content">
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li>&copy; Photo Crowd</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -7,11 +7,10 @@ import play.Logger;
 import play.jobs.Every;
 import play.jobs.Job;
 
-//@Every("10s") // disabled since we don't have the Gallery and Photo schema
 public class GalleryManagerJob extends Job<Void> {
     @Override
     public void doJob() throws Exception {
-        Logger.info("job is started");
+        Logger.info("Starting Gallery Manager Job...");
         List<Gallery> crowdList = Gallery.findAll();
         for (Gallery crowd : crowdList) {
             if (crowd.state) {

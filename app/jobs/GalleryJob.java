@@ -19,7 +19,7 @@ public class GalleryJob extends Job<Void> {
 
     @Override
     public void doJob() throws Exception {
-        JsonArray results = TwitterUtil.searchTwitter("#"
+        JsonArray results = TwitterUtil.searchTwitter("%23"
                 + gallery.hashtag, gallery.lastId);
 
         Logger.debug("tweet search result:" + results);
@@ -30,7 +30,7 @@ public class GalleryJob extends Job<Void> {
     }
 
     private void saveTweetLastId(JsonArray results) {
-        if (results.size() < 0) {
+        if (results.size() <= 0) {
             return;
         }
         Long lastId = Long.parseLong(results.get(0).getAsJsonObject()
