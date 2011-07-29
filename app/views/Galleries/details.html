@@ -1,0 +1,145 @@
+#{extends 'main.html'/}
+#{set title:'Gallery'/}
+
+#{set 'moreStyles'}
+<link rel="stylesheet" media="screen"  href="@{'/public/stylesheets/galleries/details.css'}"/>
+#{/set}
+
+#{set 'moreScripts'}
+<script type="text/javascript">
+
+function showTwitterLink() {
+    $(this).find('a.open-tweet').stop().css('opacity', 1);
+}
+
+function hideTwitterLink() {
+    $(this).find('a.open-tweet').animate({opacity:0}, 'fast');
+}
+
+$(document).ready(function() {
+    $('#recent-activity li a.open-tweet').css('opacity', 0);
+    $('#recent-activity li').mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
+});
+
+function simulateRecentActivityUpdate() {
+    var newElement = $('<li><div class="image-wrapper"><a href="#"><img alt="avatar" src="@{'/public/images/avatars/vaimiti.jpg'}"></a></div><div class="right-column"><div class="date">1 day ago</div><div class="content"><a href="#" class="username">Vaimiti</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl<a href="#" class="open-tweet" style="opacity: 0;"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a></div></div></li>');
+    newElement.mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
+    newElement.hide().prependTo('#recent-activity ul#activities').slideDown('slow');
+    $('#recent-activity li:last').slideUp('slow', function() {
+        $(this).remove();
+    });
+    
+}
+</script>
+#{/set}
+
+<div id="body" class="common-content">
+    <h1>${gallery.name}</h1>
+    <div id="album-date">${gallery.dateCreated.format('EEEE, dd MMMM yyyy')}</div>
+    <div id="album-hashtag">#${gallery.hashtag}</div>
+    <h3>An album by <a href="user-page.html">${gallery.user.username}</a></h3>
+    <div id="album-info-column-container">
+        <div id="album-info-column-left">
+            <!-- 255 characters -->
+            <div id="album-description">
+                ${gallery.description.nl2br()}
+            </div>
+            <ul id="photos">
+                #{list photos, as:'photo'}
+                <li>
+                    <a href="photo-details.html">
+                        <img alt="photo" src="${photo.thumbImageURL}">
+                    </a>
+                </li>
+                #{/list}
+            </ul>
+            <div id="pagination">
+                <ul>
+                    <li class="prev-nav"><span class="disabled padded">← prev</span></li>
+                    <li><span class="current-page padded">1</span></li>
+                    <li><a href="#" class="padded">2</a></li>
+                    <li><a href="#" class="padded">3</a></li>
+                    <li><a href="#" class="padded">4</a></li>
+                    <li><a href="#" class="padded">5</a></li>
+                    <li class="next-nav"><a href="#" class="padded">next →</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="recent-activity">
+            <div class="title">Recent activity <a href="javascript:void(0)" style="color: white;" onclick="simulateRecentActivityUpdate()">[Refresh]</a> <span class="count">320</span></div>
+            <div class="nipple"></div>
+            <ul id="activities">
+                <li>
+                    <div class="image-wrapper">
+                        <a href="#">
+                            <img alt="avatar" src="@{'/public/images/avatars/vaimiti.jpg'}">
+                        </a>
+                    </div>
+                    <div class="right-column">
+                        <div class="date">1 day ago</div>
+                        <div class="content">
+                            <a href="#" class="username">Vaimiti</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl
+                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="image-wrapper">
+                        <a href="#">
+                            <img alt="avatar" src="@{'/public/images/avatars/bozzie.jpg'}">
+                        </a>
+                    </div>
+                    <div class="right-column">
+                        <div class="date">1 day ago</div>
+                        <div class="content">
+                            <a href="#" class="username">Bozzie</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non
+                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="image-wrapper">
+                        <a href="#">
+                            <img alt="avatar" src="@{'/public/images/avatars/meat-bingo.jpg'}">
+                        </a>
+                    </div>
+                    <div class="right-column">
+                        <div class="date">1 day ago</div>
+                        <div class="content">
+                            <a href="#" class="username">meatbingo</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl
+                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="image-wrapper">
+                        <a href="#">
+                            <img alt="avatar" src="@{'/public/images/avatars/leslie.jpg'}">
+                        </a>
+                    </div>
+                    <div class="right-column">
+                        <div class="date">1 day ago</div>
+                        <div class="content">
+                            <a href="#" class="username">meatbingo</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="image-wrapper">
+                        <a href="#">
+                            <img alt="avatar" src="@{'/public/images/avatars/sonny-chavez.jpg'}">
+                        </a>
+                    </div>
+                    <div class="right-column">
+                        <div class="date">1 day ago</div>
+                        <div class="content">
+                            <a href="#" class="username">meatbingo</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl
+                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

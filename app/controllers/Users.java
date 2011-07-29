@@ -17,7 +17,7 @@ public class Users extends Controller {
     
     public static void myGalleries() {
         User user  = Security.connectedUser();
-        List<Gallery> galleries = Gallery.find("user = ? ORDER BY dateCreated DESC", user).fetch();
+        List<Gallery> galleries = Gallery.find("user = ? ORDER BY id DESC", user).fetch();
         render("@galleries", user, galleries);
     }
     
@@ -25,7 +25,7 @@ public class Users extends Controller {
         User user = User.findByUsername(username);
         notFoundIfNull(user);
         
-        List<Gallery> galleries = Gallery.find("user = ? ORDER BY dateCreated DESC", user).fetch();
+        List<Gallery> galleries = Gallery.find("user = ? ORDER BY id DESC", user).fetch();
         render(user, galleries);
     }
 }

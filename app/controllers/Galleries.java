@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import models.Gallery;
+import models.Photo;
 import play.data.binding.As;
 import play.data.validation.Match;
 import play.data.validation.Required;
@@ -61,6 +62,12 @@ public class Galleries extends Controller {
         gallery.user = Security.connectedUser();
         gallery.save();
         
-        renderText("OK");
+        Users.myGalleries();
+    }
+    
+    public static void details(Long galleryId) {
+        Gallery gallery = Gallery.findById(galleryId);
+        List<Photo> photos = Photo.find("gallery = ? ORDER BY id DESC", gallery).fetch();
+        render(gallery, photos);
     }
 }

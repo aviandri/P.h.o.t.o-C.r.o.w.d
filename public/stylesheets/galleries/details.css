@@ -1,0 +1,209 @@
+#body h1 {
+    margin: 0;
+}
+
+#body h3 {
+    margin: 0;
+    font-size: 90%;
+    color: #9b9b9b;
+    font-weight: normal;
+}
+
+#body h3 a {
+    color: #0063dc;
+    text-decoration: none;
+}
+
+#body h3 a:hover {
+    text-decoration: underline;
+}
+
+#album-date {
+    font-size: 130%;
+    margin-top: 5px;
+    color: #3e3e3e;
+}
+
+#album-hashtag {
+    font-size: 170%;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+#album-info-column-container {
+    margin-top: 5px;
+}
+
+#album-info-column-left {
+    float: left;
+    width: 670px;
+}
+
+#recent-activity {
+    width: 300px;
+    float: right;
+    margin-right: 10px;
+    color: #3e3e3e;
+}
+
+#recent-activity div.title {
+    background-color: #3e3e3e;
+    color: white;
+    padding: 5px 10px;
+}
+
+#recent-activity div.title span.count {
+    font-weight: 100;
+}
+
+#recent-activity div.title span.count:before {
+    content: "(";
+}
+
+#recent-activity div.title span.count:after {
+    content: ")";
+}
+
+#recent-activity div.nipple {
+    border-color: #3e3e3e transparent transparent transparent;
+    border-style: solid;
+    border-width: 5px;
+    width: 0;
+    height: 0;
+    margin-left: 10px;
+}
+
+#recent-activity ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+#recent-activity li {
+    border-top: 1px dotted #d5d2d2;
+    padding: 5px 0;
+}
+
+#recent-activity li:first-child {
+    border-top: 0;
+}
+
+#recent-activity div.image-wrapper {
+    background-color: gray;
+    width: 30px;
+    height: 30px;
+    float: left;
+    position: relative;
+}
+
+#recent-activity div.image-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#recent-activity div.right-column {
+    margin-left: 40px;
+    max-width: 100%;
+}
+
+#recent-activity div.date {
+    width: 100%;
+    color: #9b9b9b;
+}
+
+#recent-activity div.content {
+    width: 100%;
+}
+
+#recent-activity div.content a.username {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+}
+
+#recent-activity div.content a.username:hover {
+    text-decoration: underline;
+}
+
+ul#photos {
+    list-style: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+}
+
+ul#photos li {
+    float: left;
+    width: 75px;
+    height: 75px;
+}
+
+ul#photos li img {
+    max-width: 95%;
+    max-height: 95%;
+}
+
+ul#photos li img:hover {
+    -webkit-box-shadow: 0px 0px 5px 3px #0063dc;
+    -moz-box-shadow: 0px 0px 5px 3px #0063dc;
+    box-shadow: 0px 0px 5px 3px #0063dc;
+}
+
+#pagination {
+    clear: both;
+    font-size: 110%;
+    padding: 10px 10px 0 10px;
+}
+
+#pagination ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#pagination li {
+    float: left;
+    border: 1px solid #eeeeee;
+    margin-left: 5px;
+}
+
+#pagination li:first-child {
+    margin-left: 0;
+}
+
+#pagination .prev-nav {
+    margin-right: 20px; 
+}
+
+#pagination .next-nav {
+    margin-left: 20px;
+}
+
+#pagination .padded {
+    padding: 2px 6px;
+    display: inline-block;
+}
+
+#pagination span.disabled {
+    color: #bbbbbb;
+}
+
+#pagination span.current-page {
+    color: #ff0084;
+}
+
+#pagination a {
+    color: #0063dc;
+    text-decoration: none;
+}
+
+#pagination a:hover {
+    color: white;
+    background-color: #0063dc;
+}

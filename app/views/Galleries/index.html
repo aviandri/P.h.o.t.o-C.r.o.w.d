@@ -28,7 +28,7 @@ $(document).ready(function() {
             %{
             photo = gallery.photos.iterator().next();
             }%
-            <div class="box">
+            <div class="box" onclick="document.location='@{Galleries.details(gallery.id)}'">
                 <img alt="photo" src="${photo.fullImageURL}"/>
                 <div class="caption"><span>${gallery.name} | #${gallery.hashtag}</span></div>
             </div>
