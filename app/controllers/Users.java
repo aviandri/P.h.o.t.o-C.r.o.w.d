@@ -1,6 +1,9 @@
 package controllers;
 
+import java.util.List;
+
 import controllers.Secure.Security;
+import models.Gallery;
 import models.User;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -14,13 +17,15 @@ public class Users extends Controller {
     
     public static void myGalleries() {
         User user  = Security.connectedUser();
-        render("@galleries", user);
+        List<Gallery> galleries = Gallery.find("user = ? ORDER BY dateCreated DESC", user).fetch();
+        render("@galleries", user, galleries);
     }
     
     public static void galleries(String username) {
         User user = User.findByUsername(username);
         notFoundIfNull(user);
         
-        render(user);
+        List<Gallery> galleries = Gallery.find("user = ? ORDER BY dateCreated DESC", user).fetch();
+        render(user, galleries);
     }
 }
