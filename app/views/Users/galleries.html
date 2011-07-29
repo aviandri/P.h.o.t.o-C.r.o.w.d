@@ -22,12 +22,14 @@
     <ul id="crowds">
         #{list galleries, as:'gallery'}
         <li class="album">
-            %{
-            photo = gallery.photos.iterator().next();
-            }%
             <div class="photo-frame">
                 <a href="@{Galleries.details(gallery.id)}">
+                    #{if gallery.photos}
+                    %{
+                    photo = gallery.photos?.iterator().next();
+                    }%
                     <img alt="photo" src="${photo.thumbImageURL}"/>
+                    #{/if}
                 </a>
             </div>
             <div class="title"><a href="@{Galleries.details(gallery.id)}">${gallery.name}</a></div>
