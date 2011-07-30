@@ -59,8 +59,8 @@ public class GalleryJob extends Job<Void> {
         if (results.size() <= 0) {
             return;
         }
-        Long lastId = Long.parseLong(results.get(0).getAsJsonObject()
-                .getAsJsonPrimitive("id_str").getAsString());
+        Long lastId = results.get(0).getAsJsonObject().getAsJsonPrimitive("id")
+                .getAsLong();
         Logger.debug("Tweet last Id" + lastId);
         Logger.debug("crowd gallery id" + gallery.id);
 
