@@ -1,5 +1,7 @@
 package jobs;
 
+import java.io.UnsupportedEncodingException;
+
 import models.Gallery;
 import play.Logger;
 import play.jobs.Job;
@@ -20,20 +22,7 @@ public class GalleryJob extends Job<Void> {
 
     @Override
     public void doJob() throws Exception {
-        SearchQueryBuilder queryBuilder = new SearchQueryBuilder("#" + gallery.hashtag);
-        
-        if (gallery.startDate != null) {
-            queryBuilder.since(gallery.startDate);
-            if (gallery.endDate != null) {
-                queryBuilder.until(gallery.endDate);
-            }
-        }
-        
-        if (gallery.location != null && gallery.location.trim().length() != 0) {
-            queryBuilder.near(gallery.location);
-        }
-        
-        String searchQuery = queryBuilder.toEncodedURL("UTF-8");
+        String searchQuery = buildQuery(gallery);
         Logger.debug("Searching '%1s'", searchQuery);
         JsonArray results = TwitterUtil.searchTwitter(
                 searchQuery, 
@@ -45,7 +34,27 @@ public class GalleryJob extends Job<Void> {
         }
         saveTweetLastId(results);
     }
-
+    
+    private static String buildQuery(Gallery gallery) throws UnsupportedEncodingException {
+        String hashtagQuery = gallery.hashtag;
+        if (!gallery.hashtag.startsWith("#")) {
+            hashtagQuery = "#" + gallery.hashtag;
+        }
+        SearchQueryBuilder queryBuilder = new SearchQueryBuilder(hashtagQuery);
+        
+        if (gallery.startDate != null) {
+            queryBuilder.since(gallery.startDate);
+            if (gallery.endDate != null) {
+                queryBuilder.until(gallery.endDate);
+            }
+        }
+        
+        if (gallery.location != null && gallery.location.trim().length() != 0) {
+            queryBuilder.near(gallery.location);
+        }
+        return queryBuilder.toEncodedURL("UTF-8");
+    }
+    
     private void saveTweetLastId(JsonArray results) {
         if (results.size() <= 0) {
             return;
