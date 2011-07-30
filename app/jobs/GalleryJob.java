@@ -3,6 +3,7 @@ package jobs;
 import models.Gallery;
 import play.Logger;
 import play.jobs.Job;
+import utils.SearchQueryBuilder;
 import utils.StringUtils;
 import utils.TwitterUtil;
 
@@ -19,8 +20,24 @@ public class GalleryJob extends Job<Void> {
 
     @Override
     public void doJob() throws Exception {
-        JsonArray results = TwitterUtil.searchTwitter("%23"
-                + gallery.hashtag, gallery.lastId);
+        SearchQueryBuilder queryBuilder = new SearchQueryBuilder("#" + gallery.hashtag);
+        
+        if (gallery.startDate != null) {
+            queryBuilder.since(gallery.startDate);
+            if (gallery.endDate != null) {
+                queryBuilder.until(gallery.endDate);
+            }
+        }
+        
+        if (gallery.location != null && gallery.location.trim().length() != 0) {
+            queryBuilder.near(gallery.location);
+        }
+        
+        String searchQuery = queryBuilder.toEncodedURL("UTF-8");
+        Logger.debug("Searching '%1$s'", searchQuery);
+        JsonArray results = TwitterUtil.searchTwitter(
+                searchQuery, 
+                gallery.lastId);
 
         Logger.debug("tweet search result:" + results);
         for (JsonElement tweet : results) {
