@@ -1,15 +1,27 @@
 package utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
+ * This is a query builder for twitter search. We can specify such as keyword,
+ * date range and location.
+ * 
  * @author uudashr@gmail.com
- *
+ * 
  */
 public class SearchQueryBuilder {
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     private String keyword;
     private String since;
     private String until;
     private String location;
     
+    /**
+     * Construct by specifying the keyword.
+     * 
+     * @param keyword is the keyword.
+     */
     public SearchQueryBuilder(String keyword) {
         this.keyword = keyword;
     }
@@ -21,10 +33,21 @@ public class SearchQueryBuilder {
      * return the current builder.
      */
     public SearchQueryBuilder since(String date) {
-        this.since = date;
+        since = date;
         return this;
     }
 
+    /**
+     * Set since criteria.
+     * 
+     * @param date is the date.
+     * @return the current builder.
+     */
+    public SearchQueryBuilder since(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        return since(dateFormat.format(date));
+    }
+    
     /**
      * Set until criteria. The format of <code>date</code> will be yyyy-MM-dd.
      * 
@@ -32,8 +55,19 @@ public class SearchQueryBuilder {
      * @return the current builder.
      */
     public SearchQueryBuilder until(String date) {
-        this.until = date;
+        until = date;
         return this;
+    }
+    
+    /**
+     * Set the until criteria.
+     * 
+     * @param date is the date.
+     * @return the current builder.
+     */
+    public SearchQueryBuilder until(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        return until(dateFormat.format(date));
     }
     
     /**
