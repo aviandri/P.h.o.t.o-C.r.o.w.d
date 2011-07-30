@@ -36,7 +36,10 @@ public class Galleries extends Controller {
             @Required(message = "validation.required.gallery.name") String name,
             @As("MM/dd/yyyy") Date startDate,
             @As("MM/dd/yyyy") Date endDate,
-            @Required(message = "validation.required.gallery.hashtag") @Match(value = "#?([A-Za-z0-9_]+) *", message = "validation.hashtag") String hashtag,
+            @Required(message = "validation.required.gallery.hashtag") 
+                @Match(value = "#?([A-Za-z0-9_]+) *", 
+                message = "validation.hashtag") 
+                String hashtag,
             String location, String description) {
 
         if (endDate != null && startDate == null) {
