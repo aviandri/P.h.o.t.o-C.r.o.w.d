@@ -34,7 +34,7 @@ public class GalleryJob extends Job<Void> {
         }
         
         String searchQuery = queryBuilder.toEncodedURL("UTF-8");
-        Logger.debug("Searching '%1$s'", searchQuery);
+        Logger.debug("Searching '%1s'", searchQuery);
         JsonArray results = TwitterUtil.searchTwitter(
                 searchQuery, 
                 gallery.lastId);
