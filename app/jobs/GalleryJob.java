@@ -30,7 +30,7 @@ public class GalleryJob extends Job<Void> {
 
         Logger.debug("tweet search result:" + results);
         for (JsonElement tweet : results) {
-            processTweets(tweet);
+            processTweet(tweet);
         }
         saveTweetLastId(results);
     }
@@ -73,7 +73,7 @@ public class GalleryJob extends Job<Void> {
         crowd.save();
     }
 
-    private void processTweets(JsonElement tweet) {
+    private void processTweet(JsonElement tweet) {
         JsonObject tweetObject = tweet.getAsJsonObject();
         String tweetText = tweetObject.getAsJsonPrimitive("text").getAsString();
         String username = tweetObject.getAsJsonPrimitive("from_user")
