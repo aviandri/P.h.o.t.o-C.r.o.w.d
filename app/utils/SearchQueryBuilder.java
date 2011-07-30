@@ -1,7 +1,11 @@
 package utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import play.data.parsing.UrlEncodedParser;
 
 /**
  * This is a query builder for twitter search. We can specify such as keyword,
@@ -103,5 +107,9 @@ public class SearchQueryBuilder {
         }
         
         return builder.toString();
+    }
+    
+    public String toEncodedURL(String enc) throws UnsupportedEncodingException {
+        return URLEncoder.encode(toString(), enc);
     }
 }
