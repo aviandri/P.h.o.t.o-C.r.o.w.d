@@ -11,7 +11,7 @@ public class GalleryManagerJob extends Job<Void> {
     @Override
     public void doJob() throws Exception {
         Logger.info("Starting Gallery Manager Job...");
-        List<Gallery> crowdList = Gallery.findAll();
+        List<Gallery> crowdList = Gallery.find("state = ? ORDER BY id", true).fetch();
         for (Gallery crowd : crowdList) {
             if (crowd.state) {
                 GalleryJob job = new GalleryJob(crowd);

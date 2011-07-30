@@ -56,21 +56,22 @@ public class GalleryJob extends Job<Void> {
     }
     
     private void saveTweetLastId(JsonArray results) {
-        if (results.size() <= 0) {
-            return;
+        if (results.size() > 0) {
+            Long lastId = results.get(0).getAsJsonObject().getAsJsonPrimitive("id")
+                    .getAsLong();
+            Logger.debug("Tweet last Id" + lastId);
+            Logger.debug("crowd gallery id" + gallery.id);
+    
+            Gallery gallery = Gallery.findById(this.gallery.id);
+            Logger.info("Crowd gallery" + gallery);
+            if (lastId == null) {
+                return;
+            }
+            gallery.lastId = lastId;
+        } else {
+            gallery.state = false;
         }
-        Long lastId = results.get(0).getAsJsonObject().getAsJsonPrimitive("id")
-                .getAsLong();
-        Logger.debug("Tweet last Id" + lastId);
-        Logger.debug("crowd gallery id" + gallery.id);
-
-        Gallery crowd = Gallery.findById(this.gallery.id);
-        Logger.info("Crowd gallery" + crowd);
-        if (lastId == null) {
-            return;
-        }
-        crowd.lastId = lastId;
-        crowd.save();
+        gallery.save();
     }
 
     private void processTweet(JsonElement tweet) {
