@@ -11,7 +11,7 @@ public class TwitterUtil {
 
     public static JsonArray searchTwitter(String q, Long sinceId) {
         String callUrl = "http://search.twitter.com/search.json?q=" + q
-                + "&since_id=" + sinceId;
+                + "&since_id=" + sinceId + "&rpp=100";
         Logger.info("Call twitter url:" + callUrl);
         HttpResponse resp = WS.url(callUrl).get();
         JsonElement element = resp.getJson();
