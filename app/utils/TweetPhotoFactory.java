@@ -3,13 +3,12 @@ package utils;
 import java.net.URL;
 
 public class TweetPhotoFactory {
-    public static TweetPhotoGrabber create(URL tweetPicURL) {
-        String path = tweetPicURL.toExternalForm();
-        if (path.contains("twitpic.com")) {
+    public static TweetPhotoGrabber create(String tweetPicURL) {
+        if (tweetPicURL.contains("twitpic.com")) {
             return new TwitPicGrabber(tweetPicURL);
-        } else if (path.contains("lockerz.com")) {
+        } else if (tweetPicURL.contains("lockerz.com")) {
             return new LokerzGrabber(tweetPicURL);
-        } else if (path.contains("twitgoo.com")) {
+        } else if (tweetPicURL.contains("twitgoo.com")) {
             return new TwitgooGrabber(tweetPicURL);
         } else {
             throw new RuntimeException();

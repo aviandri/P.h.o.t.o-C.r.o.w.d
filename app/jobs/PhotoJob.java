@@ -23,10 +23,10 @@ public class PhotoJob extends Job<Void> {
     }
 
     public void doJob() throws Exception {
-        TweetPhotoGrabber grabber = TweetPhotoFactory.create(new URL(url));
+        TweetPhotoGrabber grabber = TweetPhotoFactory.create(url);
         Photo photo = new Photo();
-        photo.fullImageURL = grabber.getFullImageURL().toString();
-        photo.thumbImageURL = grabber.getThumbImageURL().toString();
+        photo.fullImageURL = grabber.getFullImageURL();
+        photo.thumbImageURL = grabber.getThumbImageURL();
         photo.posterUserName = username;
         photo.tweetContent = tweetText;
         photo.gallery = gallery;

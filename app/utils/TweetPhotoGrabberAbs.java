@@ -3,9 +3,9 @@ package utils;
 import java.net.URL;
 
 public abstract class TweetPhotoGrabberAbs implements TweetPhotoGrabber {
-    URL tweetPhotoURL;
+    protected String tweetPhotoURL;
 
-    public TweetPhotoGrabberAbs(URL tweetPhotoURL) {
+    public TweetPhotoGrabberAbs(String tweetPhotoURL) {
         this.tweetPhotoURL = tweetPhotoURL;
     }
 

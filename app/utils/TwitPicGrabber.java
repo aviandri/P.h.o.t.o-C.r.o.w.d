@@ -5,35 +5,38 @@ import java.net.URL;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
+import play.Logger;
 import play.libs.WS;
 import play.libs.WS.HttpResponse;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 
 public class TwitPicGrabber extends TweetPhotoGrabberAbs {
-    public URL fullImageURL;
-    public URL thumbImageURL;
+    public String fullImageURL;
+    public String thumbImageURL;
 
-    public TwitPicGrabber(URL tweetPhotoURL) {
+    public TwitPicGrabber(String tweetPhotoURL) {
         super(tweetPhotoURL);
     }
 
     @Override
-    public URL getFullImageURL() {
-        if (this.fullImageURL == null)
+    public String getFullImageURL() {
+        if (fullImageURL == null) {
             grab();
-        return this.fullImageURL;
+        }
+        return fullImageURL;
     }
 
     @Override
-    public URL getThumbImageURL() {
-        if (this.thumbImageURL == null)
+    public String getThumbImageURL() {
+        if (thumbImageURL == null) {
             grab();
-        return this.thumbImageURL;
+        }
+        return thumbImageURL;
     }
 
     protected void grab() {
-        HttpResponse res = WS.url(tweetPhotoURL.toExternalForm()).get();
+        HttpResponse res = WS.url(tweetPhotoURL).get();
         StringBuffer html = new StringBuffer(res.getString());
         Source source;
         try {
@@ -42,10 +45,10 @@ public class TwitPicGrabber extends TweetPhotoGrabberAbs {
             Element el = source.getElementById("photo-display");
             String url = el.getAttributeValue("src");
             
-            this.fullImageURL = new URL(url);
-            this.thumbImageURL = new URL(url);
+            fullImageURL = url;
+            thumbImageURL = url;
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error("Failed getting photo from twitpic using URL %1s", tweetPhotoURL);
         }
 
     }

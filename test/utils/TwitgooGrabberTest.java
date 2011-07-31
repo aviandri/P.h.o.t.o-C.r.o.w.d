@@ -1,7 +1,5 @@
 package utils;
 
-import java.net.URL;
-
 import org.junit.Test;
 
 import play.test.UnitTest;
@@ -31,6 +29,6 @@ public class TwitgooGrabberTest extends UnitTest {
     
     @Test
     public void grab() throws Exception {
-        new TwitgooGrabber(new URL("http://twitgoo.com/2l5l7d")).getFullImageURL();
+        new TwitgooGrabber("http://twitgoo.com/2l5l7d").getFullImageURL();
     }
 }

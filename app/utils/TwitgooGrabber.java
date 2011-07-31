@@ -18,15 +18,15 @@ public class TwitgooGrabber extends TweetPhotoGrabberAbs {
     public static final String URL_PREFIX = "http://twitgoo.com/";
     public static final String TWITGOO_INFO_URL_FORMAT = "http://twitgoo.com/api/message/info/%1s";
     
-    private URL imageUrl;
-    private URL thumbImageUrl;
+    private String imageUrl;
+    private String thumbImageUrl;
     
-    public TwitgooGrabber(URL tweetPhotoURL) {
+    public TwitgooGrabber(String tweetPhotoURL) {
         super(tweetPhotoURL);
     }
 
     @Override
-    public URL getFullImageURL() {
+    public String getFullImageURL() {
         if (imageUrl == null) {
             grab();
         }
@@ -34,7 +34,7 @@ public class TwitgooGrabber extends TweetPhotoGrabberAbs {
     }
     
     @Override
-    public URL getThumbImageURL() {
+    public String getThumbImageURL() {
         if (thumbImageUrl == null) {
             grab();
         }
@@ -42,16 +42,10 @@ public class TwitgooGrabber extends TweetPhotoGrabberAbs {
     }
     
     private void grab() {
-        String twitgooUrl = tweetPhotoURL.toExternalForm();
-        String twitgooId = parseId(twitgooUrl);
+        String twitgooId = parseId(tweetPhotoURL);
         Document document = WS.url(TWITGOO_INFO_URL_FORMAT, twitgooId).get().getXml();
-        try {
-            imageUrl = new URL(XPath.selectText("rsp/imageurl", document));
-            thumbImageUrl = new URL(XPath.selectText("rsp/thumburl", document));
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        imageUrl = XPath.selectText("rsp/imageurl", document);
+        thumbImageUrl = XPath.selectText("rsp/thumburl", document);
     }
 
     public static String parseId(String twitgooUrl) {
