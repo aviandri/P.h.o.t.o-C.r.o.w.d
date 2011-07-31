@@ -41,7 +41,7 @@ public class TwitPicGrabber extends TweetPhotoGrabberAbs {
                     html.toString().length()));
             Element el = source.getElementById("photo-display");
             String url = el.getAttributeValue("src");
-            System.out.println(url);
+            
             this.fullImageURL = new URL(url);
             this.thumbImageURL = new URL(url);
         } catch (IOException e) {

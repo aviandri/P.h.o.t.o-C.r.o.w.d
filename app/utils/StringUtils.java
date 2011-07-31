@@ -11,7 +11,7 @@ public class StringUtils {
     public static String[] grabImageServiceURLs(String input) {
         Pattern pattern = Pattern.compile(regex);
         Matcher m = pattern.matcher(input);
-        System.out.println(m.matches());
+        
         List<String> urls = new ArrayList<String>();
         while (m.find()) {
             urls.add(m.group());
