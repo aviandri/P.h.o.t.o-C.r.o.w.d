@@ -87,7 +87,7 @@ public class GalleryJob extends Job<Void> {
     }
 
     private void initPhotoJob(String tweetText, String username, String url) {
-        PhotoJob photoJob = new PhotoJob(gallery, url, username, tweetText);
+        GrabPhotoJob photoJob = new GrabPhotoJob(gallery, url, username, tweetText);
         photoJob.now();
     }
 
