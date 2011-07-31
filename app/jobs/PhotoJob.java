@@ -1,12 +1,10 @@
 package jobs;
 
-import java.net.URL;
-
 import models.Gallery;
 import models.Photo;
 import play.jobs.Job;
-import utils.TweetPhotoFactory;
-import utils.TweetPhotoGrabber;
+import utils.photograbber.TweetPhotoFactory;
+import utils.photograbber.TweetPhotoGrabber;
 
 public class PhotoJob extends Job<Void> {
     private Gallery gallery;
