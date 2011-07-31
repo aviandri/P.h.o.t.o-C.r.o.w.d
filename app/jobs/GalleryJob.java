@@ -56,13 +56,13 @@ public class GalleryJob extends Job<Void> {
     }
     
     private void saveTweetLastId(JsonArray results) {
+        Gallery gallery = Gallery.findById(this.gallery.id);
         if (results.size() > 0) {
             Long lastId = results.get(0).getAsJsonObject().getAsJsonPrimitive("id")
                     .getAsLong();
             Logger.debug("Tweet last Id" + lastId);
             Logger.debug("crowd gallery id" + gallery.id);
-    
-            Gallery gallery = Gallery.findById(this.gallery.id);
+            
             Logger.info("Crowd gallery" + gallery);
             if (lastId == null) {
                 return;
