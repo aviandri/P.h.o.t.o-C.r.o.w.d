@@ -6,6 +6,7 @@ import models.Gallery;
 import play.Logger;
 import play.jobs.Job;
 import utils.SearchQueryBuilder;
+import utils.SearchResponse;
 import utils.StringUtils;
 import utils.TwitterUtil;
 
@@ -24,15 +25,15 @@ public class GalleryJob extends Job<Void> {
     public void doJob() throws Exception {
         String searchQuery = buildQuery(gallery);
         Logger.debug("Searching '%1s'", searchQuery);
-        JsonArray results = TwitterUtil.searchTwitter(
+        SearchResponse resp = TwitterUtil.searchTwitter(
                 searchQuery, 
                 gallery.lastId);
 
-        Logger.debug("tweet search result:" + results);
-        for (JsonElement tweet : results) {
+        JsonArray tweets = resp.getTweets();
+        for (JsonElement tweet : resp.getTweets()) {
             processTweet(tweet);
         }
-        saveTweetLastId(results);
+        saveTweetLastId(tweets);
     }
     
     private static String buildQuery(Gallery gallery) throws UnsupportedEncodingException {
@@ -55,20 +56,19 @@ public class GalleryJob extends Job<Void> {
         return queryBuilder.toEncodedURL("UTF-8");
     }
     
-    private void saveTweetLastId(JsonArray results) {
+    private void saveTweetLastId(JsonArray tweets) {
         Gallery gallery = Gallery.findById(this.gallery.id);
-        if (results.size() > 0) {
-            Long lastId = results.get(0).getAsJsonObject().getAsJsonPrimitive("id")
+        if (tweets.size() > 0) {
+            Long lastId = tweets.get(0).getAsJsonObject().getAsJsonPrimitive("id")
                     .getAsLong();
-            Logger.debug("Tweet last Id" + lastId);
-            Logger.debug("crowd gallery id" + gallery.id);
+            Logger.debug("Tweet for gallery (%1s, %2s) lastId: %3s", gallery.id, gallery.name, lastId);
             
-            Logger.info("Crowd gallery" + gallery);
             if (lastId == null) {
                 return;
             }
             gallery.lastId = lastId;
         } else {
+            Logger.debug("No more content for gallery (%1s, %2s)", gallery.id, gallery.name);
             gallery.state = false;
         }
         gallery.save();
@@ -87,7 +87,7 @@ public class GalleryJob extends Job<Void> {
     }
 
     private void initPhotoJob(String tweetText, String username, String url) {
-        PhotoJob photoJob = new PhotoJob(gallery, url, username, tweetText);
+        GrabPhotoJob photoJob = new GrabPhotoJob(gallery, url, username, tweetText);
         photoJob.now();
     }
 

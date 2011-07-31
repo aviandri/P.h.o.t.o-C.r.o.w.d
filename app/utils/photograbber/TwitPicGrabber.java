@@ -1,4 +1,4 @@
-package utils;
+package utils.photograbber;
 
 import java.io.IOException;
 import java.net.URL;

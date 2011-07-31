@@ -1,8 +1,9 @@
-package utils;
+package utils.photograbber;
 
 import org.junit.Test;
 
 import play.test.UnitTest;
+import utils.photograbber.TwitgooGrabber;
 
 /**
  * This is test for class Twitgoo

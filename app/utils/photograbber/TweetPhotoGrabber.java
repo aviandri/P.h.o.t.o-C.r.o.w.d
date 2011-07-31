@@ -1,4 +1,4 @@
-package utils;
+package utils.photograbber;
 
 import java.net.URL;
 
