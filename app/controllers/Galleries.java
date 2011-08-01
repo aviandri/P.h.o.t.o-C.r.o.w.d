@@ -37,7 +37,7 @@ public class Galleries extends Controller {
             @As("MM/dd/yyyy") Date startDate,
             @As("MM/dd/yyyy") Date endDate,
             @Required(message = "validation.required.gallery.hashtag") 
-                @Match(value = "#?([A-Za-z0-9_]+) *", 
+                @Match(value = "#?[A-Za-z0-9_]+ *", 
                 message = "validation.hashtag") 
                 String hashtag,
             String location, String description) {
@@ -52,9 +52,7 @@ public class Galleries extends Controller {
             validation.future(endDate, startDate);
         }
 
-        if (hashtag != null) {
-            hashtag = hashtag.trim();
-        }
+        hashtag = cleanHashtag(hashtag);
 
         Gallery gallery = new Gallery(name, startDate, endDate, hashtag,
                 location, description);
@@ -66,6 +64,13 @@ public class Galleries extends Controller {
         gallery.save();
         
         Users.myGalleries();
+    }
+    
+    private static String cleanHashtag(String hashtag) {
+        if (hashtag.startsWith("#")) {
+            return hashtag.substring(1).trim();
+        }
+        return hashtag.trim();
     }
     
     public static void details(Long galleryId) {
