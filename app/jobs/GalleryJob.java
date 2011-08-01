@@ -3,11 +3,15 @@ package jobs;
 import java.io.UnsupportedEncodingException;
 
 import models.Gallery;
+import models.Gallery.State;
 import play.Logger;
 import play.jobs.Job;
+import sun.security.krb5.internal.SeqNumber;
 import utils.SearchQueryBuilder;
 import utils.SearchResponse;
 import utils.StringUtils;
+import utils.Twitter;
+import utils.TwitterQueryResult;
 import utils.TwitterUtil;
 
 import com.google.gson.JsonArray;
@@ -25,23 +29,62 @@ public class GalleryJob extends Job<Void> {
     public void doJob() throws Exception {
         String searchQuery = buildQuery(gallery);
         Logger.debug("Searching '%1s'", searchQuery);
-        SearchResponse resp = TwitterUtil.searchTwitter(
-                searchQuery, 
-                gallery.lastId);
-
-        JsonArray tweets = resp.getTweets();
-        for (JsonElement tweet : resp.getTweets()) {
-            processTweet(tweet);
+        if (gallery.state == State.NEW) {
+            Logger.debug("Query sinceId=0");
+            TwitterQueryResult res = Twitter.query(searchQuery).sinceId(0L).execute();
+    
+            JsonArray tweets = res.getTweets();
+            for (JsonElement tweet : tweets) {
+                processTweet(tweet);
+            }
+            
+            gallery = Gallery.findById(this.gallery.id);
+            
+            gallery.maxId = res.getMaxId();
+            
+            System.out.println(res.getJsonObject().get("max_id"));
+            System.out.println(res.getJsonObject().get("next_page").getAsString());
+            
+            if (res.hasNextPage()) {
+                gallery.state = State.FETCH_OLDER;
+                gallery.lastPage = res.getPage();
+            } else {
+                gallery.state = State.FETCH_YOUNGER;
+            }
+            Logger.debug("Switch to %1s", gallery.state);
+            
+            gallery.save();
+        } else if (gallery.state == State.FETCH_OLDER) {
+            int newPage = gallery.lastPage + 1;
+            Logger.debug("Query maxId=%1s page=%2s rpp=%3s", gallery.maxId, newPage, 100);
+            TwitterQueryResult res = Twitter.query(searchQuery).maxId(gallery.maxId).page(newPage).rpp(100).execute();
+            
+            gallery = Gallery.findById(this.gallery.id);
+            
+            if (res.hasNextPage()) {
+                gallery.lastPage = newPage;
+            } else {
+                gallery.state = State.FETCH_YOUNGER;
+            }
+            Logger.debug("Switch to %1s", gallery.state);
+            
+            gallery.save();
+        } else if (gallery.state == State.FETCH_YOUNGER) {
+            // TODO -> NOT IMPLEMENTED YET
+            gallery = Gallery.findById(this.gallery.id);
+            
+            gallery.state = State.DONE;
+            
+            Logger.debug("Switch to %1s", gallery.state);
+            
+            gallery.save();
         }
-        saveTweetLastId(tweets);
+        
+        //saveTweetLastId(tweets);
     }
     
     private static String buildQuery(Gallery gallery) throws UnsupportedEncodingException {
-        String hashtagQuery = gallery.hashtag;
-        if (!gallery.hashtag.startsWith("#")) {
-            hashtagQuery = "#" + gallery.hashtag;
-        }
-        SearchQueryBuilder queryBuilder = new SearchQueryBuilder(hashtagQuery);
+        SearchQueryBuilder queryBuilder = new SearchQueryBuilder("#" + gallery.hashtag);
         
         if (gallery.startDate != null) {
             queryBuilder.since(gallery.startDate);
@@ -53,27 +96,9 @@ public class GalleryJob extends Job<Void> {
         if (gallery.location != null && gallery.location.trim().length() != 0) {
             queryBuilder.near(gallery.location);
         }
-        return queryBuilder.toEncodedURL("UTF-8");
+        return queryBuilder.toString();
     }
     
-    private void saveTweetLastId(JsonArray tweets) {
-        Gallery gallery = Gallery.findById(this.gallery.id);
-        if (tweets.size() > 0) {
-            Long lastId = tweets.get(0).getAsJsonObject().getAsJsonPrimitive("id")
-                    .getAsLong();
-            Logger.debug("Tweet for gallery (%1s, %2s) lastId: %3s", gallery.id, gallery.name, lastId);
-            
-            if (lastId == null) {
-                return;
-            }
-            gallery.lastId = lastId;
-        } else {
-            Logger.debug("No more content for gallery (%1s, %2s)", gallery.id, gallery.name);
-            gallery.state = false;
-        }
-        gallery.save();
-    }
-
     private void processTweet(JsonElement tweet) {
         JsonObject tweetObject = tweet.getAsJsonObject();
         String tweetText = tweetObject.getAsJsonPrimitive("text").getAsString();
