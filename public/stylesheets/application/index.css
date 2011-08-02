@@ -80,7 +80,7 @@ ul#examples {
 }
 
 ul#examples li {
-    background-image: url("images/check.png");
+    background-image: url("../../images/check.png");
     background-repeat: no-repeat;
     background-position: 0 4px;
     padding: 10px 35px;
