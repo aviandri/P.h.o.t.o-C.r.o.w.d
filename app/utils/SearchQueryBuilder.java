@@ -108,8 +108,4 @@ public class SearchQueryBuilder {
         
         return builder.toString();
     }
-    
-    public String toEncodedURL(String enc) throws UnsupportedEncodingException {
-        return URLEncoder.encode(toString(), enc);
-    }
 }
