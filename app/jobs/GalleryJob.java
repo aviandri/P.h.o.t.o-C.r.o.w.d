@@ -1,6 +1,8 @@
 package jobs;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import models.Gallery;
 import models.Gallery.State;
@@ -15,6 +17,8 @@ import utils.Twitter.QueryResult;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import freemarker.template.SimpleDate;
 
 public class GalleryJob extends Job<Void> {
     private Gallery gallery;
@@ -98,9 +102,12 @@ public class GalleryJob extends Job<Void> {
     
     private void processTweet(JsonElement tweet) {
         JsonObject tweetObject = tweet.getAsJsonObject();
+        String createdDateStr = tweetObject.getAsJsonPrimitive("created_at")
+                .getAsString();
         String tweetText = tweetObject.getAsJsonPrimitive("text").getAsString();
         String username = tweetObject.getAsJsonPrimitive("from_user")
                 .getAsString();
+        
         Logger.debug("tweet text:" + tweetText);
         String[] urls = StringUtils.grabImageServiceURLs(tweetText);
         for (String url : urls) {
