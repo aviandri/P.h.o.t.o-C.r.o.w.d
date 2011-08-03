@@ -6,9 +6,9 @@ import models.Gallery;
 import models.Gallery.State;
 import play.Logger;
 import play.jobs.Job;
-import utils.SearchQueryBuilder;
 import utils.StringUtils;
 import utils.Twitter;
+import utils.Twitter.QueryBuilder;
 import utils.Twitter.QueryResult;
 
 import com.google.gson.JsonArray;
@@ -81,7 +81,7 @@ public class GalleryJob extends Job<Void> {
     }
     
     private static String buildQuery(Gallery gallery) throws UnsupportedEncodingException {
-        SearchQueryBuilder queryBuilder = new SearchQueryBuilder("#" + gallery.hashtag);
+        QueryBuilder queryBuilder = new QueryBuilder("#" + gallery.hashtag);
         
         if (gallery.startDate != null) {
             queryBuilder.since(gallery.startDate);

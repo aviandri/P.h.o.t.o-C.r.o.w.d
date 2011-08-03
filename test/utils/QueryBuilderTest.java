@@ -4,18 +4,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import play.test.UnitTest;
-import utils.SearchQueryBuilder;
+import utils.Twitter.QueryBuilder;
 
 /**
  * @author uudashr@gmail.com
  *
  */
-public class SearchQueryBuilderTest extends UnitTest {
-    private SearchQueryBuilder builder;
+public class QueryBuilderTest extends UnitTest {
+    private QueryBuilder builder;
     
     @Before
     public void prepare() {
-        builder = new SearchQueryBuilder("wedding");
+        builder = new QueryBuilder("wedding");
     }
     
     @Test
