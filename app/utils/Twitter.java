@@ -8,6 +8,7 @@ import play.libs.WS;
 import play.libs.WS.HttpResponse;
 import play.libs.WS.WSRequest;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
@@ -30,6 +31,11 @@ public class Twitter {
             this.query = query;
         }
         
+        public TwitterQuery sinceId(Integer sinceId) {
+            this.sinceId = sinceId.longValue();
+            return this;
+        }
+        
         public TwitterQuery sinceId(Long sinceId) {
             this.sinceId = sinceId;
             return this;
@@ -50,17 +56,10 @@ public class Twitter {
             return this;
         }
 
-        public TwitterQueryResult execute() {
+        public QueryResult execute() throws QueryExecutionException {
             Logger.debug("Query %1s", query);
-            String encodedQuery = query;
-            try {
-                encodedQuery = URLEncoder.encode(query, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                Logger.error("Unsupported encoding UTF-8", e);
-            }
-            Logger.debug("Encoded query %1s", encodedQuery);
+            WSRequest req = WS.url("http://search.twitter.com/search.json").setParameter("q", query);
             
-            WSRequest req = WS.url("http://search.twitter.com/search.json").setParameter("q", encodedQuery);
             if (sinceId != null) {
                 req.setParameter("since_id", sinceId);
             }
@@ -80,10 +79,59 @@ public class Twitter {
             HttpResponse resp = req.get();
             JsonObject jsonObj = resp.getJson().getAsJsonObject();
             if (resp.getStatus() != 200) {
-                String errorMesssage = jsonObj.get("error").getAsString();
-                Logger.error("Got non 200 HTTP Status code: %1s error=%2s", resp.getStatus(), errorMesssage);
+                String errorMessage = jsonObj.get("error").getAsString();
+                String message = String.format("Found non 200 HTTP status code: statusCode = %1s; %2s", resp.getStatus(), errorMessage);
+                Logger.error(message);
+                throw new QueryExecutionException(resp.getStatus(), message);
             }
-            return new TwitterQueryResult(jsonObj);
+            return new QueryResult(jsonObj);
+        }
+    }
+    
+    /**
+     * This is a wrapper of Twitter search response.
+     * 
+     * @author uudashr@gmail.com
+     *
+     */
+    public static class QueryResult {
+        private JsonObject jsonObj;
+        
+        public QueryResult(JsonObject jsonObj) {
+            this.jsonObj = jsonObj;
+        }
+
+        public JsonArray getTweets() {
+            return jsonObj.getAsJsonArray("results");
+        }
+        
+        public long getMaxId() {
+            return jsonObj.get("max_id").getAsLong();
+        }
+        
+        public int getPage() {
+            return jsonObj.get("page").getAsInt();
+        }
+        
+        public boolean hasNextPage() {
+            return jsonObj.get("next_page") != null;
+        }
+        
+        public JsonObject getJsonObject() {
+            return jsonObj;
+        }
+    }
+    
+    public static class QueryExecutionException extends RuntimeException {
+        private Integer status;
+        
+        public QueryExecutionException(Integer status, String message) {
+            super(message);
+            this.status = status;
+        }
+        
+        public Integer getStatus() {
+            return status;
         }
     }
 }

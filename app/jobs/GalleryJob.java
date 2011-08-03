@@ -6,13 +6,10 @@ import models.Gallery;
 import models.Gallery.State;
 import play.Logger;
 import play.jobs.Job;
-import sun.security.krb5.internal.SeqNumber;
 import utils.SearchQueryBuilder;
-import utils.SearchResponse;
 import utils.StringUtils;
 import utils.Twitter;
-import utils.TwitterQueryResult;
-import utils.TwitterUtil;
+import utils.Twitter.QueryResult;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -31,7 +28,7 @@ public class GalleryJob extends Job<Void> {
         Logger.debug("Searching '%1s'", searchQuery);
         if (gallery.state == State.NEW) {
             Logger.debug("Query sinceId=0");
-            TwitterQueryResult res = Twitter.query(searchQuery).sinceId(0L).execute();
+            QueryResult res = Twitter.query(searchQuery).sinceId(0L).execute();
     
             JsonArray tweets = res.getTweets();
             for (JsonElement tweet : tweets) {
@@ -43,7 +40,7 @@ public class GalleryJob extends Job<Void> {
             gallery.maxId = res.getMaxId();
             
             System.out.println(res.getJsonObject().get("max_id"));
-            System.out.println(res.getJsonObject().get("next_page").getAsString());
+            System.out.println(res.getJsonObject().get("next_page"));
             
             if (res.hasNextPage()) {
                 gallery.state = State.FETCH_OLDER;
@@ -57,7 +54,7 @@ public class GalleryJob extends Job<Void> {
         } else if (gallery.state == State.FETCH_OLDER) {
             int newPage = gallery.lastPage + 1;
             Logger.debug("Query maxId=%1s page=%2s rpp=%3s", gallery.maxId, newPage, 100);
-            TwitterQueryResult res = Twitter.query(searchQuery).maxId(gallery.maxId).page(newPage).rpp(100).execute();
+            QueryResult res = Twitter.query(searchQuery).maxId(gallery.maxId).page(newPage).rpp(100).execute();
             
             gallery = Gallery.findById(this.gallery.id);
             
