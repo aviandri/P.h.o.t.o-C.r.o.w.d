@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import models.Gallery;
 import models.Gallery.State;
 import play.Logger;
+import play.Play;
 import play.jobs.Job;
 import utils.StringUtils;
 import utils.Twitter;
@@ -27,8 +28,7 @@ public class GalleryJob extends Job<Void> {
         String searchQuery = buildQuery(gallery);
         Logger.debug("Searching '%1s'", searchQuery);
         if (gallery.state == State.NEW) {
-            Logger.debug("Query sinceId=0");
-            QueryResult res = Twitter.query(searchQuery).sinceId(0L).execute();
+            QueryResult res = Twitter.query(searchQuery).sinceId(0).execute();
     
             JsonArray tweets = res.getTweets();
             for (JsonElement tweet : tweets) {
@@ -38,9 +38,6 @@ public class GalleryJob extends Job<Void> {
             gallery = Gallery.findById(this.gallery.id);
             
             gallery.maxId = res.getMaxId();
-            
-            System.out.println(res.getJsonObject().get("max_id"));
-            System.out.println(res.getJsonObject().get("next_page"));
             
             if (res.hasNextPage()) {
                 gallery.state = State.FETCH_OLDER;
@@ -85,8 +82,11 @@ public class GalleryJob extends Job<Void> {
         
         if (gallery.startDate != null) {
             queryBuilder.since(gallery.startDate);
-            if (gallery.endDate != null) {
-                queryBuilder.until(gallery.endDate);
+            
+            if(Play.configuration.getProperty("twitter.search.until.enabled", "true").equals("true")) {
+                if (gallery.endDate != null) {
+                    queryBuilder.until(gallery.endDate);
+                }
             }
         }
         
