@@ -212,7 +212,7 @@ public class Twitter {
         }
         
         public long getMaxId() {
-            return jsonObj.get("max_id").getAsLong();
+            return Long.valueOf(jsonObj.get("max_id_str").getAsString());
         }
         
         public int getPage() {

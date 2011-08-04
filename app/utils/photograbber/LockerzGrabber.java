@@ -3,11 +3,11 @@ package utils.photograbber;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class LokerzGrabber extends TweetPhotoGrabberAbs {
+public class LockerzGrabber extends TweetPhotoGrabberAbs {
     private String fullImageURL;
     private String thumbImageURL;
 
-    public LokerzGrabber(String tweetPhotoURL) {
+    public LockerzGrabber(String tweetPhotoURL) {
         super(tweetPhotoURL);
         fullImageURL = "http://api.plixi.com/api/tpapi.svc/imagefromurl?url="
                 + tweetPhotoURL + "&size=large";

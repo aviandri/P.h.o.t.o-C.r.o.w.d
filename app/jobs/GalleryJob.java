@@ -18,11 +18,8 @@ import utils.Twitter;
 import utils.Twitter.QueryBuilder;
 import utils.Twitter.QueryResult;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import freemarker.template.SimpleDate;
 
 public class GalleryJob extends Job<Void> {
     private Gallery gallery;
@@ -35,22 +32,26 @@ public class GalleryJob extends Job<Void> {
     public void doJob() throws Exception {
         String searchQuery = buildQuery(gallery);
         Logger.debug("Searching '%1s'", searchQuery);
+        final int rpp = Integer.parseInt(Play.configuration.getProperty("twitter.search.rpp", "15"));
         if (gallery.state == State.NEW) {
-            QueryResult res = Twitter.query(searchQuery).sinceId(0).execute();
-    
-            JsonArray tweets = res.getTweets();
-            for (JsonElement tweet : tweets) {
-                processTweet(tweet);
+            QueryResult res = Twitter.query(searchQuery).sinceId(0).rpp(rpp).execute();
+            
+            for (JsonElement tweet : res.getTweets()) {
+                try {
+                    processTweet(tweet);
+                } catch (ReachStopIdException e) {
+                    Logger.warn(e, "Should never reach stopId");
+                }
             }
             
             gallery = Gallery.findById(this.gallery.id);
             
-            gallery.maxId = res.getMaxId();
-            
             if (res.hasNextPage()) {
-                gallery.state = State.FETCH_OLDER;
+                gallery.maxId = res.getMaxId();
                 gallery.lastPage = res.getPage();
+                gallery.state = State.FETCH_OLDER;
             } else {
+                gallery.stopId = res.getMaxId();
                 gallery.state = State.FETCH_YOUNGER;
             }
             Logger.debug("Switch to %1s", gallery.state);
@@ -58,24 +59,58 @@ public class GalleryJob extends Job<Void> {
             gallery.save();
         } else if (gallery.state == State.FETCH_OLDER) {
             int newPage = gallery.lastPage + 1;
-            Logger.debug("Query maxId=%1s page=%2s rpp=%3s", gallery.maxId, newPage, 100);
+            Logger.debug("Query maxId=%1s page=%2s rpp=%3s", gallery.maxId, newPage, rpp);
             QueryResult res = Twitter.query(searchQuery).maxId(gallery.maxId).page(newPage).rpp(100).execute();
+            
+            for (JsonElement tweet : res.getTweets()) {
+                try {
+                    processTweet(tweet);
+                } catch (ReachStopIdException e) {
+                    Logger.debug("Already reach stopId");
+                    gallery = Gallery.findById(this.gallery.id);
+                    gallery.state = State.FETCH_YOUNGER;
+                    gallery.save();
+                    return;
+                }
+            }
             
             gallery = Gallery.findById(this.gallery.id);
             
             if (res.hasNextPage()) {
                 gallery.lastPage = newPage;
             } else {
+                gallery.stopId = res.getMaxId();
                 gallery.state = State.FETCH_YOUNGER;
             }
             Logger.debug("Switch to %1s", gallery.state);
             
             gallery.save();
         } else if (gallery.state == State.FETCH_YOUNGER) {
-            // TODO -> NOT IMPLEMENTED YET
+            QueryResult res = Twitter.query(searchQuery).sinceId(gallery.maxId).rpp(rpp).execute();
+            
+            for (JsonElement tweet : res.getTweets()) {
+                try {
+                    processTweet(tweet);
+                } catch (ReachStopIdException e) {
+                    Logger.debug("Already reach stopId");
+                    gallery = Gallery.findById(this.gallery.id);
+                    gallery.state = State.FETCH_YOUNGER;
+                    gallery.save();
+                    return;
+                }
+            }
+            
             gallery = Gallery.findById(this.gallery.id);
             
-            gallery.state = State.DONE;
+            if (res.hasNextPage()) {
+                gallery.maxId = res.getMaxId();
+                gallery.lastPage = res.getPage();
+                gallery.state = State.FETCH_OLDER;
+            } if (new Date().after(gallery.endDate)) {
+                gallery.state = State.DONE;
+            } else {
+                gallery.stopId = res.getMaxId();
+            }
             
             Logger.debug("Switch to %1s", gallery.state);
             
@@ -86,7 +121,7 @@ public class GalleryJob extends Job<Void> {
     }
     
     private static String buildQuery(Gallery gallery) throws UnsupportedEncodingException {
-        QueryBuilder queryBuilder = new QueryBuilder("#" + gallery.hashtag);
+        QueryBuilder queryBuilder = new QueryBuilder("#" + gallery.hashtag + " (twitpic OR lockerz OR twitgoo)");
         
         if (gallery.startDate != null) {
             queryBuilder.since(gallery.startDate);
@@ -104,7 +139,7 @@ public class GalleryJob extends Job<Void> {
         return queryBuilder.toString();
     }
     
-    private void processTweet(JsonElement tweet) {
+    private void processTweet(JsonElement tweet) throws ReachStopIdException {
         JsonObject tweetObject = tweet.getAsJsonObject();
         
         long id = tweetObject.getAsJsonPrimitive("id").getAsLong();
@@ -124,12 +159,15 @@ public class GalleryJob extends Job<Void> {
             return;
         }
         
+        if (id < gallery.stopId) {
+            throw new ReachStopIdException("The tweet already reach the stopId");
+        }
+        
         if (gallery.endDate != null && createdDate.after(gallery.endDate)) {
-            Logger.debug("The tweet (%1s) date pass the end date.. skip", id);
+            Logger.debug("Found tweet %1s passed the end date (%2s vs %3s).. skip", id, createdDateStr, dateFormat.format(gallery.endDate));
             return;
         }
         
-        Logger.debug("tweet text:" + tweetText);
         String[] urls = StringUtils.grabImageServiceURLs(tweetText);
         for (String url : urls) {
             initPhotoJob(tweetText, username, url);
@@ -148,5 +186,17 @@ public class GalleryJob extends Job<Void> {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         return dateFormat;
     }
-
+    
+    
+    /**
+     * This exception thrown if the processed tweet already reach the stopId.
+     * 
+     * @author uudashr@gmail.com
+     *
+     */
+    private static class ReachStopIdException extends Exception {
+        public ReachStopIdException(String message) {
+            super(message);
+        }
+    }
 }

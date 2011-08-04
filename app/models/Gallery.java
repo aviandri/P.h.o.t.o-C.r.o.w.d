@@ -1,7 +1,6 @@
 package models;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -52,6 +51,9 @@ public class Gallery extends Model {
     
     @Column(name = "max_id")
     public Long maxId;
+    
+    @Column(name = "stop_id", nullable = false)
+    public Long stopId = 0L;
     
     @Column(name = "last_page")
     public Integer lastPage;
