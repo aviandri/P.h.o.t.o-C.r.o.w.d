@@ -70,11 +70,9 @@ a#twitter-profile:hover {
     text-shadow: 0px 1px 1px rgba(21, 21, 21, 1);
 }
 
-ul#crowds {
+div#crowds {
     clear: both;
     padding: 20px 0 0 0;
-    list-style-type: none;
-    margin: 0;
 }
 
 #crowds .photo-frame {
@@ -101,30 +99,32 @@ ul#crowds {
     border: 1px solid #999999;
 }
 
-#crowds li.album {
-    float: left;
+#crowds div.album {
+    vertical-align: top;
+    display: inline-block;
     margin-right: 20px;
     margin-bottom: 20px;
     color: #66667d
 }
 
-#crowds li.album .title {
+#crowds div.album .title {
     padding-top: 5px;
     width: 150px;
 }
 
-#crowds li.album .title > a {
+#crowds div.album .title > a {
     color: inherit;
     text-decoration: none;
     font-size: 150%;
 }
 
-#crowds li.album .title > a:hover {
+#crowds div.album .title > a:hover {
     color: #0063dc;
 }
 
 #crowds ul.info {
     padding: 0;
+    margin: 0;
     list-style-type: none;
     font-size: 95%;
 }

@@ -19,9 +19,9 @@
     </div>
 </div>
 <div class="crowds-container">
-    <ul id="crowds">
+    <div id="crowds">
         #{list galleries, as:'gallery'}
-        <li class="album">
+        <div class="album">
             <div class="photo-frame">
                 <a href="@{Galleries.details(gallery.id)}">
                     #{if gallery.photos}
@@ -37,7 +37,7 @@
                 <li>${gallery.photos.size()} photo${gallery.photos.pluralize()}</li>
                 *{<li>18 activities</li>}*
             </ul>
-        </li>
+        </div>
         #{/list}
-    </ul>
+    </div>
 </div>
