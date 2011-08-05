@@ -121,7 +121,7 @@ public class GalleryJob extends Job<Void> {
     }
     
     private static String buildQuery(Gallery gallery) throws UnsupportedEncodingException {
-        QueryBuilder queryBuilder = new QueryBuilder("#" + gallery.hashtag + " (twitpic OR lockerz OR twitgoo)");
+        QueryBuilder queryBuilder = new QueryBuilder("#" + gallery.hashtag + " (twitpic OR lockerz OR twitgoo) -RT");
         
         if (gallery.startDate != null) {
             queryBuilder.since(gallery.startDate);
