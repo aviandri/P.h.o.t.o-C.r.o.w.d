@@ -7,7 +7,7 @@ public class TweetPhotoFactory {
         if (tweetPicURL.contains("twitpic.com")) {
             return new TwitPicGrabber(tweetPicURL);
         } else if (tweetPicURL.contains("lockerz.com")) {
-            return new LokerzGrabber(tweetPicURL);
+            return new LockerzGrabber(tweetPicURL);
         } else if (tweetPicURL.contains("twitgoo.com")) {
             return new TwitgooGrabber(tweetPicURL);
         } else {

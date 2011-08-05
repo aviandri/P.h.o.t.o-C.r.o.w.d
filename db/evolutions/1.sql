@@ -22,11 +22,13 @@ create table Gallery (
     description varchar(255),
     end_date date,
     hashtag varchar(255) not null,
-    last_id bigint not null,
+    last_page integer,
     location varchar(255),
+    max_id bigint,
     name varchar(255) not null,
     start_date date,
-    state bit not null,
+    state varchar(255) not null,
+    stop_id bigint not null,
     user_id bigint,
     primary key (id)
 );
@@ -36,6 +38,9 @@ alter table Gallery
     add constraint FK57850F3247140EFE 
     foreign key (user_id) 
     references User (id);
+    
+alter table Gallery
+    add index IDXGALSTATE (state);
 
 create table Photo (
     id bigint not null auto_increment,
@@ -48,12 +53,17 @@ create table Photo (
     gallery_id bigint,
     primary key (id)
 );
+
+alter table Photo 
+    add index FK4984E12500560D6 (gallery_id), 
+    add constraint FK4984E12500560D6 
+    foreign key (gallery_id) 
+    references Gallery (id);
     
 # ---- !Downs
 
 alter table Photo 
-    drop 
-    foreign key FK4984E12500560D6;
+    drop foreign key FK4984E12500560D6;
 
 drop table if exists Photo;
 

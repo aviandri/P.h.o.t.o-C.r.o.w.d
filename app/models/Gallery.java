@@ -1,11 +1,12 @@
 package models;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,7 +19,10 @@ import play.data.validation.Required;
 
 @Entity
 public class Gallery extends Model {
-
+    public enum State {
+        NEW, FETCH_OLDER, FETCH_YOUNGER, DONE
+    }
+    
     @Required
     @Column(nullable = false)
     public String name;
@@ -39,18 +43,25 @@ public class Gallery extends Model {
     public String location;
 
     public String description;
-
-    @Column(nullable = false, name = "last_id")
-    public Long lastId = 0L;
-
-    @Column(nullable = false)
-    public Boolean state = true;
-
+    
     @Required
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;
     
+    @Column(name = "max_id")
+    public Long maxId;
+    
+    @Column(name = "stop_id", nullable = false)
+    public Long stopId = 0L;
+    
+    @Column(name = "last_page")
+    public Integer lastPage;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    public State state = State.NEW;
+
     @OneToMany(mappedBy = "gallery", fetch = FetchType.LAZY)
     public Set<Photo> photos;
     

@@ -4,6 +4,7 @@ import java.net.URL;
 
 import models.Gallery;
 import models.Photo;
+import play.Logger;
 import play.jobs.Job;
 import utils.photograbber.TweetPhotoFactory;
 import utils.photograbber.TweetPhotoGrabber;
@@ -23,6 +24,7 @@ public class GrabPhotoJob extends Job<Void> {
     }
 
     public void doJob() throws Exception {
+        Logger.debug("Get photo from URL %1s | tweet: %2s", url, tweetText);
         TweetPhotoGrabber grabber = TweetPhotoFactory.create(url);
         Photo photo = new Photo();
         photo.fullImageURL = grabber.getFullImageURL();
