@@ -1,18 +1,27 @@
 package jobs;
 
+import java.net.URL;
+
 import models.Gallery;
 import models.Photo;
+import play.Logger;
 import play.jobs.Job;
 import utils.photograbber.TweetPhotoFactory;
 import utils.photograbber.TweetPhotoGrabber;
 
-public class PhotoJob extends Job<Void> {
+/**
+ * This job responsible to grab the real photo URL from related photo service.
+ * 
+ * @author uudashr@gmail.com
+ * 
+ */
+public class RetrievePhotoURLJob extends Job<Void> {
     private Gallery gallery;
     private String url;
     private String username;
     private String tweetText;
 
-    public PhotoJob(Gallery gallery, String url, String username,
+    public RetrievePhotoURLJob(Gallery gallery, String url, String username,
             String tweetText) {
         this.gallery = gallery;
         this.url = url;
@@ -21,6 +30,7 @@ public class PhotoJob extends Job<Void> {
     }
 
     public void doJob() throws Exception {
+        Logger.debug("Get photo from URL %1s | tweet: %2s", url, tweetText);
         TweetPhotoGrabber grabber = TweetPhotoFactory.create(url);
         Photo photo = new Photo();
         photo.fullImageURL = grabber.getFullImageURL();

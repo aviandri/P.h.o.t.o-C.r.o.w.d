@@ -21,10 +21,17 @@ import utils.Twitter.QueryResult;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class GalleryJob extends Job<Void> {
+/**
+ * This job responsible to take all the tweets related to the gallery and end up
+ * with getting the photo URL on the tweet.
+ * 
+ * @author uudashr@gmail.com
+ * 
+ */
+public class RetrieveGalleryPhotosJob extends Job<Void> {
     private Gallery gallery;
 
-    public GalleryJob(Gallery crowdGallery) {
+    public RetrieveGalleryPhotosJob(Gallery crowdGallery) {
         this.gallery = crowdGallery;
     }
 
@@ -117,10 +124,15 @@ public class GalleryJob extends Job<Void> {
             gallery.save();
         }
         
-        //saveTweetLastId(tweets);
     }
     
-    private static String buildQuery(Gallery gallery) throws UnsupportedEncodingException {
+    /**
+     * Build the query based on the given <tt>Gallery</tt>.
+     * 
+     * @param gallery is the <tt>Gallery</tt>.
+     * @return the query.
+     */
+    private static String buildQuery(Gallery gallery) {
         QueryBuilder queryBuilder = new QueryBuilder("#" + gallery.hashtag + " (twitpic OR lockerz OR twitgoo) -RT");
         
         if (gallery.startDate != null) {
@@ -139,6 +151,12 @@ public class GalleryJob extends Job<Void> {
         return queryBuilder.toString();
     }
     
+    /**
+     * Process the tweet from the given tweet entry.
+     * 
+     * @param tweet is the tweet entry.
+     * @throws ReachStopIdException if the id is lower than gallery.stopId.
+     */
     private void processTweet(JsonElement tweet) throws ReachStopIdException {
         JsonObject tweetObject = tweet.getAsJsonObject();
         
@@ -164,21 +182,22 @@ public class GalleryJob extends Job<Void> {
         }
         
         if (gallery.endDate != null && createdDate.after(gallery.endDate)) {
-            Logger.debug("Found tweet %1s passed the end date (%2s vs %3s).. skip", id, createdDateStr, dateFormat.format(gallery.endDate));
+            // skip the endDate since we can disabled/not using the twitter
+            // "until" operator
             return;
         }
         
         String[] urls = StringUtils.grabImageServiceURLs(tweetText);
         for (String url : urls) {
-            initPhotoJob(tweetText, username, url);
+            new RetrievePhotoURLJob(gallery, url, username, tweetText).now();
         }
     }
-
-    private void initPhotoJob(String tweetText, String username, String url) {
-        GrabPhotoJob photoJob = new GrabPhotoJob(gallery, url, username, tweetText);
-        photoJob.now();
-    }
     
+    /**
+     * Create the date formatter compatible with twitter date.
+     * 
+     * @return the date formatter.
+     */
     private static DateFormat newDateFormat() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "EEE, dd MMM yyyy HH:mm:ss ZZZZZZ", Locale.US);
