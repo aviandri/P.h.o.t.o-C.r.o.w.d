@@ -3,6 +3,12 @@ package utils.photograbber;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * This is photo grabber for Lockerz.
+ * 
+ * @author aviandri@gmail.com
+ *
+ */
 public class LockerzGrabber extends TweetPhotoGrabberAbs {
     private String fullImageURL;
     private String thumbImageURL;
