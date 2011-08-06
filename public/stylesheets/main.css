@@ -103,6 +103,11 @@ body {
     top: -1px;
 }
 
+#top-bar .container.create-crowd:hover .create-sign {
+    color: #93d372;
+    text-shadow: 0 0 5px #93d372;
+}
+
 #top-bar .container.create-crowd .crowd-text {
     font-size: 15px;
     margin-left: 2px;
