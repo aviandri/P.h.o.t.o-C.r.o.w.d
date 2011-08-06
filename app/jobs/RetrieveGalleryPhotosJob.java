@@ -139,7 +139,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
     private static String buildQuery(Gallery gallery) {
         QueryBuilder queryBuilder = new QueryBuilder(
                 "#" + gallery.hashtag 
-                + " (http://twitpic.com OR htt://lockerz.com OR http://twitgoo.com) -RT");
+                + " (http://twitpic.com/ OR htt://lockerz.com/ OR http://twitgoo.com/) -RT");
         
         if (gallery.startDate != null) {
             queryBuilder.since(gallery.startDate);

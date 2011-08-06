@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
-    private static String regex = "http://(twitpic.com|lockerz.com|twitgoo.com)[/\\w]*";
+    private static String regex = "http://(twitpic.com|lockerz.com|twitgoo.com)/[\\w]*";
 
     public static String[] grabImageServiceURLs(String input) {
         Pattern pattern = Pattern.compile(regex);
