@@ -39,9 +39,11 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
     public void doJob() throws Exception {
         String searchQuery = buildQuery(gallery);
         Logger.debug("Searching '%1s'", searchQuery);
-        final int rpp = Integer.parseInt(Play.configuration.getProperty("twitter.search.rpp", "15"));
+        final int rpp = Integer.parseInt(Play.configuration.getProperty(
+                "twitter.search.rpp", "15"));
         if (gallery.state == State.NEW) {
-            QueryResult res = Twitter.query(searchQuery).sinceId(0).rpp(rpp).execute();
+            QueryResult res = Twitter.query(searchQuery).sinceId(0).rpp(rpp)
+                    .execute();
             
             for (JsonElement tweet : res.getTweets()) {
                 try {
@@ -66,8 +68,10 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             gallery.save();
         } else if (gallery.state == State.FETCH_OLDER) {
             int newPage = gallery.lastPage + 1;
-            Logger.debug("Query maxId=%1s page=%2s rpp=%3s", gallery.maxId, newPage, rpp);
-            QueryResult res = Twitter.query(searchQuery).maxId(gallery.maxId).page(newPage).rpp(100).execute();
+            Logger.debug("Query maxId=%1s page=%2s rpp=%3s", gallery.maxId,
+                    newPage, rpp);
+            QueryResult res = Twitter.query(searchQuery).maxId(gallery.maxId)
+                    .page(newPage).rpp(100).execute();
             
             for (JsonElement tweet : res.getTweets()) {
                 try {
@@ -133,7 +137,9 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
      * @return the query.
      */
     private static String buildQuery(Gallery gallery) {
-        QueryBuilder queryBuilder = new QueryBuilder("#" + gallery.hashtag + " (twitpic OR lockerz OR twitgoo) -RT");
+        QueryBuilder queryBuilder = new QueryBuilder(
+                "#" + gallery.hashtag 
+                + " (http://twitpic.com OR htt://lockerz.com OR http://twitgoo.com) -RT");
         
         if (gallery.startDate != null) {
             queryBuilder.since(gallery.startDate);

@@ -36,7 +36,7 @@ public class Gallery extends Model {
     public Date endDate;
 
     @Required
-    @Match(value = "#?[A-Za-z0-9_]+")
+    @Match(value = "[A-Za-z0-9_]+")
     @Column(nullable = false)
     public String hashtag;
 
