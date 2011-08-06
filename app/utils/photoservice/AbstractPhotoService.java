@@ -14,9 +14,11 @@ import java.util.regex.Pattern;
  */
 public abstract class AbstractPhotoService implements PhotoService {
     private final Pattern urlPattern;
+    private final String urlPrefix;
     
-    public AbstractPhotoService(String urlPattern) {
-        this.urlPattern = Pattern.compile(urlPattern);
+    public AbstractPhotoService(String urlPrefix) {
+        this.urlPattern = Pattern.compile(urlPrefix + "\\w");
+        this.urlPrefix = urlPrefix;
     }
 
     public String[] findURL(String text) {
@@ -35,5 +37,10 @@ public abstract class AbstractPhotoService implements PhotoService {
     @Override
     public boolean recognize(String photoUrl) {
         return urlPattern.matcher(photoUrl).matches();
+    }
+    
+    @Override
+    public String getUrlPrefix() {
+        return urlPrefix;
     }
 }

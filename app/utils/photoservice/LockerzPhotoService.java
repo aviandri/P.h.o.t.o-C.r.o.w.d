@@ -9,7 +9,7 @@ package utils.photoservice;
 public class LockerzPhotoService extends AbstractPhotoService {
 
     public LockerzPhotoService() {
-        super("http://lockerz.com/\\w");
+        super("http://lockerz.com/");
     }
     
     @Override

@@ -131,15 +131,35 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
     }
     
     /**
+     * Get the query part to filter tweets only for the available photo service
+     * only.
+     * 
+     * @return the query part.
+     */
+    private static final String photoServiceQueryPart() {
+        String[] prefixes = PhotoServices.getUrlPrefixes();
+        StringBuilder builder = new StringBuilder("(");
+        for (String prefix : prefixes) {
+            if (builder.length() > 0) {
+                builder.append(" OR ").append(prefix);
+            } else {
+                builder.append(prefix);
+            }
+        }
+        return builder.append(")").toString();
+    }
+    
+    /**
      * Build the query based on the given <tt>Gallery</tt>.
      * 
      * @param gallery is the <tt>Gallery</tt>.
      * @return the query.
      */
     private static String buildQuery(Gallery gallery) {
+        
         QueryBuilder queryBuilder = new QueryBuilder(
                 "#" + gallery.hashtag 
-                + " (http://twitpic.com/ OR htt://lockerz.com/ OR http://twitgoo.com/) -RT");
+                + " " + photoServiceQueryPart() + " -RT");
         
         if (gallery.startDate != null) {
             queryBuilder.since(gallery.startDate);

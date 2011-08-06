@@ -37,4 +37,6 @@ public interface PhotoService {
      * @return <tt>true</tt> if this service recognize, otherwise <tt>false</tt>.
      */
     boolean recognize(String photoUrl);
+    
+    String getUrlPrefix();
 }

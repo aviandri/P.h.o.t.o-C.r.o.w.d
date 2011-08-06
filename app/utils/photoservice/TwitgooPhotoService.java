@@ -18,7 +18,7 @@ public class TwitgooPhotoService extends AbstractPhotoService {
     public static final String TWITGOO_INFO_URL_FORMAT = "http://twitgoo.com/api/message/info/%1s";
     
     public TwitgooPhotoService() {
-        super("http://twitgoo.com/\\w");
+        super("http://twitgoo.com/");
     }
 
     @Override

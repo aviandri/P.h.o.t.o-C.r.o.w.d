@@ -40,6 +40,23 @@ public class PhotoServices {
     
 
     /**
+     * Return all the URL prefixes from the available photo services.
+     * 
+     * @return URL prefixes.
+     */
+    public static String[] getUrlPrefixes() {
+        String[] prefixes = new String[photoServices.size()];
+        int i = 0;
+        for (PhotoService photoService : photoServices.values()) {
+            prefixes[i++] = photoService.getUrlPrefix();
+        }
+        return prefixes;
+    }
+
+
+    /**
+     * Represent the photo resource from photo service.
+     * 
      * @author uudashr@gmail.com
      *
      */
