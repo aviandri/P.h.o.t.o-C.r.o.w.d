@@ -15,7 +15,8 @@ import play.jobs.Job;
 import utils.Twitter;
 import utils.Twitter.QueryBuilder;
 import utils.Twitter.QueryResult;
-import utils.photoservice.PhotoResource;
+import utils.photoservice.PhotoServices;
+import utils.photoservice.PhotoServices.PhotoResource;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -192,7 +193,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             return;
         }
         
-        PhotoResource[] tweetPhotos = PhotoResource.extractPhotoResource(tweetText);
+        PhotoResource[] tweetPhotos = PhotoServices.extractPhotoResource(tweetText);
         for (PhotoResource tweetPhoto : tweetPhotos) {
             new RetrievePhotoUrlJob(gallery, tweetPhoto, username, tweetText).now();
         }

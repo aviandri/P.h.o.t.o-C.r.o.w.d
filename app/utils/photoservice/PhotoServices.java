@@ -3,12 +3,13 @@ package utils.photoservice;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
+ * This is utility to extract photo resource from various photo services.
+ * 
  * @author uudashr@gmail.com
  *
  */
-public class PhotoResource {
+public class PhotoServices {
     private static final Map<String, PhotoService> photoServices = new HashMap<String, PhotoService>();
     
     static {
@@ -37,27 +38,36 @@ public class PhotoResource {
         return null;
     }
     
-    public final String url;
-    private PhotoService photoService;
-    
+
     /**
-     * Represent the tweet photo resource, URL that contained on the tweet.
-     * 
-     * @param url is the tweet photo URL.
-     * @param photoService
+     * @author uudashr@gmail.com
+     *
      */
-    public PhotoResource(String url, PhotoService photoService) {
-        this.url = url;
-        this.photoService = photoService;
+    public static class PhotoResource {
+        
+        public final String url;
+        private PhotoService photoService;
+        
+        /**
+         * Represent the tweet photo resource, URL that contained on the tweet.
+         * 
+         * @param url is the tweet photo URL.
+         * @param photoService
+         */
+        public PhotoResource(String url, PhotoService photoService) {
+            this.url = url;
+            this.photoService = photoService;
+        }
+        
+        /**
+         * This will grab the URL of original size image and the thumbnail.
+         * 
+         * @return the holder of original size and thumbnail.
+         */
+        public ImageAndThumbnailUrlHolder grab() {
+            return photoService.grab(url);
+        }
+        
     }
-    
-    /**
-     * This will grab the URL of original size image and the thumbnail.
-     * 
-     * @return the holder of original size and thumbnail.
-     */
-    public ImageAndThumbnailUrlHolder grab() {
-        return photoService.grab(url);
-    }
-    
+
 }

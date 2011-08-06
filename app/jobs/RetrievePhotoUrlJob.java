@@ -5,7 +5,7 @@ import models.Photo;
 import play.Logger;
 import play.jobs.Job;
 import utils.photoservice.ImageAndThumbnailUrlHolder;
-import utils.photoservice.PhotoResource;
+import utils.photoservice.PhotoServices.PhotoResource;
 
 /**
  * This job responsible to grab the real photo URL from related photo service.
