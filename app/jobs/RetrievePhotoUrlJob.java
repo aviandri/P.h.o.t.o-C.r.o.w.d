@@ -35,8 +35,8 @@ public class RetrievePhotoUrlJob extends Job<Void> {
         }
         
         Photo photo = new Photo();
-        photo.fullImageURL = imageUrlHolder.url;
-        photo.thumbImageURL = imageUrlHolder.thumbUrl;
+        photo.fullImageUrl = imageUrlHolder.url;
+        photo.thumbImageUrl = imageUrlHolder.thumbUrl;
         photo.posterUserName = username;
         photo.tweetContent = tweetText;
         photo.gallery = gallery;
