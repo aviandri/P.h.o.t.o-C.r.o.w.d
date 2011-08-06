@@ -3,7 +3,7 @@ package utils.photograbber;
 import org.junit.Test;
 
 import play.test.UnitTest;
-import utils.photograbber.TwitgooGrabber;
+import utils.photoservice.TwitgooPhotoService;
 
 /**
  * This is test for class Twitgoo
@@ -15,21 +15,21 @@ public class TwitgooGrabberTest extends UnitTest {
     
     @Test
     public void parseId() {
-        String id = TwitgooGrabber.parseId("http://twitgoo.com/2l5l7d");
+        String id = TwitgooPhotoService.parseId("http://twitgoo.com/2l5l7d");
         assertEquals("2l5l7d", id);
         
-        id = TwitgooGrabber.parseId("http://twitgoo.com/2l5l7c");
+        id = TwitgooPhotoService.parseId("http://twitgoo.com/2l5l7c");
         assertEquals("2l5l7c", id);
     }
     
     @Test
     public void urlFormat() {
-        String formatted = String.format(TwitgooGrabber.TWITGOO_INFO_URL_FORMAT, "3spr5");
+        String formatted = String.format(TwitgooPhotoService.TWITGOO_INFO_URL_FORMAT, "3spr5");
         assertEquals("http://twitgoo.com/api/message/info/3spr5", formatted);
     }
     
     @Test
     public void grab() throws Exception {
-        new TwitgooGrabber("http://twitgoo.com/2l5l7d").getFullImageURL();
+        new TwitgooPhotoService().grab("http://twitgoo.com/2l5l7d");
     }
 }

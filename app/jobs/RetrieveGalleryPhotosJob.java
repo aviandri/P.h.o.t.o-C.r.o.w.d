@@ -1,6 +1,5 @@
 package jobs;
 
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,10 +12,10 @@ import models.Gallery.State;
 import play.Logger;
 import play.Play;
 import play.jobs.Job;
-import utils.StringUtils;
 import utils.Twitter;
 import utils.Twitter.QueryBuilder;
 import utils.Twitter.QueryResult;
+import utils.photoservice.PhotoResource;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -193,9 +192,9 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             return;
         }
         
-        String[] urls = StringUtils.grabImageServiceURLs(tweetText);
-        for (String url : urls) {
-            new RetrievePhotoURLJob(gallery, url, username, tweetText).now();
+        PhotoResource[] tweetPhotos = PhotoResource.extractPhotoResource(tweetText);
+        for (PhotoResource tweetPhoto : tweetPhotos) {
+            new RetrievePhotoUrlJob(gallery, tweetPhoto, username, tweetText).now();
         }
     }
     
