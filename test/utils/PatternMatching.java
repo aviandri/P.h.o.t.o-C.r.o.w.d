@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.Test;
@@ -11,7 +12,7 @@ import play.test.UnitTest;
  *
  */
 public class PatternMatching extends UnitTest {
-    private Pattern pattern = Pattern.compile("http://twitpic.com/\\w*");;
+    private Pattern pattern = Pattern.compile("http://twitpic.com/\\w+(/\\w+)*");
     
     @Test
     public void testNotMatch() {

@@ -30,7 +30,7 @@ public class PhotoServices {
      */
     public static PhotoResource[] extractPhotoResource(String tweet) {
         for (PhotoService service : photoServices.values()) {
-            Logger.debug("Using service %1s to to search tweet: %2s", service.getClass().getName(), tweet);
+            Logger.debug("Using service %1s to search tweet: %2s", service.getClass().getName(), tweet);
             String[] urls = service.findURL(tweet);
             Logger.debug("Found %1s", Arrays.toString(urls));
             if (urls != null) {

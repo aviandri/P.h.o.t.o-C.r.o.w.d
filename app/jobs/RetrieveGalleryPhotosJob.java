@@ -82,6 +82,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
                 } catch (ReachStopIdException e) {
                     Logger.debug("Already reach stopId");
                     gallery = Gallery.findById(this.gallery.id);
+                    gallery.stopId = res.getMaxId();
                     gallery.state = State.FETCH_YOUNGER;
                     gallery.save();
                     return;
@@ -101,6 +102,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             gallery.save();
         } else if (gallery.state == State.FETCH_YOUNGER) {
             QueryResult res = Twitter.query(searchQuery).sinceId(gallery.maxId).rpp(rpp).execute();
+            boolean passEndDate = new Date().after(gallery.endDate);
             
             for (JsonElement tweet : res.getTweets()) {
                 try {
@@ -108,7 +110,12 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
                 } catch (ReachStopIdException e) {
                     Logger.debug("Already reach stopId");
                     gallery = Gallery.findById(this.gallery.id);
-                    gallery.state = State.FETCH_YOUNGER;
+                    if (passEndDate) {
+                        gallery.state = State.DONE;
+                    } else {
+                        gallery.stopId = res.getMaxId();
+                        gallery.state = State.FETCH_YOUNGER;
+                    }
                     gallery.save();
                     return;
                 }
@@ -120,7 +127,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
                 gallery.maxId = res.getMaxId();
                 gallery.lastPage = res.getPage();
                 gallery.state = State.FETCH_OLDER;
-            } if (new Date().after(gallery.endDate)) {
+            } if (passEndDate) {
                 gallery.state = State.DONE;
             } else {
                 gallery.stopId = res.getMaxId();
