@@ -1,8 +1,10 @@
 package jobs;
 
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -12,6 +14,7 @@ import models.Gallery.State;
 import play.Logger;
 import play.Play;
 import play.jobs.Job;
+import play.templates.JavaExtensions;
 import utils.Twitter;
 import utils.Twitter.QueryBuilder;
 import utils.Twitter.QueryResult;
@@ -137,16 +140,8 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
      * @return the query part.
      */
     private static final String photoServiceQueryPart() {
-        String[] prefixes = PhotoServices.getUrlPrefixes();
-        StringBuilder builder = new StringBuilder("(");
-        for (String prefix : prefixes) {
-            if (builder.length() > 0) {
-                builder.append(" OR ").append(prefix);
-            } else {
-                builder.append(prefix);
-            }
-        }
-        return builder.append(")").toString();
+        String[] prefixes = PhotoServices.getSearchKeys();
+        return "(" + JavaExtensions.join(Arrays.asList(prefixes), " OR ") + ")";
     }
     
     /**
@@ -214,8 +209,11 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
         }
         
         PhotoResource[] tweetPhotos = PhotoServices.extractPhotoResource(tweetText);
-        for (PhotoResource tweetPhoto : tweetPhotos) {
-            new RetrievePhotoUrlJob(gallery, tweetPhoto, username, tweetText).now();
+        if (tweetPhotos != null) {
+            Logger.debug("Found recognize url from tweet: %1s", tweetText);
+            for (PhotoResource tweetPhoto : tweetPhotos) {
+                new RetrievePhotoUrlJob(gallery, tweetPhoto, username, tweetText).now();
+            }
         }
     }
     

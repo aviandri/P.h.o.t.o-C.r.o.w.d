@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import sun.print.resources.serviceui;
+
 
 /**
  * This is common implementation of {@link PhotoService}.
@@ -13,12 +15,12 @@ import java.util.regex.Pattern;
  *
  */
 public abstract class AbstractPhotoService implements PhotoService {
+    private final String searchKey;
     private final Pattern urlPattern;
-    private final String urlPrefix;
     
-    public AbstractPhotoService(String urlPrefix) {
-        this.urlPattern = Pattern.compile(urlPrefix + "\\w");
-        this.urlPrefix = urlPrefix;
+    public AbstractPhotoService(String searchKey, String urlPrefix) {
+        this.urlPattern = Pattern.compile(urlPrefix + "\\w*");
+        this.searchKey = searchKey;
     }
 
     public String[] findURL(String text) {
@@ -40,7 +42,7 @@ public abstract class AbstractPhotoService implements PhotoService {
     }
     
     @Override
-    public String getUrlPrefix() {
-        return urlPrefix;
+    public String getSearchKey() {
+        return searchKey;
     }
 }

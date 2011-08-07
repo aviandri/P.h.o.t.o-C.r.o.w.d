@@ -38,5 +38,10 @@ public interface PhotoService {
      */
     boolean recognize(String photoUrl);
     
-    String getUrlPrefix();
+    /**
+     * Get the identifier or key value to used for searching.
+     * 
+     * @return is the search key.
+     */
+    String getSearchKey();
 }

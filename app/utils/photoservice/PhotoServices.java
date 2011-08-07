@@ -1,7 +1,10 @@
 package utils.photoservice;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import play.Logger;
 
 /**
  * This is utility to extract photo resource from various photo services.
@@ -13,9 +16,10 @@ public class PhotoServices {
     private static final Map<String, PhotoService> photoServices = new HashMap<String, PhotoService>();
     
     static {
-        photoServices.put("twitpic", new TwitgooPhotoService());
         photoServices.put("lockerz", new LockerzPhotoService());
         photoServices.put("twitgoo", new TwitgooPhotoService());
+        photoServices.put("twitpic", new TwitpicPhotoService());
+        
     }
     
     /**
@@ -26,7 +30,9 @@ public class PhotoServices {
      */
     public static PhotoResource[] extractPhotoResource(String tweet) {
         for (PhotoService service : photoServices.values()) {
+            Logger.debug("Using service %1s to to search tweet: %2s", service.getClass().getName(), tweet);
             String[] urls = service.findURL(tweet);
+            Logger.debug("Found %1s", Arrays.toString(urls));
             if (urls != null) {
                 PhotoResource[] tweetPhotos = new PhotoResource[urls.length];
                 for (int i = 0; i < urls.length; i++) {
@@ -40,15 +46,15 @@ public class PhotoServices {
     
 
     /**
-     * Return all the URL prefixes from the available photo services.
+     * Return all the search keys from the available photo services.
      * 
-     * @return URL prefixes.
+     * @return search keys.
      */
-    public static String[] getUrlPrefixes() {
+    public static String[] getSearchKeys() {
         String[] prefixes = new String[photoServices.size()];
         int i = 0;
         for (PhotoService photoService : photoServices.values()) {
-            prefixes[i++] = photoService.getUrlPrefix();
+            prefixes[i++] = photoService.getSearchKey();
         }
         return prefixes;
     }
