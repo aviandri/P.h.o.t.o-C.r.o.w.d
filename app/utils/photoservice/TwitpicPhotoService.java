@@ -26,6 +26,21 @@ public class TwitpicPhotoService extends AbstractPhotoService {
     @Override
     public ImageAndThumbnailUrlHolder grab(String photoUrl) {
         String imageId = parseId(photoUrl);
+        
+        String imageUrl = grabImageUrl(photoUrl);
+        if (imageUrl == null) {
+            return null;
+        }
+        
+        String thumbnailUrl = grabThumbnailUrl(imageId);
+        if (thumbnailUrl == null) {
+            return null;
+        }
+        
+        return new ImageAndThumbnailUrlHolder(imageUrl, thumbnailUrl);
+    }
+    
+    private static String grabImageUrl(String photoUrl) {
         HttpResponse res = WS.url(photoUrl).get();
         StringBuffer html = new StringBuffer(res.getString());
         Source source;
@@ -39,11 +54,20 @@ public class TwitpicPhotoService extends AbstractPhotoService {
             }
             String url = el.getAttributeValue("src");
             
-            return new ImageAndThumbnailUrlHolder(url, String.format("http://twitpic.com/show/large/%s", imageId));
+            return url;
         } catch (IOException e) {
             Logger.error(e, "Failed getting photo from twitpic using URL %s", photoUrl);
         }
         return null;
+    }
+    
+    private static String grabThumbnailUrl(String imageId) {
+        HttpResponse resp = WS.url("http://twitpic.com/show/large/%s", imageId).followRedirects(false).get();
+        if (resp.getStatus() != 302) {
+            Logger.warn("Get large thumbnail from twitpic for imageId %s doen't return 302 status, instead of %s", imageId, resp.getStatus());
+            return null;
+        }
+        return resp.getHeader("Location");
     }
     
     public static String parseId(String twitpicUrl) {
