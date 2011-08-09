@@ -76,4 +76,23 @@ public class TwitpicPhotoService extends AbstractPhotoService {
         }
         return twitpicUrl.substring(URL_PREFIX.length());
     }
+    
+    public static String extractExpires(String twitpicImageUrl) {
+        final String expiresPrefix = "Expires=";
+        int index = twitpicImageUrl.indexOf(expiresPrefix);
+        
+        if (index < 0) {
+            throw new IllegalArgumentException("The twitpicImageUrl doesn't contains Expires parameter: " + twitpicImageUrl);
+        }
+        
+        int indexOfEnd = twitpicImageUrl.indexOf("&", index);
+        if (indexOfEnd > 0) {
+            return twitpicImageUrl.substring(index + expiresPrefix.length(), indexOfEnd);
+        }
+        return twitpicImageUrl.substring(index + expiresPrefix.length());
+    }
+    
+    public static long extractExpiresToTimestamp(String twitpicImageUrl) {
+        return Long.parseLong(extractExpires(twitpicImageUrl)) * 1000;
+    }
 }
