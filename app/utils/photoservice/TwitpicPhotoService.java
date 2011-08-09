@@ -17,6 +17,7 @@ import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
  *
  */
 public class TwitpicPhotoService extends AbstractPhotoService {
+    public static final String URL_PREFIX = "http://twitpic.com/";
     
     public TwitpicPhotoService() {
         super("twitpic.com", "http://twitpic.com");
@@ -24,6 +25,7 @@ public class TwitpicPhotoService extends AbstractPhotoService {
 
     @Override
     public ImageAndThumbnailUrlHolder grab(String photoUrl) {
+        String imageId = parseId(photoUrl);
         HttpResponse res = WS.url(photoUrl).get();
         StringBuffer html = new StringBuffer(res.getString());
         Source source;
@@ -32,15 +34,22 @@ public class TwitpicPhotoService extends AbstractPhotoService {
                     html.toString().length()));
             Element el = source.getElementById("photo-display");
             if (el == null) {
-                Logger.warn("Cannot find element photo-display from URL %1s", photoUrl);
+                Logger.warn("Cannot find element photo-display from URL %s", photoUrl);
                 return null;
             }
             String url = el.getAttributeValue("src");
             
-            return new ImageAndThumbnailUrlHolder(url, url);
+            return new ImageAndThumbnailUrlHolder(url, String.format("http://twitpic.com/show/large/%s", imageId));
         } catch (IOException e) {
-            Logger.error(e, "Failed getting photo from twitpic using URL %1s", photoUrl);
+            Logger.error(e, "Failed getting photo from twitpic using URL %s", photoUrl);
         }
         return null;
+    }
+    
+    public static String parseId(String twitpicUrl) {
+        if (!twitpicUrl.startsWith(URL_PREFIX)) {
+            throw new IllegalArgumentException("Twitpic URL should start with 'http://twitpic.com/'");
+        }
+        return twitpicUrl.substring(URL_PREFIX.length());
     }
 }
