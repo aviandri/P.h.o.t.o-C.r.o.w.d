@@ -65,7 +65,7 @@ $(document).ready(function() {
 </div>
 #{form @Galleries.save()}
     <div class="field">
-        <input type="text" placeholder="Gallery name" name="name" value="${gallery?.name}"/>
+        <input type="text" placeholder="Gallery name" name="name" autofocus="autofocus" value="${gallery?.name}"/>
         <div class="message">
             #{ifError 'name'}
                 <span class="nok">#{error 'name'/}</span>

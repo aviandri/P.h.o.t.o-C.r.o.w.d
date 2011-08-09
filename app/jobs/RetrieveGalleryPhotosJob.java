@@ -1,9 +1,10 @@
 package jobs;
 
-import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -13,10 +14,12 @@ import models.Gallery.State;
 import play.Logger;
 import play.Play;
 import play.jobs.Job;
-import utils.StringUtils;
+import play.templates.JavaExtensions;
 import utils.Twitter;
 import utils.Twitter.QueryBuilder;
 import utils.Twitter.QueryResult;
+import utils.photoservice.PhotoServices;
+import utils.photoservice.PhotoServices.PhotoResource;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -79,6 +82,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
                 } catch (ReachStopIdException e) {
                     Logger.debug("Already reach stopId");
                     gallery = Gallery.findById(this.gallery.id);
+                    gallery.stopId = res.getMaxId();
                     gallery.state = State.FETCH_YOUNGER;
                     gallery.save();
                     return;
@@ -98,6 +102,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             gallery.save();
         } else if (gallery.state == State.FETCH_YOUNGER) {
             QueryResult res = Twitter.query(searchQuery).sinceId(gallery.maxId).rpp(rpp).execute();
+            boolean passEndDate = new Date().after(gallery.endDate);
             
             for (JsonElement tweet : res.getTweets()) {
                 try {
@@ -105,7 +110,12 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
                 } catch (ReachStopIdException e) {
                     Logger.debug("Already reach stopId");
                     gallery = Gallery.findById(this.gallery.id);
-                    gallery.state = State.FETCH_YOUNGER;
+                    if (passEndDate) {
+                        gallery.state = State.DONE;
+                    } else {
+                        gallery.stopId = res.getMaxId();
+                        gallery.state = State.FETCH_YOUNGER;
+                    }
                     gallery.save();
                     return;
                 }
@@ -117,7 +127,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
                 gallery.maxId = res.getMaxId();
                 gallery.lastPage = res.getPage();
                 gallery.state = State.FETCH_OLDER;
-            } if (new Date().after(gallery.endDate)) {
+            } if (passEndDate) {
                 gallery.state = State.DONE;
             } else {
                 gallery.stopId = res.getMaxId();
@@ -131,15 +141,27 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
     }
     
     /**
+     * Get the query part to filter tweets only for the available photo service
+     * only.
+     * 
+     * @return the query part.
+     */
+    private static final String photoServiceQueryPart() {
+        String[] prefixes = PhotoServices.getSearchKeys();
+        return "(" + JavaExtensions.join(Arrays.asList(prefixes), " OR ") + ")";
+    }
+    
+    /**
      * Build the query based on the given <tt>Gallery</tt>.
      * 
      * @param gallery is the <tt>Gallery</tt>.
      * @return the query.
      */
     private static String buildQuery(Gallery gallery) {
+        
         QueryBuilder queryBuilder = new QueryBuilder(
                 "#" + gallery.hashtag 
-                + " (http://twitpic.com/ OR htt://lockerz.com/ OR http://twitgoo.com/) -RT");
+                + " " + photoServiceQueryPart() + " -RT");
         
         if (gallery.startDate != null) {
             queryBuilder.since(gallery.startDate);
@@ -193,9 +215,12 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             return;
         }
         
-        String[] urls = StringUtils.grabImageServiceURLs(tweetText);
-        for (String url : urls) {
-            new RetrievePhotoURLJob(gallery, url, username, tweetText).now();
+        PhotoResource[] tweetPhotos = PhotoServices.extractPhotoResource(tweetText);
+        if (tweetPhotos != null) {
+            Logger.debug("Found recognize url from tweet: %1s", tweetText);
+            for (PhotoResource tweetPhoto : tweetPhotos) {
+                new RetrievePhotoUrlJob(gallery, tweetPhoto, username, tweetText).now();
+            }
         }
     }
     

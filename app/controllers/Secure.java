@@ -1,16 +1,14 @@
 package controllers;
 
 import models.User;
-import play.Logger;
 import play.Play;
 import play.libs.OAuth;
 import play.libs.OAuth.Response;
 import play.libs.OAuth.ServiceInfo;
-import play.libs.WS.HttpResponse;
 import play.libs.WS;
+import play.libs.WS.HttpResponse;
 import play.mvc.Before;
 import play.mvc.Controller;
-import play.utils.HTTP;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -24,6 +22,12 @@ public class Secure extends Controller {
     private static final String TWITTER_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
     private static final String TWITTER_VERIFY_CREDENTIALS_URL = "http://api.twitter.com/1/account/verify_credentials.json";
     private static final String TWITTER_PROFILE_IMAGE_URL = "http://api.twitter.com/1/users/profile_image";
+    private static final ServiceInfo twitterServiceInfo = new ServiceInfo(
+            TWITTER_REQUEST_TOKEN_URL, TWITTER_ACCESS_TOKEN_URL,
+            Play.configuration.getProperty("twitter.authorizationUrl",
+                    "https://api.twitter.com/oauth/authorize"),
+            Play.configuration.getProperty("twitter.consumer.key"),
+            Play.configuration.getProperty("twitter.consumer.secret"));
     
     @Before(unless={"authenticate"})
     static void checkAccess() throws Throwable {
@@ -34,25 +38,15 @@ public class Secure extends Controller {
         renderArgs.put("loggedUser", Security.connectedUser());
     }
     
-    private static ServiceInfo twitterServiceInfo() {
-        return new ServiceInfo(
-                TWITTER_REQUEST_TOKEN_URL, TWITTER_ACCESS_TOKEN_URL, 
-                Play.configuration.getProperty("twitter.authorizationUrl", 
-                        "https://api.twitter.com/oauth/authorize"),
-                Play.configuration.getProperty("twitter.consumer.key"),
-                Play.configuration.getProperty("twitter.consumer.secret"));
-    }
-    
     public static void authenticate() {
-        ServiceInfo serviceInfo = twitterServiceInfo();
         if (OAuth.isVerifierResponse()) {
-            Response accessTokenResp = OAuth.service(serviceInfo)
+            Response accessTokenResp = OAuth.service(twitterServiceInfo)
                     .retrieveAccessToken(
                             session.get("twitter.token"),
                             session.get("twitter.secret"));
             
             JsonElement json = WS.url(TWITTER_VERIFY_CREDENTIALS_URL)
-                    .oauth(serviceInfo, 
+                    .oauth(twitterServiceInfo, 
                             accessTokenResp.token, 
                             accessTokenResp.secret).get().getJson();
             JsonObject jsonObj = json.getAsJsonObject();
@@ -82,7 +76,7 @@ public class Secure extends Controller {
             Galleries.index();
         }
         
-        OAuth twitt = OAuth.service(serviceInfo);
+        OAuth twitt = OAuth.service(twitterServiceInfo);
         Response reqTokenResp = twitt.retrieveRequestToken(
                 Play.configuration.getProperty("twitter.callbackUrl", 
                         "http://localhost:9000/secure/authenticate"));

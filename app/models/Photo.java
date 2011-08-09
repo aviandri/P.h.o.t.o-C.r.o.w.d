@@ -21,10 +21,10 @@ public class Photo extends Model {
 
     @URL
     @Column(name = "full_image_url")
-    public String fullImageURL;
+    public String fullImageUrl;
 
     @URL
     @Column(name = "thumb_image_url")
-    public String thumbImageURL;
+    public String thumbImageUrl;
 
 }
