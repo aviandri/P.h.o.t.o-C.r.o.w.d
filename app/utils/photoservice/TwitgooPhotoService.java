@@ -26,7 +26,7 @@ public class TwitgooPhotoService extends AbstractPhotoService {
         String twitgooId = parseId(photoUrl);
         HttpResponse resp = WS.url(TWITGOO_INFO_URL_FORMAT, twitgooId).get();
         if (resp.getStatus() != 200) {
-            Logger.error("Failed getting response from twitgoo for %1s", photoUrl);
+            Logger.error("Failed getting response from twitgoo for %s", photoUrl);
             return null;
         }
         Document document = resp.getXml();
