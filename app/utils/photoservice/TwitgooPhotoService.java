@@ -15,7 +15,7 @@ import play.libs.XPath;
  */
 public class TwitgooPhotoService extends AbstractPhotoService {
     public static final String URL_PREFIX = "http://twitgoo.com/";
-    public static final String TWITGOO_INFO_URL_FORMAT = "http://twitgoo.com/api/message/info/%1s";
+    public static final String TWITGOO_INFO_URL_FORMAT = "http://twitgoo.com/api/message/info/%s";
     
     public TwitgooPhotoService() {
         super("twitgoo.com", "http://twitgoo.com");
