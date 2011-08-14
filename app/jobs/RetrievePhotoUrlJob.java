@@ -2,6 +2,7 @@ package jobs;
 
 import models.Gallery;
 import models.Photo;
+import models.User;
 import play.Logger;
 import play.jobs.Job;
 import utils.photoservice.ImageAndThumbnailUrlHolder;
@@ -16,14 +17,14 @@ import utils.photoservice.PhotoServices.PhotoResource;
 public class RetrievePhotoUrlJob extends Job<Void> {
     private Gallery gallery;
     private PhotoResource photoResource;
-    private String username;
+    private Long posterId;
     private String tweetText;
 
-    public RetrievePhotoUrlJob(Gallery gallery, PhotoResource tweetPhoto, String username,
+    public RetrievePhotoUrlJob(Gallery gallery, PhotoResource tweetPhoto, Long posterId,
             String tweetText) {
         this.gallery = gallery;
         this.photoResource = tweetPhoto;
-        this.username = username;
+        this.posterId = posterId;
         this.tweetText = tweetText;
     }
 
@@ -37,7 +38,7 @@ public class RetrievePhotoUrlJob extends Job<Void> {
         Photo photo = new Photo();
         photo.fullImageUrl = imageUrlHolder.url;
         photo.thumbImageUrl = imageUrlHolder.thumbUrl;
-        photo.posterUserName = username;
+        photo.poster = User.findByTwitterId(posterId);
         photo.tweetContent = tweetText;
         photo.gallery = gallery;
         photo.save();

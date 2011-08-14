@@ -13,8 +13,9 @@ public class Photo extends Model {
     @JoinColumn(name = "gallery_id")
     public Gallery gallery;
 
-    @Column(name = "poster_user_name")
-    public String posterUserName;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "poster_id")
+    public User poster;
 
     @Column(name = "tweet_content")
     public String tweetContent;

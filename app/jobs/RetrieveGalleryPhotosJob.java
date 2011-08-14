@@ -11,6 +11,7 @@ import java.util.TimeZone;
 
 import models.Gallery;
 import models.Gallery.State;
+import models.User;
 import play.Logger;
 import play.Play;
 import play.jobs.Job;
@@ -192,9 +193,14 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
         String tweetText = tweetObject.getAsJsonPrimitive("text").getAsString();
         String username = tweetObject.getAsJsonPrimitive("from_user")
                 .getAsString();
+        long twitterId = tweetObject.getAsJsonPrimitive("from_user_id").getAsLong();
         String createdDateStr = tweetObject.getAsJsonPrimitive("created_at")
                 .getAsString();
         
+        User user = User.findByTwitterId(twitterId);
+        if (user == null) {
+            user = new User(twitterId, username).save();
+        }
         
         DateFormat dateFormat = newDateFormat();
         Date createdDate = null;
@@ -219,7 +225,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
         if (tweetPhotos != null) {
             Logger.debug("Found recognize url from tweet: %1s", tweetText);
             for (PhotoResource tweetPhoto : tweetPhotos) {
-                new RetrievePhotoUrlJob(gallery, tweetPhoto, username, tweetText).now();
+                new RetrievePhotoUrlJob(gallery, tweetPhoto, user.id, tweetText).now();
             }
         }
     }

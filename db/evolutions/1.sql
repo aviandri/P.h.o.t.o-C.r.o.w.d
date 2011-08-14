@@ -4,13 +4,13 @@ create table User (
     id bigint not null auto_increment,
     date_created datetime not null,
     date_updated datetime not null,
-    access_token varchar(255) not null,
+    access_token varchar(255),
     profile_image_bigger_url varchar(255),
     profile_image_mini_url varchar(255),
     profile_image_original_url varchar(255),
     profile_image_url varchar(255),
-    secret_token varchar(255) not null,
-    twitter_id bigint not null,
+    secret_token varchar(255),
+    twitter_id bigint not null unique,
     username varchar(255) not null unique,
     primary key (id)
 );
@@ -47,13 +47,19 @@ create table Photo (
     date_created datetime not null,
     date_updated datetime not null,
     full_image_url varchar(255),
-    poster_user_name varchar(255),
     thumb_image_url varchar(255),
     tweet_content varchar(255),
     gallery_id bigint,
+    poster_id bigint not null,
     primary key (id)
 );
 
+alter table Photo 
+    add index FK4984E12C78F763C (poster_id), 
+    add constraint FK4984E12C78F763C 
+    foreign key (poster_id) 
+    references User (id);
+    
 alter table Photo 
     add index FK4984E12500560D6 (gallery_id), 
     add constraint FK4984E12500560D6 
@@ -63,12 +69,20 @@ alter table Photo
 # ---- !Downs
 
 alter table Photo 
-    drop foreign key FK4984E12500560D6;
+    drop 
+    foreign key FK4984E12C78F763C;
+
+alter table Photo 
+    drop 
+    foreign key FK4984E12500560D6;
 
 drop table if exists Photo;
 
 alter table Gallery 
     drop foreign key FK57850F3247140EFE;
+    
+alter table Gallery
+    drop index IDXGALSTATE (state);
 
 drop table if exists Gallery;
 
