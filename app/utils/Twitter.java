@@ -30,7 +30,7 @@ public class Twitter {
         private Long maxId;
         private Integer page;
         private Integer rpp;
-        private Boolean includeEntities;
+        private boolean includeEntities;
         
         public TwitterQuery(String query) {
             this.query = query;
@@ -61,7 +61,7 @@ public class Twitter {
             return this;
         }
         
-        public TwitterQuery includeEntities(Boolean includeEntities) {
+        public TwitterQuery includeEntities(boolean includeEntities) {
             this.includeEntities = includeEntities;
             return this;
         }
@@ -93,6 +93,7 @@ public class Twitter {
             Logger.debug("requesting to %1s", req.url + " params " + req.parameters);
             HttpResponse resp = req.get();
             JsonObject jsonObj = resp.getJson().getAsJsonObject();
+            Logger.debug("Json value: %1s", jsonObj);
             if (resp.getStatus() != 200) {
                 String errorMessage = jsonObj.get("error").getAsString();
                 String message = String.format("Found non 200 HTTP status code: statusCode = %1s; %2s", resp.getStatus(), errorMessage);
