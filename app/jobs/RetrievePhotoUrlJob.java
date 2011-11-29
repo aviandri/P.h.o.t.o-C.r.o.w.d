@@ -38,7 +38,7 @@ public class RetrievePhotoUrlJob extends Job<Void> {
         Photo photo = new Photo();
         photo.fullImageUrl = imageUrlHolder.url;
         photo.thumbImageUrl = imageUrlHolder.thumbUrl;
-        photo.poster = User.findByTwitterId(posterId);
+        photo.poster = User.findById(posterId);
         photo.tweetContent = tweetText;
         photo.gallery = gallery;
         photo.save();
