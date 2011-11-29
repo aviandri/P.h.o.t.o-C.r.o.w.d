@@ -30,6 +30,7 @@ public class Twitter {
         private Long maxId;
         private Integer page;
         private Integer rpp;
+        private Boolean includeEntities;
         
         public TwitterQuery(String query) {
             this.query = query;
@@ -59,6 +60,11 @@ public class Twitter {
             this.rpp = rpp;
             return this;
         }
+        
+        public TwitterQuery includeEntities(Boolean includeEntities) {
+            this.includeEntities = includeEntities;
+            return this;
+        }
 
         public QueryResult execute() throws QueryExecutionException {
             Logger.debug("Query %1s", query);
@@ -79,6 +85,11 @@ public class Twitter {
             if (rpp != null) {
                 req.setParameter("rpp", rpp);
             }
+            
+            if (includeEntities) {
+                req.setParameter("include_entities", "t");
+            }
+            
             Logger.debug("requesting to %1s", req.url + " params " + req.parameters);
             HttpResponse resp = req.get();
             JsonObject jsonObj = resp.getJson().getAsJsonObject();

@@ -46,7 +46,9 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
         final int rpp = Integer.parseInt(Play.configuration.getProperty(
                 "twitter.search.rpp", "15"));
         if (gallery.state == State.NEW) {
-            QueryResult res = Twitter.query(searchQuery).sinceId(0).rpp(rpp)
+            QueryResult res = Twitter.query(searchQuery)
+                    .sinceId(0).rpp(rpp)
+                    .includeEntities(true)
                     .execute();
             
             for (JsonElement tweet : res.getTweets()) {
