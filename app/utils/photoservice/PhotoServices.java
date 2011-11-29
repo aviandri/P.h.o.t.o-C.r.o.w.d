@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.JsonArray;
+
 import play.Logger;
 
 /**
@@ -28,6 +30,7 @@ public class PhotoServices {
      * @param tweet is the tweet text
      * @return the photo resources.
      */
+    @Deprecated
     public static PhotoResource[] extractPhotoResource(String tweet) {
         for (PhotoService service : photoServices.values()) {
             Logger.debug("Using service %1s to search tweet: %2s", service.getClass().getName(), tweet);
@@ -37,6 +40,31 @@ public class PhotoServices {
                 PhotoResource[] tweetPhotos = new PhotoResource[urls.length];
                 for (int i = 0; i < urls.length; i++) {
                     tweetPhotos[i] = new PhotoResource(urls[i], service);
+                }
+                return tweetPhotos;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Filter the URLs to photo resources
+     * 
+     * @param urls is the URLs.
+     * @return the photo resources.
+     * @see PhotoResource
+     */
+    public static PhotoResource[] filterToPhotoResources(String[] urls) {
+        for (PhotoService service : photoServices.values()) {
+            if (Logger.isDebugEnabled()) {
+                Logger.debug("Using service %1s to check url: %2s", service.getClass().getName(), Arrays.toString(urls));
+            }
+            String[] filteredUrls = service.filter(urls);
+            Logger.debug("Found %1s", Arrays.toString(urls));
+            if (filteredUrls != null) {
+                PhotoResource[] tweetPhotos = new PhotoResource[filteredUrls.length];
+                for (int i = 0; i < urls.length; i++) {
+                    tweetPhotos[i] = new PhotoResource(filteredUrls[i], service);
                 }
                 return tweetPhotos;
             }

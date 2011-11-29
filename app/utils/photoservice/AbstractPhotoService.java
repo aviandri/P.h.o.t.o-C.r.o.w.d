@@ -23,6 +23,7 @@ public abstract class AbstractPhotoService implements PhotoService {
         this.searchKey = searchKey;
     }
 
+    @Override
     public String[] findURL(String text) {
         Matcher matcher = urlPattern.matcher(text);
         List<String> urls = new ArrayList<String>();
@@ -34,6 +35,21 @@ public abstract class AbstractPhotoService implements PhotoService {
             return null;
         }
         return urls.toArray(new String[urls.size()]);
+    }
+    
+    @Override
+    public String[] filter(String[] urls) {
+        List<String> filteredUrls = new ArrayList<String>();
+        for (int i = 0; i < urls.length; i++) {
+            if (urlPattern.matcher(urls[i]).matches()) {
+                filteredUrls.add(urls[i]);
+            }
+        }
+        if (filteredUrls.isEmpty()) {
+            // this cannot find the supported URL
+            return null;
+        }
+        return filteredUrls.toArray(new String[filteredUrls.size()]);
     }
     
     @Override

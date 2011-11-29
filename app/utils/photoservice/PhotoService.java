@@ -20,7 +20,22 @@ public interface PhotoService {
      * @param text is the text contains the URL to page of photo service.
      * @return the URLs or <tt>null</tt> if not found.
      */
+    @Deprecated
     String[] findURL(String text);
+    
+    
+    /**
+     * Filter the URL supported by the TwitterPhotoService.
+     * <p>
+     * If it return not-null value means it has minimum one element and every
+     * returned URL(s) should return <tt>true</tt> if you pass it to
+     * {@link #recognize(String)} method.
+     * </p>
+     * 
+     * @param the URLs.
+     * @return the URLs or <tt>null</tt> if not found.
+     */
+    String[] filter(String[] urls);
     
     /**
      * Grab the URL of original size and thumbnail.

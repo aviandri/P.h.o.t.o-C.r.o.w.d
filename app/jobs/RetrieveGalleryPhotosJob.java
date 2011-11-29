@@ -22,6 +22,7 @@ import utils.Twitter.QueryResult;
 import utils.photoservice.PhotoServices;
 import utils.photoservice.PhotoServices.PhotoResource;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -76,8 +77,12 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             int newPage = gallery.lastPage + 1;
             Logger.debug("Query maxId=%1s page=%2s rpp=%3s", gallery.maxId,
                     newPage, rpp);
-            QueryResult res = Twitter.query(searchQuery).maxId(gallery.maxId)
-                    .page(newPage).rpp(100).execute();
+            QueryResult res = Twitter.query(searchQuery)
+                    .maxId(gallery.maxId)
+                    .page(newPage)
+                    .rpp(rpp)
+                    .includeEntities(true)
+                    .execute();
             
             for (JsonElement tweet : res.getTweets()) {
                 try {
@@ -104,7 +109,11 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             
             gallery.save();
         } else if (gallery.state == State.FETCH_YOUNGER) {
-            QueryResult res = Twitter.query(searchQuery).sinceId(gallery.maxId).rpp(rpp).execute();
+            QueryResult res = Twitter.query(searchQuery)
+                    .sinceId(gallery.maxId)
+                    .rpp(rpp)
+                    .includeEntities(true)
+                    .execute();
             boolean passEndDate = new Date().after(gallery.endDate);
             
             for (JsonElement tweet : res.getTweets()) {
@@ -199,6 +208,9 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
         String createdDateStr = tweetObject.getAsJsonPrimitive("created_at")
                 .getAsString();
         
+        JsonObject entitiesObject = tweetObject.getAsJsonObject("entities");
+        JsonArray urlsObject = entitiesObject.getAsJsonArray("urls");
+        
         User user = User.findByTwitterId(twitterId);
         if (user == null) {
             user = new User(twitterId, username).save();
@@ -223,7 +235,14 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             return;
         }
         
-        PhotoResource[] tweetPhotos = PhotoServices.extractPhotoResource(tweetText);
+        // all URLs on the tweet
+        String[] urls = new String[urlsObject.size()];
+        for (int i = 0; i < urlsObject.size(); i++) {
+            String url = urlsObject.get(i).getAsJsonObject().getAsJsonPrimitive("expanded_url").getAsString();
+            urls[i] = url;
+        }
+        
+        PhotoResource[] tweetPhotos = PhotoServices.filterToPhotoResources(urls);
         if (tweetPhotos != null) {
             Logger.debug("Found recognize url from tweet: %1s", tweetText);
             for (PhotoResource tweetPhoto : tweetPhotos) {
