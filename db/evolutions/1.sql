@@ -1,20 +1,5 @@
 # --- !Ups
 
-create table User (
-    id bigint not null auto_increment,
-    date_created datetime not null,
-    date_updated datetime not null,
-    access_token varchar(255),
-    profile_image_bigger_url varchar(255),
-    profile_image_mini_url varchar(255),
-    profile_image_original_url varchar(255),
-    profile_image_url varchar(255),
-    secret_token varchar(255),
-    twitter_id bigint not null unique,
-    username varchar(255) not null unique,
-    primary key (id)
-);
-
 create table Gallery (
     id bigint not null auto_increment,
     date_created datetime not null,
@@ -33,15 +18,6 @@ create table Gallery (
     primary key (id)
 );
 
-alter table Gallery 
-    add index FK57850F3247140EFE (user_id), 
-    add constraint FK57850F3247140EFE 
-    foreign key (user_id) 
-    references User (id);
-    
-alter table Gallery
-    add index IDXGALSTATE (state);
-
 create table Photo (
     id bigint not null auto_increment,
     date_created datetime not null,
@@ -54,12 +30,33 @@ create table Photo (
     primary key (id)
 );
 
+create table User (
+    id bigint not null auto_increment,
+    date_created datetime not null,
+    date_updated datetime not null,
+    access_token varchar(255),
+    profile_image_bigger_url varchar(255),
+    profile_image_mini_url varchar(255),
+    profile_image_original_url varchar(255),
+    profile_image_url varchar(255),
+    secret_token varchar(255),
+    twitter_id bigint not null unique,
+    username varchar(255) not null unique,
+    primary key (id)
+);
+
+alter table Gallery 
+    add index FK57850F3247140EFE (user_id), 
+    add constraint FK57850F3247140EFE 
+    foreign key (user_id) 
+    references User (id);
+
 alter table Photo 
     add index FK4984E12C78F763C (poster_id), 
     add constraint FK4984E12C78F763C 
     foreign key (poster_id) 
     references User (id);
-    
+
 alter table Photo 
     add index FK4984E12500560D6 (gallery_id), 
     add constraint FK4984E12500560D6 
@@ -67,6 +64,10 @@ alter table Photo
     references Gallery (id);
     
 # ---- !Downs
+
+alter table Gallery 
+    drop 
+    foreign key FK57850F3247140EFE;
 
 alter table Photo 
     drop 
@@ -76,15 +77,9 @@ alter table Photo
     drop 
     foreign key FK4984E12500560D6;
 
-drop table if exists Photo;
-
-alter table Gallery 
-    drop foreign key FK57850F3247140EFE;
-    
-alter table Gallery
-    drop index IDXGALSTATE (state);
-
 drop table if exists Gallery;
+
+drop table if exists Photo;
 
 drop table if exists User;
 
