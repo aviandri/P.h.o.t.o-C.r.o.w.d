@@ -90,10 +90,10 @@ public class Twitter {
                 req.setParameter("include_entities", "t");
             }
             
-            Logger.debug("requesting to %1s", req.url + " params " + req.parameters);
+            Logger.debug("Requesting to %1s", req.url + " params " + req.parameters);
             HttpResponse resp = req.get();
             JsonObject jsonObj = resp.getJson().getAsJsonObject();
-            Logger.debug("Json value: %1s", jsonObj);
+            Logger.debug("Body response: %1s", jsonObj);
             if (resp.getStatus() != 200) {
                 String errorMessage = jsonObj.get("error").getAsString();
                 String message = String.format("Found non 200 HTTP status code: statusCode = %1s; %2s", resp.getStatus(), errorMessage);

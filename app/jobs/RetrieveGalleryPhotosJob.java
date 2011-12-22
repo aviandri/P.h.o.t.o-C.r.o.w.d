@@ -110,11 +110,12 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
             gallery.save();
         } else if (gallery.state == State.FETCH_YOUNGER) {
             QueryResult res = Twitter.query(searchQuery)
-                    .sinceId(gallery.maxId)
+                    .sinceId(gallery.stopId)
                     .rpp(rpp)
                     .includeEntities(true)
                     .execute();
             boolean passEndDate = new Date().after(gallery.endDate);
+            
             
             for (JsonElement tweet : res.getTweets()) {
                 try {
