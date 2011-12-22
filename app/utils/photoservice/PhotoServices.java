@@ -63,7 +63,7 @@ public class PhotoServices {
             Logger.debug("Found %1s", Arrays.toString(urls));
             if (filteredUrls != null) {
                 PhotoResource[] tweetPhotos = new PhotoResource[filteredUrls.length];
-                for (int i = 0; i < urls.length; i++) {
+                for (int i = 0; i < filteredUrls.length; i++) {
                     tweetPhotos[i] = new PhotoResource(filteredUrls[i], service);
                 }
                 return tweetPhotos;
