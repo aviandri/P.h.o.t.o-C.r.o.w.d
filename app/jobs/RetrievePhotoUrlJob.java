@@ -33,6 +33,7 @@ public class RetrievePhotoUrlJob extends Job<Void> {
         ImageAndThumbnailUrlHolder imageUrlHolder = photoResource.grab();
         if (imageUrlHolder == null) {
             Logger.warn("Cannot get photo URL from %1s ... skip", photoResource.url);
+            return;
         }
         
         Photo photo = new Photo();
