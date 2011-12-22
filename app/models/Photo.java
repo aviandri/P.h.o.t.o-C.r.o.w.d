@@ -22,13 +22,14 @@ public class Photo extends Model {
     public String tweetContent;
 
     @URL
-    @MaxSize(500)
     @Column(name = "full_image_url", length = 500)
     public String fullImageUrl;
 
     @URL
-    @MaxSize(500)
     @Column(name = "thumb_image_url", length = 500)
     public String thumbImageUrl;
+    
+    @Column(name = "reference_id", nullable = false)
+    public Long referenceId;
 
 }

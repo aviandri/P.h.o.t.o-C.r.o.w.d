@@ -27,6 +27,7 @@ create table Photo (
     tweet_content varchar(255),
     gallery_id bigint,
     poster_id bigint not null,
+    reference_id bigint not null,
     primary key (id)
 );
 

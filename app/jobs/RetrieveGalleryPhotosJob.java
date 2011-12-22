@@ -247,7 +247,7 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
         if (tweetPhotos != null) {
             Logger.debug("Found recognize url from tweet: %1s", tweetText);
             for (PhotoResource tweetPhoto : tweetPhotos) {
-                new RetrievePhotoUrlJob(gallery, tweetPhoto, user.id, tweetText).now();
+                new RetrievePhotoUrlJob(gallery, tweetPhoto, user.id, tweetText, id).now();
             }
         }
     }

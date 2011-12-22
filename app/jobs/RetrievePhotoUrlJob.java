@@ -19,13 +19,15 @@ public class RetrievePhotoUrlJob extends Job<Void> {
     private PhotoResource photoResource;
     private Long posterId;
     private String tweetText;
+    private long referenceId;
 
     public RetrievePhotoUrlJob(Gallery gallery, PhotoResource tweetPhoto, Long posterId,
-            String tweetText) {
+            String tweetText, long referenceId) {
         this.gallery = gallery;
         this.photoResource = tweetPhoto;
         this.posterId = posterId;
         this.tweetText = tweetText;
+        this.referenceId = referenceId;
     }
 
     public void doJob() throws Exception {
@@ -42,6 +44,7 @@ public class RetrievePhotoUrlJob extends Job<Void> {
         photo.poster = User.findById(posterId);
         photo.tweetContent = tweetText;
         photo.gallery = gallery;
+        photo.referenceId = referenceId;
         photo.save();
     }
 
