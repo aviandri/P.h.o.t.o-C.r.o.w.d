@@ -24,7 +24,7 @@ create table Photo (
     date_updated datetime not null,
     full_image_url varchar(500),
     thumb_image_url varchar(500),
-    tweet_content varchar(255),
+    message varchar(255),
     gallery_id bigint,
     poster_id bigint not null,
     reference_id bigint not null,

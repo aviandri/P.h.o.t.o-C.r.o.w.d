@@ -42,7 +42,7 @@ public class RetrievePhotoUrlJob extends Job<Void> {
         photo.fullImageUrl = imageUrlHolder.url;
         photo.thumbImageUrl = imageUrlHolder.thumbUrl;
         photo.poster = User.findById(posterId);
-        photo.tweetContent = tweetText;
+        photo.message = tweetText;
         photo.gallery = gallery;
         photo.referenceId = referenceId;
         photo.save();
