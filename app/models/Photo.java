@@ -18,8 +18,8 @@ public class Photo extends Model {
     @JoinColumn(name = "poster_id")
     public User poster;
 
-    @Column(name = "tweet_content")
-    public String tweetContent;
+    @Column(name = "message")
+    public String message;
 
     @URL
     @Column(name = "full_image_url", length = 500)
