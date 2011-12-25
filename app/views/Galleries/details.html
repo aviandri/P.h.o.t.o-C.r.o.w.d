@@ -1,145 +1,108 @@
 #{extends 'main.html'/}
-#{set title:'Gallery'/}
+#{set title:'PhotoCloud - Gallery Details'/}
 
 #{set 'moreStyles'}
-<link rel="stylesheet" media="screen"  href="@{'/public/stylesheets/galleries/details.css'}"/>
+	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/galleries/details.css'}"/>
 #{/set}
+
 
 #{set 'moreScripts'}
-<script type="text/javascript">
+	<script type="text/javascript">
 
-function showTwitterLink() {
-    $(this).find('a.open-tweet').stop().css('opacity', 1);
-}
+	function showTwitterLink() {
+	    $(this).find('a.open-tweet').stop().css('opacity', 1);
+	}
 
-function hideTwitterLink() {
-    $(this).find('a.open-tweet').animate({opacity:0}, 'fast');
-}
+	function hideTwitterLink() {
+	    $(this).find('a.open-tweet').animate({opacity:0}, 'fast');
+	}
 
-$(document).ready(function() {
-    $('#recent-activity li a.open-tweet').css('opacity', 0);
-    $('#recent-activity li').mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
-});
+	$(document).ready(function() {
+	    $('#recent-activity li a.open-tweet').css('opacity', 0);
+	    $('#recent-activity li').mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
 
-function simulateRecentActivityUpdate() {
-    var newElement = $('<li><div class="image-wrapper"><a href="#"><img alt="avatar" src="@{'/public/images/avatars/vaimiti.jpg'}"></a></div><div class="right-column"><div class="date">1 day ago</div><div class="content"><a href="#" class="username">Vaimiti</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl<a href="#" class="open-tweet" style="opacity: 0;"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a></div></div></li>');
-    newElement.mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
-    newElement.hide().prependTo('#recent-activity ul#activities').slideDown('slow');
-    $('#recent-activity li:last').slideUp('slow', function() {
-        $(this).remove();
-    });
+	    var lastFetchedMessage = 0;
+
+	    $('#moreButton').click(function() {
+	        $.ajax({
+	                url: 'mock/photos.json',
+	                contentType: 'application/json; charset=utf-8',
+	                dataType: 'json',
+	                data: '{"lastId":'+lastFetchedMessage+'"}',
+	                success: morePhoto
+	        });
+	        return false;
+	    });
     
-}
-</script>
+	    $('#new-photo-bar').click(function() {
+	        $.ajax({
+	                url: 'mock/photos.json',
+	                contentType: 'application/json; charset=utf-8',
+	                dataType: 'json',
+	                data: '{"lastId":'+lastFetchedMessage+'"}',
+	                success: newPhoto
+	        });
+	        return false;
+	    });
+    
+	});
+
+	function simulateRecentActivityUpdate() {
+	    var newElement = $('<li><div class="image-wrapper"><a href="#"><img alt="avatar" src="images/avatars/vaimiti.jpg"></a></div><div class="right-column"><div class="date">1 day ago</div><div class="content"><a href="#" class="username">Vaimiti</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl<a href="#" class="open-tweet" style="opacity: 0;"><img alt="open twitter" src="images/twitter-small.png"></a></div></div></li>');
+	    newElement.mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
+	    newElement.hide().prependTo('#recent-activity ul#activities').slideDown('slow');
+	    $('#recent-activity li:last').slideUp('slow', function() {
+	        $(this).remove();
+	    });
+    
+	}
+
+	function morePhoto(json) {
+	    $.each(json.photos,function(i,photo){
+	       $("#photos").append('<div class="photo-item new-item"> <div class="photo"> <a href="photo-details.html"> <img alt="photo"src="'+photo.url+'"></a></div><a href="#" class="poster">'+photo.poster+'</a><p>'+photo.text+'</p></div>')
+	    });
+	    $('#photos').find(".new-item").slideDown("slow");
+	}
+
+	function newPhoto(json) {
+	    $.each(json.photos,function(i,photo){
+	       $("#photos").prepend('<div class="photo-item new-item"> <div class="photo"> <a href="photo-details.html"> <img alt="photo"src="'+photo.url+'"></a></div><a href="#" class="poster">'+photo.poster+'</a><p>'+photo.text+'</p></div>')
+	    });
+	    $('#photos').find(".new-item").slideDown("slow");
+	}
+	</script>
 #{/set}
 
-<div id="body" class="common-content">
-    <h1>${gallery.name}</h1>
-    <div id="album-date">${gallery.dateCreated.format('EEEE, dd MMMM yyyy')}</div>
-    <div id="album-hashtag">#${gallery.hashtag}</div>
-    <h3>A gallery by <a href="@{Users.galleries(gallery.user.username)}">${gallery.user.username}</a></h3>
-    <div id="album-info-column-container">
-        <div id="album-info-column-left">
-            <!-- 255 characters -->
-            <div id="album-description">
-                ${gallery.description.nl2br()}
-            </div>
-            <ul id="photos">
-                #{list photos, as:'photo'}
-                <li>
-                    <a href="photo-details.html">
-                        <img alt="photo" src="${photo.thumbImageUrl}">
-                    </a>
-                </li>
-                #{/list}
-            </ul>
-            <div id="pagination">
-                <ul>
-                    <li class="prev-nav"><span class="disabled padded">← prev</span></li>
-                    <li><span class="current-page padded">1</span></li>
-                    <li><a href="#" class="padded">2</a></li>
-                    <li><a href="#" class="padded">3</a></li>
-                    <li><a href="#" class="padded">4</a></li>
-                    <li><a href="#" class="padded">5</a></li>
-                    <li class="next-nav"><a href="#" class="padded">next →</a></li>
-                </ul>
-            </div>
-        </div>
-        <div id="recent-activity">
-            <div class="title">Recent activity <a href="javascript:void(0)" style="color: white;" onclick="simulateRecentActivityUpdate()">[Refresh]</a> <span class="count">320</span></div>
-            <div class="nipple"></div>
-            <ul id="activities">
-                <li>
-                    <div class="image-wrapper">
-                        <a href="#">
-                            <img alt="avatar" src="@{'/public/images/avatars/vaimiti.jpg'}">
-                        </a>
-                    </div>
-                    <div class="right-column">
-                        <div class="date">1 day ago</div>
-                        <div class="content">
-                            <a href="#" class="username">Vaimiti</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl
-                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="image-wrapper">
-                        <a href="#">
-                            <img alt="avatar" src="@{'/public/images/avatars/bozzie.jpg'}">
-                        </a>
-                    </div>
-                    <div class="right-column">
-                        <div class="date">1 day ago</div>
-                        <div class="content">
-                            <a href="#" class="username">Bozzie</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non
-                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="image-wrapper">
-                        <a href="#">
-                            <img alt="avatar" src="@{'/public/images/avatars/meat-bingo.jpg'}">
-                        </a>
-                    </div>
-                    <div class="right-column">
-                        <div class="date">1 day ago</div>
-                        <div class="content">
-                            <a href="#" class="username">meatbingo</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl
-                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="image-wrapper">
-                        <a href="#">
-                            <img alt="avatar" src="@{'/public/images/avatars/leslie.jpg'}">
-                        </a>
-                    </div>
-                    <div class="right-column">
-                        <div class="date">1 day ago</div>
-                        <div class="content">
-                            <a href="#" class="username">meatbingo</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="image-wrapper">
-                        <a href="#">
-                            <img alt="avatar" src="@{'/public/images/avatars/sonny-chavez.jpg'}">
-                        </a>
-                    </div>
-                    <div class="right-column">
-                        <div class="date">1 day ago</div>
-                        <div class="content">
-                            <a href="#" class="username">meatbingo</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl
-                            <a href="#" class="open-tweet"><img alt="open twitter" src="@{'/public/images/twitter-small.png'}"></a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+             <h1>Google Developer Day 2011</h1>
+             <div id="album-date">Thursday, 30 June 2011</div>
+             <div id="album-hashtag">#devday2011</div>
+             <h3>An album by <a href="user-page.html">Bozzie Bozzo</a></h3>
+             <div id="album-info-column-container">
+                 <div id="album-info-column-left">
+                     <!-- 255 characters -->
+                     <div id="album-description">
+                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a placerat libero hendrerit. Aliquam ut risus quis quam luctus porttitor eu et nisl. Nunc pharetra ultricies mattis. Mae</p>
+                     </div>
+                     <div id="new-photo-bar" style="">2 new tweets</div>
+                     <div id="photos">
+										#{list photos, as:'photo'}
+                         <div class="photo-item">
+                             <div class="photo">
+                                 <a href="photo-details.html">
+                                     <img alt="photo" src="${photo.thumbImageUrl}">
+                                 </a>
+                             </div>
+                             <a href="#" class="poster">@aviandri</a>
+                             <p>When you're a writer and you find many typo in your tweet, it is such a torture</p>
+                         </div>
+										#{/list}
+                     
+
+                     </div>
+                     <div class="more">
+                         <a href="#"  id="moreButton" class="button blue" data-page="2">More</a>
+                     </div>
+
+                 </div>
+             </div>
+

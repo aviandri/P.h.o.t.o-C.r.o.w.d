@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import play.Logger;
 import play.Play;
 import play.libs.OAuth;
 import play.libs.OAuth.Response;
@@ -50,6 +51,7 @@ public class Secure extends Controller {
                             accessTokenResp.token, 
                             accessTokenResp.secret).get().getJson();
             JsonObject jsonObj = json.getAsJsonObject();
+            Logger.debug(jsonObj.toString());
             Long twitterId = jsonObj.getAsJsonPrimitive("id").getAsLong();
             String username = jsonObj.getAsJsonPrimitive("screen_name").getAsString();
             
