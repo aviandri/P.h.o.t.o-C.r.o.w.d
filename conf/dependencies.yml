@@ -3,5 +3,6 @@
 require:
     - play
     - play -> db 1.1.1
+    - play -> paginate head
     - net.htmlparser.jericho -> jericho-html 3.2:
         transitive: false

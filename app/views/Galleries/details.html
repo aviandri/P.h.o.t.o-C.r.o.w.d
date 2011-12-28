@@ -22,24 +22,25 @@
 	    $('#recent-activity li').mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
 
 	    var lastFetchedMessage = 0;
+			var galleryId = $("#gallery").attr("data-galleryid");
 
 	    $('#moreButton').click(function() {
+					var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
 	        $.ajax({
-	                url: 'mock/photos.json',
+	                url: '1/photos/older?startId='+lastPhotoId,
 	                contentType: 'application/json; charset=utf-8',
 	                dataType: 'json',
-	                data: '{"lastId":'+lastFetchedMessage+'"}',
 	                success: morePhoto
 	        });
 	        return false;
 	    });
     
 	    $('#new-photo-bar').click(function() {
+					var firstPhotoId = $(".photo-item").length > 0 ? $(".photo-item").first().attr("data-id") : 0;			
 	        $.ajax({
-	                url: 'mock/photos.json',
+	                url: '1/photos/newer?lastId='+firstPhotoId,
 	                contentType: 'application/json; charset=utf-8',
 	                dataType: 'json',
-	                data: '{"lastId":'+lastFetchedMessage+'"}',
 	                success: newPhoto
 	        });
 	        return false;
@@ -47,32 +48,23 @@
     
 	});
 
-	function simulateRecentActivityUpdate() {
-	    var newElement = $('<li><div class="image-wrapper"><a href="#"><img alt="avatar" src="images/avatars/vaimiti.jpg"></a></div><div class="right-column"><div class="date">1 day ago</div><div class="content"><a href="#" class="username">Vaimiti</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a pl<a href="#" class="open-tweet" style="opacity: 0;"><img alt="open twitter" src="images/twitter-small.png"></a></div></div></li>');
-	    newElement.mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
-	    newElement.hide().prependTo('#recent-activity ul#activities').slideDown('slow');
-	    $('#recent-activity li:last').slideUp('slow', function() {
-	        $(this).remove();
-	    });
-    
-	}
 
 	function morePhoto(json) {
 	    $.each(json.photos,function(i,photo){
-	       $("#photos").append('<div class="photo-item new-item"> <div class="photo"> <a href="photo-details.html"> <img alt="photo"src="'+photo.url+'"></a></div><a href="#" class="poster">'+photo.poster+'</a><p>'+photo.text+'</p></div>')
+	       $("#photos").append('<div class="photo-item" data-id="'+photo.id+'"> <div class="photo"> <a href="photo-details.html"> <img alt="photo"src="'+photo.image_thumb+'"></a></div><a href="#" class="poster">'+photo.poster+'</a><p>'+photo.tweet_text+'</p></div>')
 	    });
 	    $('#photos').find(".new-item").slideDown("slow");
 	}
 
 	function newPhoto(json) {
 	    $.each(json.photos,function(i,photo){
-	       $("#photos").prepend('<div class="photo-item new-item"> <div class="photo"> <a href="photo-details.html"> <img alt="photo"src="'+photo.url+'"></a></div><a href="#" class="poster">'+photo.poster+'</a><p>'+photo.text+'</p></div>')
+	       $("#photos").prepend('<div class="photo-item" data-id="'+photo.id+'"> <div class="photo"> <a href="photo-details.html"> <img alt="photo"src="'+photo.image_thumb+'"></a></div><a href="#" class="poster">'+photo.poster+'</a><p>'+photo.tweet_text+'</p></div>')
 	    });
 	    $('#photos').find(".new-item").slideDown("slow");
 	}
 	</script>
 #{/set}
-
+			<article id="gallery" data-galleryid="${gallery.id}">
              <h1>Google Developer Day 2011</h1>
              <div id="album-date">Thursday, 30 June 2011</div>
              <div id="album-hashtag">#devday2011</div>
@@ -86,7 +78,7 @@
                      <div id="new-photo-bar" style="">2 new tweets</div>
                      <div id="photos">
 										#{list photos, as:'photo'}
-                         <div class="photo-item">
+                         <div class="photo-item" data-id="${photo.id}">
                              <div class="photo">
                                  <a href="photo-details.html">
                                      <img alt="photo" src="${photo.thumbImageUrl}">
@@ -95,9 +87,7 @@
                              <a href="#" class="poster">@aviandri</a>
                              <p>When you're a writer and you find many typo in your tweet, it is such a torture</p>
                          </div>
-										#{/list}
-                     
-
+										#{/list}                     
                      </div>
                      <div class="more">
                          <a href="#"  id="moreButton" class="button blue" data-page="2">More</a>
@@ -105,4 +95,5 @@
 
                  </div>
              </div>
+			</article>
 

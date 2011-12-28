@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -31,5 +33,12 @@ public class Photo extends Model {
     
     @Column(name = "reference_id", nullable = false)
     public Long referenceId;
+    
+    
+    public static List<Photo> findByGallery(Gallery gallery, Long startId, Long endId, int limit){
+    	startId  = startId > 0 ? startId : 0;
+    	endId = endId > 0 ? endId : startId + 50;
+    	return Photo.find("gallery = ? AND id > ? AND id < ? order by id DESC", gallery, startId, endId).fetch(limit);    	
+    }
 
 }
