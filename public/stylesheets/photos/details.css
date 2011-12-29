@@ -1,0 +1,129 @@
+a {
+    color: #3366cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.date {
+    color: #9b9b9b;
+}
+
+a#go-to-album {
+    background-color: #3366cc;
+    color: white;
+    
+    padding: 5px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+a#go-to-album:hover {
+    text-decoration: none;
+    text-shadow: 0 0 5px white;
+}
+
+div#poster-avatar.avatar-frame {
+    width: 50px;
+    height: 50px;
+}
+
+div.avatar-frame img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+a.poster {
+    font-weight: bold;
+}
+
+#left-column-poster-avatar {
+    float: left;
+}
+
+#right-column-main {
+    margin-left: 60px;
+}
+
+#photo-content {
+    /*
+    background-color: gray;
+    width: 700px;
+    height: 500px;
+    */
+}
+
+#photo-content img {
+    max-width: 700px;
+    max-height: 500px;
+    margin: 20px 0;
+}
+
+ul#photo-comments {
+    list-style-type: none;
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+ul#photo-comments li {
+    padding: 10px;
+    width: 500px;
+    float: left;
+    clear: left;
+    border-bottom: 1px dotted #cccccc;
+}
+
+ul#photo-comments li:first-child {
+    border-top: 1px dotted #cccccc;
+}
+
+#photo-comments .avatar-frame {
+    width: 35px;
+    height: 35px;
+    position: relative;
+}
+
+#photo-comments .avatar-frame img {
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#photo-comments .avatar-frame {
+    float: left;
+}
+
+#photo-comments .content {
+    margin-left: 45px;
+}
+
+#comment-form {
+    clear: left;
+    padding: 10px 0;
+    width: 520px;
+}
+
+#comment-form textarea {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 7px;
+    margin: 0;
+    width: 504px;
+    height: 50px;
+}
+
+#comment-form textarea:hover {
+    border-color: gray;
+}
+
+#comment-form-control {
+    text-align: right;
+}

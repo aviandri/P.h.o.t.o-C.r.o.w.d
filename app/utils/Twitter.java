@@ -11,6 +11,7 @@ import play.libs.WS.HttpResponse;
 import play.libs.WS.WSRequest;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
@@ -22,6 +23,16 @@ public class Twitter {
     
     public static TwitterQuery query(String query) {
         return new TwitterQuery(query);
+    }
+    
+    public static TwitterUser getTwitterUser(Long twitterId){
+    	WSRequest req = WS.url("http://api.twitter.com/1/users/show.json").setParameter("user_id", twitterId);
+    	HttpResponse res = req.get();
+    	JsonElement result = res.getJson();
+//    	if(result.getAsJsonObject().get("error") == null){
+//    		return null;
+//    	}
+    	return new TwitterUser(result);
     }
     
     public static class TwitterQuery {
@@ -251,5 +262,17 @@ public class Twitter {
         public Integer getStatus() {
             return status;
         }
+    }
+    
+    public static class TwitterUser{
+    	private JsonElement userElement;
+    	
+    	public TwitterUser(JsonElement element){
+    		this.userElement = element;
+    	}
+    	
+    	public String getProfileImageUrl(){
+    		return this.userElement.getAsJsonObject().get("profile_image_url").getAsString();
+    	}
     }
 }
