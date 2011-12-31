@@ -47,8 +47,10 @@
                         <div id="user-menu">
                             <ul>
                                 <li><a href="@{Users.myGalleries()}">My Galleries</a></li>
+                                #{if play.Play.mode.dev}
                                 <li><a href="#">Settings</a></li>
                                 <li><a href="#">Help</a></li>
+                                #{/if}
                                 <li><a href="@{Secure.signOut()}">Sign out</a></li>
                             </ul>
                         </div>
@@ -63,9 +65,11 @@
 	        <div id="footer" class="common-wrapper">
 	            <div class="common-content">
 	                <ul>
+                        #{if play.Play.mode.dev}
 	                    <li><a href="#">About</a></li>
 	                    <li><a href="#">Help</a></li>
-	                    <li>&copy; Photo Crowd</li>
+                        #{/if}
+	                    <li>&copy; Photo Crowd 2011 - 2021</li>
 	                </ul>
 	            </div>
 	        </div>

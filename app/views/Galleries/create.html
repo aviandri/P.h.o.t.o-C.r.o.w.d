@@ -1,5 +1,5 @@
 #{extends 'main.html'/}
-#{set title:'PhotoCrowd - Create Gallery'/}
+#{set title:'Create Crowd'/}
 
 #{set 'moreStyles'}
 <link rel="stylesheet" media="screen" type="text/css" href="@{'/public/javascripts/datepicker/css/datepicker.css'}" />
@@ -61,7 +61,7 @@ $(document).ready(function() {
 
 <div id="welcome">
     Time to set the crowd.<br/>
-    <em>Create your photo gallery right now.</em>
+    <em>Create your photo crowd gallery right now.</em>
 </div>
 #{form @Galleries.save()}
     <div class="field">
@@ -74,7 +74,7 @@ $(document).ready(function() {
                 <span class="ok">What a great name</span>
             #{/elseif}
             #{else}
-                <span class="hint">Enter the gallery name</span>
+                <span class="hint">Enter the crowd name</span>
             #{/else}
         </div>
     </div>
@@ -116,7 +116,7 @@ $(document).ready(function() {
                 <span class="ok">Valid hashtag</span>
             #{/elseif}
             #{else}
-                <span class="hint">The hashtag that describe the event?</span>
+                <span class="hint">The hashtag that describe the crowd?</span>
             #{/else}
         </div>
     </div>
@@ -144,9 +144,9 @@ $(document).ready(function() {
                 <span class="ok">Fine</span>
             #{/elseif}
             #{else}
-                <span class="hint">Short description about the gallery</span>
+                <span class="hint">Short description about the crowd</span>
             #{/else}
         </div>
     </div>
-    <input type="submit" value="Create gallery"/>
+    <input type="submit" value="Bring the crowd!"/>
 #{/form}
