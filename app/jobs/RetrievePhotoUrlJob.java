@@ -1,5 +1,7 @@
 package jobs;
 
+import java.util.Date;
+
 import models.Gallery;
 import models.Photo;
 import models.User;
@@ -20,14 +22,16 @@ public class RetrievePhotoUrlJob extends Job<Void> {
     private Long posterId;
     private String tweetText;
     private long referenceId;
+    private Date tweetDate;
 
-    public RetrievePhotoUrlJob(Gallery gallery, PhotoResource tweetPhoto, Long posterId,
-            String tweetText, long referenceId) {
+    public RetrievePhotoUrlJob(Gallery gallery, PhotoResource tweetPhoto,
+            Long posterId, String tweetText, long referenceId, Date tweetDate) {
         this.gallery = gallery;
         this.photoResource = tweetPhoto;
         this.posterId = posterId;
         this.tweetText = tweetText;
         this.referenceId = referenceId;
+        this.tweetDate = tweetDate;
     }
 
     public void doJob() throws Exception {
@@ -47,6 +51,7 @@ public class RetrievePhotoUrlJob extends Job<Void> {
         photo.message = tweetText;
         photo.gallery = gallery;
         photo.referenceId = referenceId;
+        photo.referenceDate = tweetDate;
         
         photo.save();
     }

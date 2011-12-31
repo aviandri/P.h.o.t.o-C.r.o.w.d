@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -45,6 +46,9 @@ public class Photo extends Model {
     
     @Column(name = "reference_id", nullable = false)
     public Long referenceId;
+    
+    @Column(name = "reference_date", nullable = false)
+    public Date referenceDate;
     
     public boolean hasExpired() {
         return hasExpired(System.currentTimeMillis());
