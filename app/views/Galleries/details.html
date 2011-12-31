@@ -8,7 +8,8 @@
 
 #{set 'moreScripts'}
 	<script type="text/javascript">
-
+	var showPhotoDetailsAction = #{jsAction @Photos.details(':id') /}
+    
 	function showTwitterLink() {
 	    $(this).find('a.open-tweet').stop().css('opacity', 1);
 	}
@@ -51,14 +52,14 @@
 
 	function morePhoto(json) {
 	    $.each(json.photos,function(i,photo){
-	       $("#photos").append('<div class="photo-item" data-id="'+photo.id+'"> <div class="photo"> <a href="photo-details.html"> <img alt="photo"src="'+photo.image_thumb+'"></a></div><a href="#" class="poster">'+photo.poster+'</a><p>'+photo.tweet_text+'</p></div>')
+	        $("#photos").append('<div class="photo-item" data-id="' + photo.id + '"> <div class="photo"> <a href="' + showPhotoDetailsAction({id:photo.id}) + '"> <img alt="photo"src="'+photo.image_thumb+'"></a></div><a href="http://twitter.com/#!/' + photo.poster + '" class="poster">'+photo.poster+'</a><p>'+photo.tweet_text+'</p></div>')
 	    });
 	    $('#photos').find(".new-item").slideDown("slow");
 	}
 
 	function newPhoto(json) {
 	    $.each(json.photos,function(i,photo){
-	       $("#photos").prepend('<div class="photo-item" data-id="'+photo.id+'"> <div class="photo"> <a href="photo-details.html"> <img alt="photo"src="'+photo.image_thumb+'"></a></div><a href="#" class="poster">'+photo.poster+'</a><p>'+photo.tweet_text+'</p></div>')
+	       $("#photos").prepend('<div class="photo-item" data-id="' + photo.id + '"> <div class="photo"> <a href="' + showPhotoDetailsAction({id:photo.id}) + '"> <img alt="photo"src="'+photo.image_thumb+'"></a></div><a href="http://twitter.com/#!/' + photo.poster + '" class="poster">'+photo.poster+'</a><p>'+photo.tweet_text+'</p></div>')
 	    });
 	    $('#photos').find(".new-item").slideDown("slow");
 	}
