@@ -72,22 +72,26 @@
              <div id="album-info-column-container">
                  <div id="album-info-column-left">
                      <!-- 255 characters -->
+                     #{if gallery.description}
                      <div id="album-description">
-                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta dapibus diam non mattis. Nunc aliquam lorem euismod dui viverra a placerat libero hendrerit. Aliquam ut risus quis quam luctus porttitor eu et nisl. Nunc pharetra ultricies mattis. Mae</p>
+                         <p>${photo.album.description}</p>
                      </div>
+                     #{/if}
+                     <!--
                      <div id="new-photo-bar" style="">2 new tweets</div>
+                     -->
                      <div id="photos">
-										#{list photos, as:'photo'}
+						#{list photos, as:'photo'}
                          <div class="photo-item" data-id="${photo.id}">
                              <div class="photo">
-                                 <a href="/photos/details/1">
+                                 <a href="@{Photos.details(photo.id)}">
                                      <img alt="photo" src="${photo.thumbImageUrl}">
                                  </a>
                              </div>
-                             <a href="#" class="poster">@aviandri</a>
-                             <p>When you're a writer and you find many typo in your tweet, it is such a torture</p>
+                             <a href="#" class="poster">@${photo.poster.username}</a>
+                             <p>${photo.message}</p>
                          </div>
-										#{/list}                     
+						#{/list}                     
                      </div>
                      <div class="more">
                          <a href="#"  id="moreButton" class="button blue" data-page="2">More</a>
