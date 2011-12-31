@@ -25,29 +25,6 @@ public class PhotoServices {
     }
     
     /**
-     * This will extract the photo resources from a tweet text.
-     * 
-     * @param tweet is the tweet text
-     * @return the photo resources.
-     */
-    @Deprecated
-    public static PhotoResource[] extractPhotoResource(String tweet) {
-        for (PhotoService service : photoServices.values()) {
-            Logger.debug("Using service %1s to search tweet: %2s", service.getClass().getName(), tweet);
-            String[] urls = service.findURL(tweet);
-            Logger.debug("Found %1s", Arrays.toString(urls));
-            if (urls != null) {
-                PhotoResource[] tweetPhotos = new PhotoResource[urls.length];
-                for (int i = 0; i < urls.length; i++) {
-                    tweetPhotos[i] = new PhotoResource(urls[i], service);
-                }
-                return tweetPhotos;
-            }
-        }
-        return null;
-    }
-    
-    /**
      * Filter the URLs to photo resources
      * 
      * @param urls is the URLs.
