@@ -1,5 +1,5 @@
 #{extends 'main.html'/}
-#{set title:'PhotoCloud - Photo Details'/}
+#{set title: "Crowd - " + photo.gallery.name/}
 
 #{set 'moreStyles'}
 	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/photos/details.css'}"/>
@@ -45,11 +45,11 @@
 #{/set}
 				<article id="photodetails" data-galleryid="${photo.gallery.id}" data-photoid="${photo.id}">
 				<div id="page-controls">
-					<a href="album-details.html" id="go-to-album">← Go to Album</a>
+					<a href="@{Galleries.details(photo.gallery.id)}" id="go-to-album">← Go to Gallery</a>
 				</div>
 				<div id="left-column-poster-avatar">
 					<div id="poster-avatar" class="avatar-frame">
-						<a href="#">
+						<a href="http://twitter.com/#!/${photo.poster.username}">
 							<img alt="avatar" src="${userImageUrl}"/>
 						</a>
 					</div>
@@ -57,7 +57,7 @@
 				<div id="right-column-main">
 					<div id="all-content">
 						<div id="content-meta-data">
-							<a href="#" class="poster">${photo.poster.username}</a> <span class="date">10 hours ago</span>
+							<a href="http://twitter.com/#!/${photo.poster.username}" class="poster">${photo.poster.username}</a> <span class="date">${photo.dateCreated.since()}</span>
 						</div>
 						<div id="user-content">
 							${photo.message}

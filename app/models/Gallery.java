@@ -77,4 +77,8 @@ public class Gallery extends Model {
         this.location = location;
         this.description = description;
     }
+    
+    public Photo photo() {
+        return Photo.findGalleryRepresentation(this);
+    }
 }

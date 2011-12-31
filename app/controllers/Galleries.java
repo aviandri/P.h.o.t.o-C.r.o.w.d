@@ -83,13 +83,13 @@ public class Galleries extends Controller {
     
     public static void details(Long galleryId) {    	
     	Gallery gallery = Gallery.findById(galleryId);
-    	List<Photo> photos = Photo.findByGallery(gallery, 0L, 100L, 10);        
+    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, 0L, 100L, 10);        
     	render(gallery, photos);
     }
     
     public static void getNewerPhoto(Long id, Long lastId){    	
     	Gallery gallery = Gallery.findById(id);
-    	List<Photo> photos = Photo.findByGallery(gallery, lastId, 0L, 10);
+    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, lastId, 0L, 10);
     	Map<String, Object> photoMap = new HashMap<String, Object>();
     	List<Object> photoList = new ArrayList<Object>();
     	Collections.reverse(photos);
@@ -108,7 +108,7 @@ public class Galleries extends Controller {
     
     public static void getOlderPhoto(Long id, Long startId){    	
     	Gallery gallery = Gallery.findById(id);
-    	List<Photo> photos = Photo.findByGallery(gallery, 0L, startId, 10);
+    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, 0L, startId, 10);
     	Map<String, Object> photoMap = new HashMap<String, Object>();
     	List<Object> photoList = new ArrayList<Object>();
     	for (Photo photo : photos) {    		

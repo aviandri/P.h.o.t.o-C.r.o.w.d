@@ -32,7 +32,7 @@ public class TwitgooPhotoService extends AbstractPhotoService {
         Document document = resp.getXml();
         String url = XPath.selectText("rsp/imageurl", document);
         String thumbUrl = XPath.selectText("rsp/thumburl", document);
-        return new ImageAndThumbnailUrlHolder(url, thumbUrl);
+        return new ImageAndThumbnailUrlHolder(photoUrl, url, thumbUrl);
     }
     
     public static String parseId(String twitgooUrl) {

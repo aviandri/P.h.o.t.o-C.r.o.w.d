@@ -39,12 +39,15 @@ public class RetrievePhotoUrlJob extends Job<Void> {
         }
         
         Photo photo = new Photo();
+        photo.originalUrl = imageUrlHolder.originalUrl;
         photo.fullImageUrl = imageUrlHolder.url;
         photo.thumbImageUrl = imageUrlHolder.thumbUrl;
+        photo.expires = imageUrlHolder.expires;
         photo.poster = User.findById(posterId);
         photo.message = tweetText;
         photo.gallery = gallery;
         photo.referenceId = referenceId;
+        
         photo.save();
     }
 

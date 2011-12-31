@@ -14,7 +14,7 @@ public class LockerzPhotoService extends AbstractPhotoService {
     
     @Override
     public ImageAndThumbnailUrlHolder grab(String photoUrl) {
-        return new ImageAndThumbnailUrlHolder(
+        return new ImageAndThumbnailUrlHolder(photoUrl, 
                 "http://api.plixi.com/api/tpapi.svc/imagefromurl?url=" + photoUrl + "&size=large", 
                 "http://api.plixi.com/api/tpapi.svc/imagefromurl?url=" + photoUrl + "&size=small");
     }

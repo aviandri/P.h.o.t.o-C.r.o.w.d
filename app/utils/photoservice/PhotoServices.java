@@ -49,6 +49,15 @@ public class PhotoServices {
         return null;
     }
     
+    public static PhotoResource photoResource(String url) {
+        for (PhotoService service : photoServices.values()) {
+            if (service.recognize(url)) {
+                return new PhotoResource(url, service);
+            }
+        }
+        return null;
+    }
+    
 
     /**
      * Return all the search keys from the available photo services.

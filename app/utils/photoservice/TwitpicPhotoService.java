@@ -37,7 +37,14 @@ public class TwitpicPhotoService extends AbstractPhotoService {
             return null;
         }
         
-        return new ImageAndThumbnailUrlHolder(imageUrl, thumbnailUrl);
+        try {
+            long expires = extractExpiresToTimestamp(imageUrl);
+            return new ImageAndThumbnailUrlHolder(photoUrl, imageUrl, thumbnailUrl, expires);
+        } catch (IllegalArgumentException e) {
+            Logger.warn("Photo %1s doesn't contains expiry time", photoUrl);
+        }
+        
+        return new ImageAndThumbnailUrlHolder(photoUrl, imageUrl, thumbnailUrl);
     }
     
     private static String grabImageUrl(String photoUrl) {
