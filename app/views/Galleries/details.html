@@ -65,9 +65,9 @@
 	</script>
 #{/set}
 			<article id="gallery" data-galleryid="${gallery.id}">
-             <h1>Google Developer Day 2011</h1>
-             <div id="album-date">Thursday, 30 June 2011</div>
-             <div id="album-hashtag">#devday2011</div>
+             <h1>${gallery.name}</h1>
+             <div id="album-date">${gallery.dateCreated.format("EEEE, dd MMMM yyyy")}</div>
+             <div id="album-hashtag">#${gallery.hashtag}</div>
              <h3>An album by <a href="@{Users.galleries(gallery.user.username)}">${gallery.user.username}</a></h3>
              <div id="album-info-column-container">
                  <div id="album-info-column-left">
