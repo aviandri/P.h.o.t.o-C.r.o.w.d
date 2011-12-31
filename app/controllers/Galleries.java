@@ -16,7 +16,6 @@ import play.Logger;
 import play.data.binding.As;
 import play.data.validation.Match;
 import play.data.validation.Required;
-import play.modules.paginate.ModelPaginator;
 import play.mvc.Controller;
 import play.mvc.With;
 import controllers.Secure.Security;
