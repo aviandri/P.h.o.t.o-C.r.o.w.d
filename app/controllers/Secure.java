@@ -40,6 +40,11 @@ public class Secure extends Controller {
     }
     
     public static void authenticate() {
+        String deninedHash = params.get("denied");
+        if (deninedHash != null) {
+            Application.index();
+        }
+        
         if (OAuth.isVerifierResponse()) {
             Response accessTokenResp = OAuth.service(twitterServiceInfo)
                     .retrieveAccessToken(
