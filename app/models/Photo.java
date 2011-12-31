@@ -18,6 +18,8 @@ import utils.photoservice.PhotoServices.PhotoResource;
 
 @Entity
 public class Photo extends Model {
+    private static final int TEN_SECONDS = 10000;
+
     @ManyToOne
     @JoinColumn(name = "gallery_id")
     public Gallery gallery;
@@ -63,29 +65,8 @@ public class Photo extends Model {
     	endId = endId > 0 ? endId : startId + 50;
     	List<Photo> photos = Photo.find("gallery = ? AND id > ? AND id < ? order by id DESC", gallery, startId, endId).fetch(limit);
     	for (Photo photo : photos) {
-    	    if (photo.hasExpired(System.currentTimeMillis() + 10000)) {
-    	        PhotoResource res = PhotoServices.photoResource(photo.originalUrl);
-    	        if (res == null) {
-    	            Logger.warn("Cannot recognize the photo url %1s", photo.originalUrl);
-    	            continue;
-    	        }
-    	        
-    	        if (Logger.isDebugEnabled()) {
-    	            Logger.debug("Refreshing photo for %1s", photo.originalUrl);
-    	        }
-    	        ImageAndThumbnailUrlHolder holder = res.grab();
-    	        if (holder == null) {
-    	            Logger.warn("Failed getting the image and thumbnail for %1s", photo.originalUrl);
-    	            continue;
-    	        }
-    	        
-    	        if (Logger.isDebugEnabled()) {
-    	            Logger.debug("Saving new photo url for %1s", photo.originalUrl);
-    	        }
-    	        photo.fullImageUrl = holder.url;
-    	        photo.thumbImageUrl = holder.thumbUrl;
-    	        photo.expires = holder.expires;
-    	        photo.save();
+    	    if (photo.hasExpired(System.currentTimeMillis() + TEN_SECONDS)) {
+    	        revalidate(photo);
     	    }
     	}
     	return photos;
@@ -93,27 +74,39 @@ public class Photo extends Model {
     
     public static Photo findGalleryRepresentation(Gallery gallery) {
         Photo photo = Photo.find("gallery = ?", gallery).first();
-        if (photo != null && photo.hasExpired(System.currentTimeMillis() + 10000)) {
-            PhotoResource res = PhotoServices.photoResource(photo.originalUrl);
-            if (res == null) {
-                Logger.warn("Cannot recognize the photo url %1s", photo.originalUrl);
-                return photo;
-            }
-            
-            ImageAndThumbnailUrlHolder holder = res.grab();
-            if (holder == null) {
-                Logger.warn("Failed getting the image and thumbnail for %1s", photo.originalUrl);
-                return photo;
-            }
-            
-            if (Logger.isDebugEnabled()) {
-                Logger.debug("Saving new photo url for %1s", photo.originalUrl);
-            }
-            photo.fullImageUrl = holder.url;
-            photo.thumbImageUrl = holder.thumbUrl;
-            photo.expires = holder.expires;
-            photo.save();
+        if (photo != null && photo.hasExpired(System.currentTimeMillis() + TEN_SECONDS)) {
+            revalidate(photo);
         }
         return photo;
+    }
+    
+    public static Photo findByIdAndRevalidate(Long id) {
+        Photo photo = findById(id);
+        if (photo != null && photo.hasExpired(System.currentTimeMillis() + TEN_SECONDS)) {
+            revalidate(photo);
+        }
+        return photo;
+    }
+    
+    private static void revalidate(Photo photo) {
+        PhotoResource res = PhotoServices.photoResource(photo.originalUrl);
+        if (res == null) {
+            Logger.warn("Cannot recognize the photo url %1s", photo.originalUrl);
+            return;
+        }
+        
+        ImageAndThumbnailUrlHolder holder = res.grab();
+        if (holder == null) {
+            Logger.warn("Failed getting the image and thumbnail for %1s", photo.originalUrl);
+            return;
+        }
+        
+        if (Logger.isDebugEnabled()) {
+            Logger.debug("Saving new photo url for %1s", photo.originalUrl);
+        }
+        photo.fullImageUrl = holder.url;
+        photo.thumbImageUrl = holder.thumbUrl;
+        photo.expires = holder.expires;
+        photo.save();
     }
 }
