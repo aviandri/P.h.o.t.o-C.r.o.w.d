@@ -22,12 +22,15 @@ create table Photo (
     id bigint not null auto_increment,
     date_created datetime not null,
     date_updated datetime not null,
-    full_image_url varchar(500),
-    thumb_image_url varchar(500),
+    expires bigint,
+    full_image_url longtext,
     message varchar(255),
+    original_url longtext,
+    reference_date datetime not null,
+    reference_id bigint not null,
+    thumb_image_url longtext,
     gallery_id bigint,
     poster_id bigint not null,
-    reference_id bigint not null,
     primary key (id)
 );
 
@@ -83,4 +86,3 @@ drop table if exists Gallery;
 drop table if exists Photo;
 
 drop table if exists User;
-
