@@ -60,7 +60,7 @@
 							<a href="http://twitter.com/#!/${photo.poster.username}" class="poster">${photo.poster.username}</a> <span class="date">${photo.referenceDate.since()}</span>
 						</div>
 						<div id="user-content">
-							${photo.message}
+							${photo.message.linkify()}
 						</div>
 						<div id="photo-content">
 							<img alt="photo" src="${photo.fullImageUrl}"/>

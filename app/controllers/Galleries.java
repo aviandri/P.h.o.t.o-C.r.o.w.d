@@ -14,6 +14,7 @@ import play.data.validation.Match;
 import play.data.validation.Required;
 import play.mvc.Controller;
 import play.mvc.With;
+import utils.LinkifyExtensions;
 import controllers.Secure.Security;
 
 /**
@@ -94,7 +95,7 @@ public class Galleries extends Controller {
 			pMap.put("poster", photo.poster.username);
 			pMap.put("image_thumb", photo.thumbImageUrl);
 			pMap.put("image_full", photo.fullImageUrl);
-			pMap.put("tweet_text", photo.message);
+			pMap.put("message", photo.message);
 			pMap.put("id", photo.id);
 			photoList.add(pMap);
 		}
@@ -112,7 +113,7 @@ public class Galleries extends Controller {
 			pMap.put("poster", photo.poster.username);
 			pMap.put("image_thumb", photo.thumbImageUrl);
 			pMap.put("image_full", photo.fullImageUrl);
-			pMap.put("tweet_text", photo.message);
+			pMap.put("message", LinkifyExtensions.linkify(photo.message).toString());
 			pMap.put("id", photo.id);
 			photoList.add(pMap);
 		}
