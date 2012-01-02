@@ -28,7 +28,7 @@
 	    $('#moreButton').click(function() {
 					var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
 	        $.ajax({
-	                url: '1/photos/older?startId='+lastPhotoId,
+	                url: '${gallery.id}/photos/older?startId=' + lastPhotoId,
 	                contentType: 'application/json; charset=utf-8',
 	                dataType: 'json',
 	                success: morePhoto
@@ -39,7 +39,7 @@
 	    $('#new-photo-bar').click(function() {
 					var firstPhotoId = $(".photo-item").length > 0 ? $(".photo-item").first().attr("data-id") : 0;			
 	        $.ajax({
-	                url: '1/photos/newer?lastId='+firstPhotoId,
+	                url: '${gallery.id}/photos/newer?lastId=' + firstPhotoId,
 	                contentType: 'application/json; charset=utf-8',
 	                dataType: 'json',
 	                success: newPhoto
