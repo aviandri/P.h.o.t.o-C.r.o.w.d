@@ -72,7 +72,7 @@ public class Photo extends Model {
     	return photos;
     }
     
-    public static Photo findGalleryRepresentation(Gallery gallery) {
+    public static Photo findGallerySnap(Gallery gallery) {
         Photo photo = Photo.find("gallery = ?", gallery).first();
         if (photo != null && photo.hasExpired(System.currentTimeMillis() + TEN_SECONDS)) {
             revalidate(photo);
