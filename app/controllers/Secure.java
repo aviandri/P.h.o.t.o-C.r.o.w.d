@@ -54,8 +54,8 @@ public class Secure extends Controller {
     
     private static void check(Check check) throws Throwable {
         for(String profile : check.value()) {
-            if (profile.equals("admin") && Security.connectedIsAdmin()) {
-                unauthorized();
+            if (profile.equals("admin") && !Security.connectedIsAdmin()) {
+                forbidden("Restricted admin area");
             }
         }
     }
@@ -161,8 +161,8 @@ public class Secure extends Controller {
         }
         
         static boolean connectedIsAdmin() {
-            String connected = connected();
-            return "uudashr".equals(connected) || "andriavi".equals(connected);
+            User connectedUser = connectedUser();
+            return "andriavi".equals(connectedUser.username) || "uudashr".equals(connectedUser.username);
         }
     }
 }
