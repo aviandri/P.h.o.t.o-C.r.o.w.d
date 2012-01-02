@@ -1,0 +1,43 @@
+#{extends 'adminMain.html'/}
+#{set title:'Photos'/}
+
+<a href="@{admin.Galleries.index()}">Go to Galleries</a>
+<table>
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>ID</th>
+            <th>URL</th>
+            <th>Expires</th>
+            <th>Images</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        #{list photos, as:'photo'}
+        <tr>
+            <td>${photo_index}</td>
+            <td>${photo.id}</td>
+            <td><a href="${photo.originalUrl}">${photo.originalUrl}</a></td>
+            <td>
+                #{if photo.hasExpired()}
+                    ${new java.util.Date(photo.expires).since()}
+                #{/if}
+                #{elseif photo.expires}
+                    ${new java.util.Date(photo.expires).format("yyyy-MM-dd hh:mm:ss ZZZZZ")}
+                #{/elseif}
+                #{else}
+                    Never
+                #{/else}
+            </td>
+            <td><a href="${photo.thumbImageUrl}">[Thumbnail]</a> <a href="${photo.fullImageUrl}">[Full]</a></td>
+            <td>
+                #{form @admin.Photos.revalidate()}
+                    <input type="hidden" name="id" value="${photo.id}"/>
+                    <input type="submit" value="Revalidate"/>
+                #{/form}
+            </td>
+        </tr>
+        #{/list}
+    </tbody>
+</table>
