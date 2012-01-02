@@ -95,7 +95,7 @@ public class Galleries extends Controller {
 			pMap.put("poster", photo.poster.username);
 			pMap.put("image_thumb", photo.thumbImageUrl);
 			pMap.put("image_full", photo.fullImageUrl);
-			pMap.put("message", photo.message);
+			pMap.put("message", LinkifyExtensions.linkify(photo.message).toString());
 			pMap.put("id", photo.id);
 			photoList.add(pMap);
 		}
