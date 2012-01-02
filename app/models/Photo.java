@@ -90,18 +90,6 @@ public class Photo extends Model {
         return photos;
     }
     
-    public static List<Photo> findByGalleryAndRevalidate(Gallery gallery, Long startId, Long endId, int limit) {
-    	startId  = startId > 0 ? startId : 0;
-    	endId = endId > 0 ? endId : startId + 50;
-    	List<Photo> photos = Photo.find("gallery = ? AND id > ? AND id < ? ORDER BY id DESC", gallery, startId, endId).fetch(limit);
-    	for (Photo photo : photos) {
-    	    if (photo.hasExpired(System.currentTimeMillis() + TEN_SECONDS)) {
-    	        revalidate(photo);
-    	    }
-    	}
-    	return photos;
-    }
-    
     public static Photo findGallerySnap(Gallery gallery) {
         Photo photo = Photo.find("gallery = ?", gallery).first();
         if (photo != null && photo.hasExpired(System.currentTimeMillis() + TEN_SECONDS)) {
