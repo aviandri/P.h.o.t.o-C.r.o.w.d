@@ -85,7 +85,7 @@ public class Galleries extends Controller {
     
     public static void getNewerPhoto(Long id, Long lastId){    	
     	Gallery gallery = Gallery.findById(id);
-    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, lastId, 0L, 10);
+    	List<Photo> photos = Photo.findNewerByGalleryAndRevalidate(gallery, lastId, 10);
     	Map<String, Object> photoMap = new HashMap<String, Object>();
     	List<Object> photoList = new ArrayList<Object>();
     	Collections.reverse(photos);
