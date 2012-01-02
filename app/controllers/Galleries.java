@@ -1,18 +1,14 @@
 package controllers;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.JsonObject;
-
 import models.Gallery;
 import models.Photo;
-import play.Logger;
 import play.data.binding.As;
 import play.data.validation.Match;
 import play.data.validation.Required;
@@ -83,7 +79,7 @@ public class Galleries extends Controller {
     
     public static void details(Long galleryId) {    	
     	Gallery gallery = Gallery.findById(galleryId);
-    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, 0L, 100L, 10);        
+    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, 10);
     	render(gallery, photos);
     }
     
