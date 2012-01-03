@@ -25,7 +25,7 @@
             <div class="photo-frame">
                 <a href="@{Galleries.details(gallery.id)}">
                     %{
-                    photo = gallery.photo();
+                    photo = gallery.getSnapPhoto();
                     }%
                     #{if photo}
                     <img alt="photo" src="${photo.thumbImageUrl}"/>
@@ -35,7 +35,6 @@
             <div class="title"><a href="@{Galleries.details(gallery.id)}">${gallery.name}</a></div>
             <ul class="info">
                 <li>${gallery.photos.size()} photo${gallery.photos.pluralize()}</li>
-                *{<li>18 activities</li>}*
             </ul>
         </div>
         #{/list}

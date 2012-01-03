@@ -27,9 +27,8 @@
 
 	    $('#moreButton').click(function() {
 					var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
-					var galleryId = $("#gallery").attr("data-galleryid");
 	        $.ajax({
-	                url: galleryId+'/photos/older?startId='+lastPhotoId,
+	                url: '${gallery.id}/photos/older?startId=' + lastPhotoId,
 	                contentType: 'application/json; charset=utf-8',
 	                dataType: 'json',
 	                success: morePhoto
@@ -39,9 +38,8 @@
     
 	    $('#new-photo-bar').click(function() {
 					var firstPhotoId = $(".photo-item").length > 0 ? $(".photo-item").first().attr("data-id") : 0;			
-					var galleryId = $("#gallery").attr("data-galleryid");
 	        $.ajax({
-	                url: galleryId+'/photos/newer?lastId='+firstPhotoId,
+	                url: '${gallery.id}/photos/newer?lastId=' + firstPhotoId,
 	                contentType: 'application/json; charset=utf-8',
 	                dataType: 'json',
 	                success: newPhoto
@@ -54,14 +52,14 @@
 
 	function morePhoto(json) {
 	    $.each(json.photos,function(i,photo){
-	        $("#photos").append('<div class="photo-item" data-id="' + photo.id + '"> <div class="photo"> <a href="' + showPhotoDetailsAction({id:photo.id}) + '"> <img alt="photo"src="'+photo.image_thumb+'"></a></div><a href="http://twitter.com/#!/' + photo.poster + '" class="poster">'+photo.poster+'</a><p>'+photo.tweet_text+'</p></div>')
+	        $("#photos").append('<div class="photo-item" data-id="' + photo.id + '"> <div class="photo"> <a href="' + showPhotoDetailsAction({id:photo.id}) + '"> <img alt="photo"src="' + photo.image_thumb + '"></a></div><a href="http://twitter.com/#!/' + photo.poster + '" class="poster">' + photo.poster + '</a><p>' + photo.message + '</p></div>')
 	    });
 	    $('#photos').find(".new-item").slideDown("slow");
 	}
 
 	function newPhoto(json) {
 	    $.each(json.photos,function(i,photo){
-	       $("#photos").prepend('<div class="photo-item" data-id="' + photo.id + '"> <div class="photo"> <a href="' + showPhotoDetailsAction({id:photo.id}) + '"> <img alt="photo"src="'+photo.image_thumb+'"></a></div><a href="http://twitter.com/#!/' + photo.poster + '" class="poster">'+photo.poster+'</a><p>'+photo.tweet_text+'</p></div>')
+	       $("#photos").prepend('<div class="photo-item" data-id="' + photo.id + '"> <div class="photo"> <a href="' + showPhotoDetailsAction({id:photo.id}) + '"> <img alt="photo"src="' + photo.image_thumb + '"></a></div><a href="http://twitter.com/#!/' + photo.poster + '" class="poster">' + photo.poster + '</a><p>' + photo.message + '</p></div>')
 	    });
 	    $('#photos').find(".new-item").slideDown("slow");
 	}
@@ -80,10 +78,11 @@
                          <p>${gallery.description}</p>
                      </div>
                      #{/if}
-										 <div id="twitter-share"><img src="@{'/public/images/share-twitter.png'}"></div>
+                     <!--
                      <div id="new-photo-bar" style="">2 new tweets</div>
+                     -->
                      <div id="photos">
-											#{list photos, as:'photo'}
+						#{list photos, as:'photo'}
                          <div class="photo-item" data-id="${photo.id}">
                              <div class="photo">
                                  <a href="@{Photos.details(photo.id)}">
@@ -91,9 +90,9 @@
                                  </a>
                              </div>
                              <a href="http://twitter.com/#!/${photo.poster.username}" class="poster">@${photo.poster.username}</a>
-                             <p>${photo.message}</p>
+                             <p>${photo.message.linkify()}</p>
                          </div>
-										 #{/list}                     
+						#{/list}                     
                      </div>
                      <div class="more">
                          <a href="#"  id="moreButton" class="button blue" data-page="2">More</a>

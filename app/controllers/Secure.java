@@ -10,6 +10,8 @@ import play.libs.WS;
 import play.libs.WS.HttpResponse;
 import play.mvc.Before;
 import play.mvc.Controller;
+import play.mvc.Router;
+import play.mvc.Router.Route;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,7 +38,26 @@ public class Secure extends Controller {
             flash.put("url", "GET".equals(request.method) ? request.url : "/");
             authenticate();
         }
+        
+        // Checks
+        Check check = getActionAnnotation(Check.class);
+        if(check != null) {
+            check(check);
+        }
+        check = getControllerInheritedAnnotation(Check.class);
+        if(check != null) {
+            check(check);
+        }
+        
         renderArgs.put("loggedUser", Security.connectedUser());
+    }
+    
+    private static void check(Check check) throws Throwable {
+        for(String profile : check.value()) {
+            if (profile.equals("admin") && !Security.connectedIsAdmin()) {
+                forbidden("Restricted admin area");
+            }
+        }
     }
     
     public static void authenticate() {
@@ -80,6 +101,11 @@ public class Secure extends Controller {
             user.save();
             
             session.put("loggedUser.id", user.id);
+            
+            String url = flash.get("url");
+            if(url != null) {
+                redirect(url);
+            }
             Galleries.index();
         }
         
@@ -90,6 +116,7 @@ public class Secure extends Controller {
         
         session.put("twitter.secret", reqTokenResp.secret);
         session.put("twitter.token", reqTokenResp.token);
+        flash.keep("url");
         redirect(twitt.redirectUrl(reqTokenResp.token));
 
     }
@@ -121,12 +148,21 @@ public class Secure extends Controller {
             return session.get("loggedUser.id") != null;
         }
         
+        static String connected() {
+            return session.get("loggedUser.id");
+        }
+        
         static User connectedUser() {
-            String userId = session.get("loggedUser.id");
+            String userId = connected();
             if (userId == null) {
                 return null;
             }
             return User.findById(Long.valueOf(userId));
+        }
+        
+        static boolean connectedIsAdmin() {
+            User connectedUser = connectedUser();
+            return "andriavi".equals(connectedUser.username) || "uudashr".equals(connectedUser.username);
         }
     }
 }

@@ -1,0 +1,30 @@
+#{extends 'adminMain.html'/}
+#{set title:'Galleries'/}
+
+<table>
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Hashtag</th>
+            <th>Fetch Range</th>
+            <th>Found Photos</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody>
+        #{list galleries, as:'gallery'}
+        <tr>
+            <td>${gallery_index}</td>
+            <td>${gallery.id}</td>
+            <td><a href="@{admin.Galleries.details(gallery.id)}">${gallery.name}</a></td>
+            <td>${gallery.hashtag}</td>
+            <td>[${gallery.startDate}] - [${gallery.endDate}]</td>
+            <td>${gallery.photos.size()}</td>
+            <td>${gallery.state}</td>
+        </tr>
+        #{/list}
+    </tbody>
+</table>
+

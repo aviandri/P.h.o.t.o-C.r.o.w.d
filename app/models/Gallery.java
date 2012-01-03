@@ -78,7 +78,7 @@ public class Gallery extends Model {
         this.description = description;
     }
     
-    public Photo photo() {
-        return Photo.findGalleryRepresentation(this);
+    public Photo getSnapPhoto() {
+        return Photo.findGallerySnap(this);
     }
 }

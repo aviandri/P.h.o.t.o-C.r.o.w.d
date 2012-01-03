@@ -18,6 +18,8 @@ GET     /galleries/{id}/photos/older            Galleries.getOlderPhoto
 
 GET     /photos/details/{id}            		Photos.details
 
+GET     /admin                                  admin.Galleries.index
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
 

@@ -24,10 +24,10 @@ $(document).ready(function() {
 
 <div id="masonry-container">
     #{list galleries, as:'gallery'}
-        #{if gallery.photos}
-            %{
-            photo = gallery.photos.iterator().next();
-            }%
+        %{
+        photo = gallery.getSnapPhoto();
+        }%
+        #{if photo}
             <div class="box" onclick="document.location='@{Galleries.details(gallery.id)}'">
                 <img alt="photo" src="${photo.fullImageUrl}"/>
                 <div class="caption"><span>${gallery.name} | #${gallery.hashtag}</span></div>
