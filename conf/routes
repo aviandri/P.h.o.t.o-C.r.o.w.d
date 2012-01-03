@@ -16,7 +16,7 @@ GET     /galleries/{id}/photos/newer            Galleries.getNewerPhoto
 
 GET     /galleries/{id}/photos/older            Galleries.getOlderPhoto
 
-GET     /photos/details/{id}            				Photos.details
+GET     /photos/details/{id}            		Photos.details
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

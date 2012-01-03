@@ -83,7 +83,7 @@ public class Galleries extends Controller {
     
     public static void details(Long galleryId) {    	
     	Gallery gallery = Gallery.findById(galleryId);
-    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, 0L, 100L, 10);        
+    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, 0L, 100L, 3);        
     	render(gallery, photos);
     }
     

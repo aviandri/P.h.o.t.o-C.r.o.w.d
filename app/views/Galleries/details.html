@@ -27,8 +27,9 @@
 
 	    $('#moreButton').click(function() {
 					var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
+					var galleryId = $("#gallery").attr("data-galleryid");
 	        $.ajax({
-	                url: '1/photos/older?startId='+lastPhotoId,
+	                url: galleryId+'/photos/older?startId='+lastPhotoId,
 	                contentType: 'application/json; charset=utf-8',
 	                dataType: 'json',
 	                success: morePhoto
@@ -38,8 +39,9 @@
     
 	    $('#new-photo-bar').click(function() {
 					var firstPhotoId = $(".photo-item").length > 0 ? $(".photo-item").first().attr("data-id") : 0;			
+					var galleryId = $("#gallery").attr("data-galleryid");
 	        $.ajax({
-	                url: '1/photos/newer?lastId='+firstPhotoId,
+	                url: galleryId+'/photos/newer?lastId='+firstPhotoId,
 	                contentType: 'application/json; charset=utf-8',
 	                dataType: 'json',
 	                success: newPhoto
@@ -78,11 +80,10 @@
                          <p>${gallery.description}</p>
                      </div>
                      #{/if}
-                     <!--
+										 <div id="twitter-share"><img src="@{'/public/images/share-twitter.png'}"></div>
                      <div id="new-photo-bar" style="">2 new tweets</div>
-                     -->
                      <div id="photos">
-						#{list photos, as:'photo'}
+											#{list photos, as:'photo'}
                          <div class="photo-item" data-id="${photo.id}">
                              <div class="photo">
                                  <a href="@{Photos.details(photo.id)}">
@@ -92,7 +93,7 @@
                              <a href="http://twitter.com/#!/${photo.poster.username}" class="poster">@${photo.poster.username}</a>
                              <p>${photo.message}</p>
                          </div>
-						#{/list}                     
+										 #{/list}                     
                      </div>
                      <div class="more">
                          <a href="#"  id="moreButton" class="button blue" data-page="2">More</a>
