@@ -81,4 +81,8 @@ public class Gallery extends Model {
     public Photo getSnapPhoto() {
         return Photo.findGallerySnap(this);
     }
+    
+    public long countPhoto() {
+        return Photo.count("gallery = ?", this);
+    }
 }

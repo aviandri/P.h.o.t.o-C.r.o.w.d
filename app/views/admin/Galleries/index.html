@@ -21,7 +21,7 @@
             <td><a href="@{admin.Galleries.details(gallery.id)}">${gallery.name}</a></td>
             <td>${gallery.hashtag}</td>
             <td>[${gallery.startDate}] - [${gallery.endDate}]</td>
-            <td>${gallery.photos.size()}</td>
+            <td>${gallery.countPhoto()}</td>
             <td>${gallery.state}</td>
         </tr>
         #{/list}

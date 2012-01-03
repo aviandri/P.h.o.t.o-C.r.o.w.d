@@ -23,6 +23,7 @@ import controllers.Secure.Security;
  */
 @With(Secure.class)
 public class Galleries extends Controller {
+    private static final int PAGE_SIZE = 12;
     
     public static void index() {
         List<Gallery> galleries =  Gallery.findAll();
@@ -80,13 +81,13 @@ public class Galleries extends Controller {
     
     public static void details(Long galleryId) {    	
     	Gallery gallery = Gallery.findById(galleryId);
-    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, 10);
+    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, PAGE_SIZE);
     	render(gallery, photos);
     }
     
     public static void getNewerPhoto(Long id, Long lastId){    	
     	Gallery gallery = Gallery.findById(id);
-    	List<Photo> photos = Photo.findNewerByGalleryAndRevalidate(gallery, lastId, 10);
+    	List<Photo> photos = Photo.findNewerByGalleryAndRevalidate(gallery, lastId, PAGE_SIZE);
     	Map<String, Object> photoMap = new HashMap<String, Object>();
     	List<Object> photoList = new ArrayList<Object>();
     	Collections.reverse(photos);
@@ -105,7 +106,7 @@ public class Galleries extends Controller {
     
     public static void getOlderPhoto(Long id, Long startId){    	
     	Gallery gallery = Gallery.findById(id);
-    	List<Photo> photos = Photo.findOlderByGalleryAndRevalidate(gallery, startId, 10);
+    	List<Photo> photos = Photo.findOlderByGalleryAndRevalidate(gallery, startId, PAGE_SIZE);
     	Map<String, Object> photoMap = new HashMap<String, Object>();
     	List<Object> photoList = new ArrayList<Object>();
     	for (Photo photo : photos) {    		
