@@ -48,13 +48,30 @@
 	    });
     
 	});
-
+	
+	var alreadyLoading = false;
+	$(window).scroll(function() {
+	    if ($('body').height() <= ($(window).height() + $(window).scrollTop())) {
+					if(alreadyLoading == false){
+						var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
+						alreadyLoading == true;
+						$.ajax({
+		                url: '${gallery.id}/photos/older?startId=' + lastPhotoId,
+		                contentType: 'application/json; charset=utf-8',
+										beforeSend: function(){$('.more').show();},
+										complete: function(){$('.more').hide();},
+		                dataType: 'json',
+		                success: morePhoto
+		        });
+					}
+	    }
+	});
 
 	function morePhoto(json) {
-	    $.each(json.photos,function(i,photo){
+	   $.each(json.photos,function(i,photo){
 	        $("#photos").append('<div class="photo-item" data-id="' + photo.id + '"> <div class="photo"> <a href="' + showPhotoDetailsAction({id:photo.id}) + '"> <img alt="photo"src="' + photo.image_thumb + '"></a></div><a href="http://twitter.com/#!/' + photo.poster + '" class="poster">' + photo.poster + '</a><p>' + photo.message + '</p></div>')
 	    });
-	    $('#photos').find(".new-item").slideDown("slow");
+			alreadyLoading == false;
 	}
 
 	function newPhoto(json) {
@@ -63,6 +80,7 @@
 	    });
 	    $('#photos').find(".new-item").slideDown("slow");
 	}
+	
 	</script>
 #{/set}
 			<article id="gallery" data-galleryid="${gallery.id}">
@@ -100,7 +118,7 @@
 						#{/list}                     
                      </div>
                      <div class="more">
-                         <a href="#"  id="moreButton" class="button blue" data-page="2">More</a>
+                         <img src="@{'/public/images/ajax-loader.gif'}"/>
                      </div>
 
                  </div>
