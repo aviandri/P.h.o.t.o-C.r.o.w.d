@@ -19,7 +19,7 @@ public abstract class AbstractPhotoService implements PhotoService {
     private final Pattern urlPattern;
     
     public AbstractPhotoService(String searchKey, String urlPrefix) {
-        this.urlPattern = Pattern.compile(urlPrefix + "/\\w+(/\\w+)*");
+        this.urlPattern = Pattern.compile(urlPrefix + "/\\S+(/\\S+)*");
         this.searchKey = searchKey;
     }
 

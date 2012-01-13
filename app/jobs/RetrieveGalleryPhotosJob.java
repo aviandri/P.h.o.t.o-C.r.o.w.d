@@ -4,8 +4,10 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -211,7 +213,8 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
         
         JsonObject entitiesObject = tweetObject.getAsJsonObject("entities");
         JsonArray urlsObject = entitiesObject.getAsJsonArray("urls");
-        
+        JsonArray mediaObject = entitiesObject.getAsJsonArray("media");
+
         User user = User.findByTwitterId(twitterId);
         if (user == null) {
             user = new User(twitterId, username).save();
@@ -237,12 +240,22 @@ public class RetrieveGalleryPhotosJob extends Job<Void> {
         }
         
         // all URLs on the tweet
-        String[] urls = new String[urlsObject.size()];
-        for (int i = 0; i < urlsObject.size(); i++) {
-            String url = urlsObject.get(i).getAsJsonObject().getAsJsonPrimitive("expanded_url").getAsString();
-            urls[i] = url;
+        List<String> urlList = new ArrayList<String>();
+        if(urlsObject != null){
+        	for (JsonElement el : urlsObject) {
+                String url = el.getAsJsonObject().getAsJsonPrimitive("expanded_url").getAsString();
+                urlList.add(url);	
+    		}
+        }        
+        if(mediaObject != null){
+        	for (JsonElement el : mediaObject) {
+                String url = el.getAsJsonObject().getAsJsonPrimitive("media_url").getAsString();
+                urlList.add(url);
+            }
         }
         
+        String[] urls = new String[urlList.size()];
+        urls = urlList.toArray(urls);
         PhotoResource[] tweetPhotos = PhotoServices.filterToPhotoResources(urls);
         if (tweetPhotos != null) {
             Logger.debug("Found recognize url from tweet: %1s", tweetText);

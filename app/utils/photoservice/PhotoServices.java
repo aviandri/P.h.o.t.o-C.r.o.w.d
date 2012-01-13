@@ -21,6 +21,7 @@ public class PhotoServices {
         photoServices.put("lockerz", new LockerzPhotoService());
         photoServices.put("twitgoo", new TwitgooPhotoService());
         photoServices.put("twitpic", new TwitpicPhotoService());
+        photoServices.put("twitter", new TwitterPhotoService());
         
     }
     
@@ -37,7 +38,7 @@ public class PhotoServices {
                 Logger.debug("Using service %1s to check url: %2s", service.getClass().getName(), Arrays.toString(urls));
             }
             String[] filteredUrls = service.filter(urls);
-            Logger.debug("Found %1s", Arrays.toString(urls));
+            Logger.debug("Found %1s", Arrays.toString(filteredUrls));
             if (filteredUrls != null) {
                 PhotoResource[] tweetPhotos = new PhotoResource[filteredUrls.length];
                 for (int i = 0; i < filteredUrls.length; i++) {
