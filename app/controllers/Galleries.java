@@ -81,7 +81,7 @@ public class Galleries extends Controller {
     
     public static void details(Long galleryId) {    	
     	Gallery gallery = Gallery.findById(galleryId);
-    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, PAGE_SIZE);
+    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, PAGE_SIZE); 
     	render(gallery, photos);
     }
     

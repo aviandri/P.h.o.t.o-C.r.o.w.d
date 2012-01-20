@@ -19,6 +19,7 @@
 	}
 
 	$(document).ready(function() {
+		  $('#unpinlink').hide();
 	    $('#recent-activity li a.open-tweet').css('opacity', 0);
 	    $('#recent-activity li').mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
 
@@ -55,6 +56,25 @@
 								type: 'POST'
         });
 			});
+			$('#tweet-box').click(function(){
+				var width  = 575,
+				height = 400,
+        left   = ($(window).width()  - width)  / 2,
+        top    = ($(window).height() - height) / 2,
+        url    = this.href,
+        opts   = 'status=1' +
+                 ',width='  + width  +
+                 ',height=' + height +
+                 ',top='    + top    +
+                 ',left='   + left;
+						var url = "http://photocrowd.com:9000/galleries/details?galleryId=${gallery.id}";
+						var text = escape("come and see this cool crowd :");
+				    window.open("https://twitter.com/share?url="+url+"&text="+text, 'twitte', opts);
+				    return false;
+			});
+			
+			
+			
     
 	});
 	
@@ -95,8 +115,13 @@
 			<article id="gallery" data-galleryid="${gallery.id}">
              <h1>${gallery.name}</h1>
              <div id="album-date">${gallery.dateCreated.format("EEEE, dd MMMM yyyy")}</div>
-             <div id="album-hashtag">#${gallery.hashtag}</div>
-             <h3>A crowd by <a href="@{Users.galleries(gallery.user.username)}">${gallery.user.username}</a></h3>
+						 <div>
+             <div id="album-hashtag" style="float:left;">#${gallery.hashtag}</div>
+						 <button id="pinlink" class="minimal" style="float:right;margin-left:10px;hide:true;">Pin!</button>
+  					 <button id="unpinlink" class="minimal" style="float:right;margin-left:10px;">UnPin!</button>
+						 <button id="tweet-box" class="minimal" style="float:right">Tweet</button>
+						 </div>
+             <h3 style="clear:both;">A crowd by <a href="@{Users.galleries(gallery.user.username)}">${gallery.user.username}</a></h3>
              <div id="album-info-column-container">
                  <div id="album-info-column-left">
                      <!-- 255 characters -->
@@ -105,14 +130,6 @@
                          <p>${gallery.description}</p>
                      </div>
                      #{/if}
-										 	<div id="twitterContainer">		
-													<iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?size=large&text=Checkout%20this%20crowd%20at%20photocrowd" class="twitter-share-button twitter-count-none" title="Twitter Tweet Button" style="width:130px; height:20px;">														
-													</iframe>
-													<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-											</div>
-											<div id="pinlink">
-												<img src="@{'/public/images/location-plus.png'}">
-											</div>
                      <!--
                      <div id="new-photo-bar" style="">2 new tweets</div>
                      -->
