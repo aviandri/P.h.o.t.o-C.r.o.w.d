@@ -10,6 +10,8 @@
 	<script type="text/javascript">
 	showPhotoDetailsAction = #{jsAction @Photos.details(':id') /}
 	galleryDetailsAction = #{jsAction @Galleries.details(':galleryId') /};
+	pinGalleryAction = #{jsAction @Galleries.details(':galleryId') /};
+	pinRoute = #{jsRoute @Pins.createAjax(':galleryId', ':userId')/};
 	
     
 	function showTwitterLink() {
@@ -50,12 +52,13 @@
 	        return false;
 	    });
 			
+	    
 			$('#pinlink').click(function(){
 				$.ajax({
-				    url: '/pins/create?galleryId=${gallery.id}&userId=${loggedUser.id}',
+				    url: pinRoute.url({galleryId : ${gallery.id}, userId : ${loggedUser.id}}),
 				    contentType: 'application/json; charset=utf-8',
 				    dataType: 'json',
-				    type: 'POST'
+				    type: pinRoute.method
 				});
 			});
 			
