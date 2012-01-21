@@ -88,8 +88,8 @@
 						$.ajax({
 		                url: olderPhotosRoute.url({id : ${gallery.id}, startId : lastPhotoId}),
 		                contentType: 'application/json; charset=utf-8',
-										beforeSend: function(){$('.more').show();},
-										complete: function(){$('.more').hide();},
+						beforeSend: function(){$('.more').show();},
+						complete: function(){$('.more').hide();},
 		                dataType: 'json',
 		                type: olderPhotosRoute.method,
 		                success: morePhoto
