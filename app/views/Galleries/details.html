@@ -11,7 +11,7 @@
 	showPhotoDetailsAction = #{jsAction @Photos.details(':id') /}
 	galleryDetailsAction = #{jsAction @Galleries.details(':galleryId') /};
 	pinGalleryAction = #{jsAction @Galleries.details(':galleryId') /};
-	pinRoute = #{jsRoute @Pins.createAjax(':galleryId', ':userId')/};
+	pinRoute = #{jsRoute @Pins.createAjax(':galleryId')/};
 	
     
 	function showTwitterLink() {
@@ -55,7 +55,7 @@
 	    
 			$('#pinlink').click(function(){
 				$.ajax({
-				    url: pinRoute.url({galleryId : ${gallery.id}, userId : ${loggedUser.id}}),
+				    url: pinRoute.url({galleryId : ${gallery.id}}),
 				    contentType: 'application/json; charset=utf-8',
 				    dataType: 'json',
 				    type: pinRoute.method
