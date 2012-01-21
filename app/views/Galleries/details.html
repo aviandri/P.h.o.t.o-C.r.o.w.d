@@ -59,18 +59,18 @@
 			$('#tweet-box').click(function(){
 				var width  = 575,
 				height = 400,
-        left   = ($(window).width()  - width)  / 2,
-        top    = ($(window).height() - height) / 2,
-        url    = this.href,
-        opts   = 'status=1' +
+			    left   = ($(window).width()  - width)  / 2,
+			    top    = ($(window).height() - height) / 2,
+			    url    = this.href,
+			    opts   = 'status=1' +
                  ',width='  + width  +
                  ',height=' + height +
                  ',top='    + top    +
                  ',left='   + left;
-						var url = "http://photocrowd.com:9000/galleries/details?galleryId=${gallery.id}";
-						var text = escape("come and see this cool crowd :");
-				    window.open("https://twitter.com/share?url="+url+"&text="+text, 'twitte', opts);
-				    return false;
+			    var url = "http://photocrowd.com:9000/galleries/details?galleryId=${gallery.id}";
+			    var text = escape("come and see this cool crowd :");
+			    window.open("https://twitter.com/share?url="+url+"&text="+text, 'twitte', opts);
+			    return false;
 			});
 			
 			
@@ -78,6 +78,7 @@
     
 	});
 	
+	olderPhotosRoute = #{jsRoute @Galleries.getOlderPhoto(':id', ':startId') /};
 	var alreadyLoading = false;
 	$(window).scroll(function() {
 	    if ($('body').height() <= ($(window).height() + $(window).scrollTop())) {
@@ -85,11 +86,12 @@
 						var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
 						alreadyLoading == true;
 						$.ajax({
-		                url: '${gallery.id}/photos/older?startId=' + lastPhotoId,
+		                url: olderPhotosRoute.url({id : ${gallery.id}, startId : lastPhotoId}),
 		                contentType: 'application/json; charset=utf-8',
 										beforeSend: function(){$('.more').show();},
 										complete: function(){$('.more').hide();},
 		                dataType: 'json',
+		                type: olderPhotosRoute.method,
 		                success: morePhoto
 		        });
 					}
