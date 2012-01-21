@@ -35,7 +35,7 @@
             <div class="title"><a href="@{Galleries.details(gallery.id)}">${gallery.name}</a></div>
             <ul class="info">
                 %{ totalPhoto = gallery.countPhoto(); }%
-                <li>${totalPhoto} photo${totalPhoto}</li>
+                <li>${totalPhoto} photo${totalPhoto.pluralize()}</li>
             </ul>
         </div>
         #{/list}
