@@ -8,7 +8,9 @@
 
 #{set 'moreScripts'}
 	<script type="text/javascript">
-	var showPhotoDetailsAction = #{jsAction @Photos.details(':id') /}
+	showPhotoDetailsAction = #{jsAction @Photos.details(':id') /}
+	galleryDetailsAction = #{jsAction @Galleries.details(':galleryId') /};
+	
     
 	function showTwitterLink() {
 	    $(this).find('a.open-tweet').stop().css('opacity', 1);
@@ -50,12 +52,13 @@
 			
 			$('#pinlink').click(function(){
 				$.ajax({
-                url: '/pins/create?galleryId=${gallery.id}&userId=${loggedUser.id}',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-								type: 'POST'
-        });
+				    url: '/pins/create?galleryId=${gallery.id}&userId=${loggedUser.id}',
+				    contentType: 'application/json; charset=utf-8',
+				    dataType: 'json',
+				    type: 'POST'
+				});
 			});
+			
 			$('#tweet-box').click(function(){
 				var width  = 575,
 				height = 400,
@@ -67,7 +70,7 @@
                  ',height=' + height +
                  ',top='    + top    +
                  ',left='   + left;
-			    var url = "http://photocrowd.com:9000/galleries/details?galleryId=${gallery.id}";
+			    var url = galleryDetailsAction({galleryId : ${gallery.id}});
 			    var text = escape("come and see this cool crowd :");
 			    window.open("https://twitter.com/share?url="+url+"&text="+text, 'twitte', opts);
 			    return false;
