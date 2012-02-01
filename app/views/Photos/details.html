@@ -1,3 +1,4 @@
+
 #{extends 'main.html'/}
 #{set title: "Crowd - " + photo.gallery.name/}
 
@@ -65,23 +66,20 @@
 						<div id="photo-content">
 							<img alt="photo" src="${photo.fullImageUrl}"/>
 						</div>
-							
-						<div id="disqus_thread"></div>
-							<script type="text/javascript">
-						    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-						    var disqus_shortname = 'photocrowd'; // required: replace example with your forumshortname	
-								var galleryId = $("#photodetails").attr("data-galleryid");
-								var photoId = $("#photodetails").attr("data-photoid");
-								var disqus_identifier = "gallery" + galleryId + "_photo" + photoId;
-
-						    /* * * DON'T EDIT BELOW THIS LINE * * */
-						    (function() {
-						        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-						        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-						        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-						    })();
-							</script>
-						<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+						
+						<div id="fb-root"></div>
+						<script type="text/javascript">
+							(function(d, s, id) {
+						  var js, fjs = d.getElementsByTagName(s)[0];
+						  if (d.getElementById(id)) return;
+						  js = d.createElement(s); js.id = id;
+						  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=165745540204772";
+						  fjs.parentNode.insertBefore(js, fjs);
+						}(document, 'script', 'facebook-jssdk'));
+						</script>
+						
+						<div class="fb-comments" data-href="${play.configuration.getProperty("application.baseUrl")}details/${photo.id}" data-num-posts="2" data-width="700"></div>
+																						
 						
 					</div>
 				</div>
