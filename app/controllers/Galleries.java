@@ -9,6 +9,8 @@ import java.util.Map;
 
 import models.Gallery;
 import models.Photo;
+import models.Pin;
+import play.Logger;
 import play.data.binding.As;
 import play.data.validation.Match;
 import play.data.validation.Required;
@@ -79,10 +81,15 @@ public class Galleries extends Controller {
         return hashtag.trim();
     }
     
-    public static void details(Long galleryId) {    	
+    public static void details(Long galleryId) {  
     	Gallery gallery = Gallery.findById(galleryId);
-    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, PAGE_SIZE); 
-    	render(gallery, photos);
+    	List<Photo> photos = Photo.findByGalleryAndRevalidate(gallery, PAGE_SIZE);
+    	Pin pinned = Pin.findByUserAndGallery(Security.connectedUser(), gallery);    	
+    	Long pinId = 0L;
+    	if(!(pinned == null)){
+    		pinId = pinned.getId();    		
+    	}
+    	render(gallery, photos, pinned, pinId);
     }
     
     public static void getNewerPhoto(Long id, Long lastId){    	

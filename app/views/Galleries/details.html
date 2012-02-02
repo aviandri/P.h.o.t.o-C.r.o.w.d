@@ -17,9 +17,16 @@
 	function hideTwitterLink() {
 	    $(this).find('a.open-tweet').animate({opacity:0}, 'fast');
 	}
-
+	
 	$(document).ready(function() {
-		  $('#unpinlink').hide();
+			if(${pinId} == 0){
+				$('#pinlink').show();
+				$('#unpinlink').hide();
+			}else{
+				$('#pinlink').hide();
+				$('#unpinlink').show();
+			}
+			
 	    $('#recent-activity li a.open-tweet').css('opacity', 0);
 	    $('#recent-activity li').mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
 
@@ -53,9 +60,26 @@
                 url: '/pins/create?galleryId=${gallery.id}&userId=${loggedUser.id}',
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
-								type: 'POST'
+								type: 'POST',
+								success : function(){
+									$('#pinlink').hide();
+									$('#unpinlink').show();
+								}
         });
 			});
+				$('#unpinlink').click(function(){
+					$.ajax({
+	                url: '/pins/destroy?pinId=${pinId}',
+	                contentType: 'application/json; charset=utf-8',
+	                dataType: 'json',
+									type: 'DELETE',
+									success : function(){
+										$('#pinlink').show();
+										$('#unpinlink').hide();
+									}
+	        });
+				});
+			
 			$('#tweet-box').click(function(){
 				var width  = 575,
 				height = 400,

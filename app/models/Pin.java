@@ -15,7 +15,10 @@ public class Pin extends Model {
 	
   @ManyToOne
   @JoinColumn(name="gallery_id")
-    
-	public Gallery gallery;
+  public Gallery gallery;
+  
+  public static Pin findByUserAndGallery(User user, Gallery gallery){
+  	return Pin.find("user = ? AND gallery = ?", user, gallery).first();    	
+  }
 	
 }

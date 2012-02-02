@@ -20,7 +20,9 @@ GET     /photos/details/{id}            		Photos.details
 
 GET     /admin                                  admin.Galleries.index
 
-POST     /pins/create                            Pins.createAjax
+POST     /pins/create                           Pins.createAjax
+
+DELETE   /pins/destroy                          Pins.destroyAjax
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
