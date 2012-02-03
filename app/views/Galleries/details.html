@@ -12,6 +12,7 @@
 	galleryDetailsAction = #{jsAction @Galleries.details(':galleryId') /};
 	pinGalleryAction = #{jsAction @Galleries.details(':galleryId') /};
 	pinRoute = #{jsRoute @Pins.createAjax(':galleryId')/};
+	unpinRoute = #{jsRoute @Pins.destroyAjax(':galleryId')/};
 	
     
 	function showTwitterLink() {
@@ -22,109 +23,105 @@
 	    $(this).find('a.open-tweet').animate({opacity:0}, 'fast');
 	}
 	
-	$(document).ready(function() {
-			if(${pinId} == 0){
-				$('#pinlink').show();
-				$('#unpinlink').hide();
-			}else{
-				$('#pinlink').hide();
-				$('#unpinlink').show();
-			}
+    $(document).ready(function() {
+        if (${pinId} == 0) {
+            $('#pinlink').show();
+            $('#unpinlink').hide();
+        } else {
+            $('#pinlink').hide();
+            $('#unpinlink').show();
+        }
 			
 	    $('#recent-activity li a.open-tweet').css('opacity', 0);
 	    $('#recent-activity li').mouseenter(showTwitterLink).mouseleave(hideTwitterLink);
 
 	    var lastFetchedMessage = 0;
-			var galleryId = $("#gallery").attr("data-galleryid");
+	    var galleryId = $("#gallery").attr("data-galleryid");
 
 	    $('#moreButton').click(function() {
-					var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
+	        var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
 	        $.ajax({
-	                url: '${gallery.id}/photos/older?startId=' + lastPhotoId,
-	                contentType: 'application/json; charset=utf-8',
-	                dataType: 'json',
-	                success: morePhoto
+	            url: '${gallery.id}/photos/older?startId=' + lastPhotoId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: morePhoto
 	        });
 	        return false;
 	    });
     
 	    $('#new-photo-bar').click(function() {
-					var firstPhotoId = $(".photo-item").length > 0 ? $(".photo-item").first().attr("data-id") : 0;			
+			var firstPhotoId = $(".photo-item").length > 0 ? $(".photo-item").first().attr("data-id") : 0;			
 	        $.ajax({
-	                url: '${gallery.id}/photos/newer?lastId=' + firstPhotoId,
-	                contentType: 'application/json; charset=utf-8',
-	                dataType: 'json',
-	                success: newPhoto
+                url: '${gallery.id}/photos/newer?lastId=' + firstPhotoId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: newPhoto
 	        });
 	        return false;
 	    });
 			
 	    
-			$('#pinlink').click(function(){
-				$.ajax({
-				    url: pinRoute.url({galleryId : ${gallery.id}}),
-				    contentType: 'application/json; charset=utf-8',
-				    dataType: 'json',
-				    type: pinRoute.method, 
-				    success : function() {
-						$('#pinlink').hide();
-						$('#unpinlink').show();
-					}
-				});
+		$('#pinlink').click(function(){
+			$.ajax({
+			    url: pinRoute.url({galleryId : ${gallery.id}}),
+			    contentType: 'application/json; charset=utf-8',
+			    dataType: 'json',
+			    type: pinRoute.method, 
+			    success : function() {
+					$('#pinlink').hide();
+					$('#unpinlink').show();
+				}
 			});
+		});
 			
-				$('#unpinlink').click(function(){
-					$.ajax({
-	                url: '/pins/destroy?pinId=${pinId}',
-	                contentType: 'application/json; charset=utf-8',
-	                dataType: 'json',
-									type: 'DELETE',
-									success : function(){
-										$('#pinlink').show();
-										$('#unpinlink').hide();
-									}
-	        });
-				});
+		$('#unpinlink').click(function(){
+			$.ajax({
+                url: unpinRoute.url({galleryId: ${gallery.id}}),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+    			type: 'DELETE',
+    			success : function(){
+    				$('#pinlink').show();
+    				$('#unpinlink').hide();
+    			}
+    	    });
+		});
 			
-			$('#tweet-box').click(function(){
-				var width  = 575,
-				height = 400,
-			    left   = ($(window).width()  - width)  / 2,
-			    top    = ($(window).height() - height) / 2,
-			    url    = this.href,
-			    opts   = 'status=1' +
-                 ',width='  + width  +
-                 ',height=' + height +
-                 ',top='    + top    +
-                 ',left='   + left;
-			    var url = galleryDetailsAction({galleryId : ${gallery.id}});
-			    var text = escape("come and see this cool crowd :");
-			    window.open("https://twitter.com/share?url="+url+"&text="+text, 'twitte', opts);
-			    return false;
-			});
-			
-			
-			
-    
+		$('#tweet-box').click(function(){
+		    var width  = 575,
+			height = 400,
+		    left   = ($(window).width()  - width)  / 2,
+		    top    = ($(window).height() - height) / 2,
+		    url    = this.href,
+		    opts   = 'status=1' 
+		        + ',width='  + width  
+		        + ',height=' + height 
+		        + ',top='    + top 
+		        + ',left='   + left;
+		    var url = galleryDetailsAction({galleryId : ${gallery.id}});
+		    var text = escape("come and see this cool crowd :");
+		    window.open("https://twitter.com/share?url="+url+"&text="+text, 'twitte', opts);
+		    return false;
+		});
 	});
 	
 	olderPhotosRoute = #{jsRoute @Galleries.getOlderPhoto(':id', ':startId') /};
 	var alreadyLoading = false;
 	$(window).scroll(function() {
 	    if ($('body').height() <= ($(window).height() + $(window).scrollTop())) {
-					if(alreadyLoading == false){
-						var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
-						alreadyLoading == true;
-						$.ajax({
-		                url: olderPhotosRoute.url({id : ${gallery.id}, startId : lastPhotoId}),
-		                contentType: 'application/json; charset=utf-8',
-						beforeSend: function(){$('.more').show();},
-						complete: function(){$('.more').hide();},
-		                dataType: 'json',
-		                type: olderPhotosRoute.method,
-		                success: morePhoto
+    		if(alreadyLoading == false){
+    			var lastPhotoId = $(".photo-item").length > 0 ? $(".photo-item").last().attr("data-id") : 0;
+    			alreadyLoading == true;
+    			$.ajax({
+                    url: olderPhotosRoute.url({id : ${gallery.id}, startId : lastPhotoId}),
+                    contentType: 'application/json; charset=utf-8',
+        			beforeSend: function(){$('.more').show();},
+        			complete: function(){$('.more').hide();},
+                    dataType: 'json',
+                    type: olderPhotosRoute.method,
+                    success: morePhoto
 		        });
-					}
+			}
 	    }
 	});
 
@@ -132,7 +129,7 @@
 	   $.each(json.photos,function(i,photo){
 	        $("#photos").append('<div class="photo-item" data-id="' + photo.id + '"> <div class="photo"> <a href="' + showPhotoDetailsAction({id:photo.id}) + '"> <img alt="photo"src="' + photo.image_thumb + '"></a></div><a href="http://twitter.com/#!/' + photo.poster + '" class="poster">' + photo.poster + '</a><p>' + photo.message + '</p></div>')
 	    });
-			alreadyLoading == false;
+		alreadyLoading == false;
 	}
 
 	function newPhoto(json) {
