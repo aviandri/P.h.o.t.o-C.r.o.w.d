@@ -14,7 +14,7 @@ import play.mvc.*;
 @With(Secure.class)
 public class Pins extends Controller {
 
-    public static void createAjax(Long userId, Long galleryId) {
+    public static void createAjax(Long galleryId) {
         User user = Security.connectedUser();
         notFoundIfNull(user, "You no longer exists");
         
