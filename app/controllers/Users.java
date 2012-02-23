@@ -4,6 +4,7 @@ import java.util.List;
 
 import controllers.Secure.Security;
 import models.Gallery;
+import models.Pin;
 import models.User;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -27,5 +28,11 @@ public class Users extends Controller {
         
         List<Gallery> galleries = Gallery.find("user = ? ORDER BY id DESC", user).fetch();
         render(user, galleries);
+    }
+    
+    public static void mypinned(String username){
+    	User user  = Security.connectedUser();
+        List<Pin> pins = Pin.findByUser(user);
+        render("@pinned", user, pins);	
     }
 }

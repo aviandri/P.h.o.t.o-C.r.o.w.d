@@ -20,5 +20,9 @@ public class Pin extends Model {
   public static Pin findByUserAndGallery(User user, Gallery gallery){
   	return Pin.find("user = ? AND gallery = ?", user, gallery).first();    	
   }
+  
+  public static List<Pin> findByUser(User user){
+	return Pin.find("user = ?", user).fetch();    	
+  }
 	
 }

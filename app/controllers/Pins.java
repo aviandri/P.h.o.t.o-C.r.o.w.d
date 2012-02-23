@@ -15,17 +15,22 @@ import play.mvc.*;
 public class Pins extends Controller {
 
     public static void createAjax(Long galleryId) {
-        User user = Security.connectedUser();
+    	Map<String, String> response = new HashMap<String, String>();
+    	User user = Security.connectedUser();
         notFoundIfNull(user, "You no longer exists");
         
         Gallery gallery = Gallery.findById(galleryId);
         notFoundIfNull(gallery, "Gallery doesn't exists");
         
+        if(Pin.findByUserAndGallery(user, gallery) != null){
+        	response.put("status", "ERROR");
+        	response.put("description", "user cannot pin the same gallery multiple times");
+        	renderJSON(response);
+        }
         Pin pin = new Pin();
         pin.user = user;
         pin.gallery = gallery;        
         pin.save();
-        Map<String, String> response = new HashMap<String, String>();
         response.put("status", "OK");
         renderJSON(response);        
     }
@@ -41,5 +46,6 @@ public class Pins extends Controller {
     	pin.delete();
         response.put("status", "OK");
         renderJSON(response);        
-    }    
+    }
+    
 }
