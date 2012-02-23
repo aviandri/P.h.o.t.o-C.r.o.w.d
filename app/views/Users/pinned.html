@@ -1,0 +1,43 @@
+#{extends 'main.html'/}
+#{set title:user.username + "'s Pinned Galleries"/}
+
+#{set 'moreStyles'}
+<link rel="stylesheet" media="screen"  href="@{'/public/stylesheets/users/galleries.css'}"/>
+#{/set}
+
+
+<div id="head-info">
+    <div id="avatar-frame">
+        <img alt="avatar" src="${user.profileImageBiggerUrl}"/>
+    </div>
+    <div id="short-info">
+        <h1>${user.username}</h1>
+        <ul>
+            <li>${pins.size()} crowd${pins.pluralize()}</li>
+            <li><a href="http://twitter.com/#!/${user.username}" id="twitter-profile">profile</a></li>
+        </ul>
+    </div>
+</div>
+<div class="crowds-container">
+    <div id="crowds">
+        #{list pins, as:'pin'}
+        <div class="album">
+            <div class="photo-frame">
+                <a href="@{Galleries.details(pin.gallery.id)}">
+                    %{
+                    photo = pin.gallery.getSnapPhoto();
+                    }%
+                    #{if photo}
+                    <img alt="photo" src="${photo.thumbImageUrl}"/>
+                    #{/if}
+                </a>
+            </div>
+            <div class="title"><a href="@{Galleries.details(pin.gallery.id)}">${pin.gallery.name}</a></div>
+            <ul class="info">
+                %{ totalPhoto = pin.gallery.countPhoto(); }%
+                <li>${totalPhoto} photo${totalPhoto.pluralize()}</li>
+            </ul>
+        </div>
+        #{/list}
+    </div>
+</div>
